@@ -1762,6 +1762,9 @@ fetch(
 .then(response => response.json())
 .then(data => {
 
+console.log("Reviews Loaded:", data);
+console.log("Count:", data.length);
+
 const container =
 document.getElementById('dynamicReviews');
 
@@ -1771,20 +1774,13 @@ data.forEach(review => {
 
 container.innerHTML += `
 <div class="testimonial-card">
-
-<div class="stars">
-${'★'.repeat(review.rating)}
-</div>
-
+<div class="stars">${'★'.repeat(review.rating)}</div>
 <p>${review.review}</p>
-
 <h4>${review.parent}</h4>
-
 <span>
 Parent of ${review.student}
  • ${review.program}
 </span>
-
 </div>
 `;
 
