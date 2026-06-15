@@ -302,7 +302,7 @@ margin-left:10px;
     box-shadow: 0 5px 30px rgba(0,0,0,.2);
 
     width: 100%;
-    max-width: 500px;
+    max-width: 380px;
     margin: 0 auto;
 }
 
@@ -1687,7 +1687,8 @@ nav ul li a:hover{
 }
 
 .registration-form input,
-.registration-form select{
+.registration-form select,
+.registration-form textarea{
 
     width:100%;
     padding:15px;
@@ -2031,4 +2032,37 @@ nav ul li a:hover{
 #mainNav ul li a{
     display:block;
     padding:12px 0;
+}
+
+.review-submit{
+    width:100%;
+    max-width:350px;
+    padding:15px;
+    border:none;
+    border-radius:8px;
+    font-size:1rem;
+    font-weight:600;
+    cursor:pointer;
+
+    background:linear-gradient(135deg,#d4af37,#f4d03f);
+    color:#111;
+
+    transition:0.3s;
+}
+
+.review-submit:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(212,175,55,0.3);
+}
+
+.registration-form textarea{
+    width:100%;
+    padding:15px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    font-size:1rem;
+    font-family:'Poppins',sans-serif;
+    resize:vertical;
+    min-height:120px;
+    box-sizing:border-box;
 }
