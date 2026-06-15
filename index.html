@@ -1212,66 +1212,66 @@ form.querySelectorAll("select").forEach(select => {
             </p>
         </div>
 
-        <div class="testimonial-grid">
+  <div id="dynamicReviews"
+     class="testimonial-grid">
+</div>
+      
+    <iframe
+    name="review_iframe"
+    id="review_iframe"
+    style="display:none;">
+</iframe>
 
-            <!-- Testimonial 1 -->
+<form id="reviewForm"
+      class="registration-form"
+      action="https://docs.google.com/forms/d/e/1FAIpQLSeYOyfPwfSXGvYwc7TGKXEjzlRCDl_yExsBE1564RqKcUicPw/formResponse"
+      method="POST"
+      target="review_iframe">
 
-            <div class="testimonial-card">
+    <input type="text"
+           name="entry.837417622"
+           placeholder="Parent Name"
+           required>
 
-                <div class="stars">
-                    ★★★★★
-                </div>
+    <input type="text"
+           name="entry.528486610"
+           placeholder="Student Name"
+           required>
 
-                <p>
-                    Coach Edgar's structured lessons helped my daughter gain confidence
-                    and perform much better in tournaments. The program is very
-                    organized and engaging.
-                </p>
+    <select name="entry.1776943804" required>
+        <option value="">Select Program</option>
+        <option value="Spring">Spring</option>
+        <option value="Summer">Summer</option>
+        <option value="Fall">Fall</option>
+    </select>
 
-                <h4>Vidya Iyer</h4>
+    <select name="entry.472770536" required>
+        <option value="">Select Rating</option>
+        <option value="5">★★★★★ Excellent</option>
+        <option value="4">★★★★☆ Very Good</option>
+        <option value="3">★★★☆☆ Good</option>
+        <option value="2">★★☆☆☆ Fair</option>
+        <option value="1">★☆☆☆☆ Poor</option>
+    </select>
 
-                <span>
-                    Parent of Vibha Iyer • Spring 2026
-                </span>
+    <textarea
+        name="entry.1798985644"
+        rows="5"
+        placeholder="Share your experience with Hamilton Chess Club..."
+        required></textarea>
 
-            </div>
+  
+    <input type="hidden"
+           name="entry.1630017653"
+           value="Yes">
 
-            <!-- Testimonial 2 -->
+    <button type="submit" class="register-submit">
+        Submit Review
+    </button>
 
-            <div class="testimonial-card">
-
-                <div class="stars">
-                    ★★★★★
-                </div>
-
-                <p>
-                    The weekly practice games and analysis sessions have improved
-                    my daughter's strategic thinking and tournament preparation. We love the family discount program and my girls enjoy this interactive session
-                </p>
-
-                <h4>Alka Gupta</h4>
-
-                <span>
-                    Parent of Anika & Riya • Fall 2026
-                </span>
-
-            </div>
-
-            <!-- Add additional approved reviews here -->
-
-        </div>
-
-        <div class="testimonial-actions">
-<a href="https://forms.gle/SYRbHfcER9odKCP19"
-   target="_blank"
-   rel="noopener"
-   class="btn-testimonial">
-  Submit Your Review
-            </a>
-
-        </div>
-
-        <div class="review-policy">
+</form>
+      
+      <div class="review-policy">
 
             <h4>Review Policy</h4>
 
@@ -1691,7 +1691,112 @@ document.querySelectorAll('#mainNav a').forEach(link => {
 });
 
 </script>
-  
+
+<div id="reviewSuccessPopup" class="success-popup">
+
+    <div class="popup-box">
+
+        <div class="success-icon">✓</div>
+
+        <h2>Review Submitted Successfully!</h2>
+
+        <p>
+            Thank you for sharing your experience with Hamilton Chess Club.
+        </p>
+
+        <p>
+            Your review has been received and is currently under review.
+        </p>
+
+      
+          <p>
+Approved reviews may be published on our website to help other families learn about our programs.
+</p>
+      
+        <button onclick="closeReviewPopup()"
+                class="close-btn-popup">
+            Close
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+const reviewForm =
+document.getElementById("reviewForm");
+
+reviewForm.addEventListener("submit", function() {
+
+    reviewForm.querySelector("button").disabled = true;
+
+    setTimeout(function() {
+
+        document.getElementById(
+            "reviewSuccessPopup"
+        ).style.display = "flex";
+
+    }, 1500);
+
+});
+
+function closeReviewPopup() {
+
+    document.getElementById(
+        "reviewSuccessPopup"
+    ).style.display = "none";
+
+    reviewForm.reset();
+
+    reviewForm.querySelector("button").disabled = false;
+}
+
+</script>
+
+
+<script>
+fetch(
+'https://script.google.com/macros/s/AKfycbzu7Wj2UGI6EDhpb6F0vl25BfyzG8K8eMyb5x0UG-iBiIbbKNVdaRGeDrH4r4jiPXvk7w/exec'
+)
+.then(response => response.json())
+.then(data => {
+
+const container =
+document.getElementById('dynamicReviews');
+
+container.innerHTML = '';
+
+data.forEach(review => {
+
+container.innerHTML += `
+<div class="testimonial-card">
+
+<div class="stars">
+${'★'.repeat(review.rating)}
+</div>
+
+<p>${review.review}</p>
+
+<h4>${review.parent}</h4>
+
+<span>
+Parent of ${review.student}
+ • ${review.program}
+</span>
+
+</div>
+`;
+
+});
+
+})
+.catch(error => {
+console.error("Review Load Error:", error);
+});
+</script>
+
+
 </body>
 
 </html>
