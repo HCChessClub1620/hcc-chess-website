@@ -22,15 +22,24 @@
          class="logo-img">
 
     <div class="brand-text">
-        <h2>Hamilton Chess Club</h2>
-        <p>Where Intelligence Meets Strategy </p>
-        <p>Learn • Train • Think • Compete • Win</p>
-      
+
+    <h2 class="club-title">
+        Hamilton Chess Club
+    </h2>
+
+    <p class="club-tagline">
+        Where Intelligence Meets Strategy
+    </p>
+
     </div>
 
 </div>
 
-<nav>
+<button class="menu-toggle" id="menuToggle">
+☰
+</button>
+ 
+<nav id="mainNav">
 <ul>
 <li><a href="#about">About</a></li>
 <li><a href="#founders">Founders</a></li>
@@ -59,7 +68,7 @@
 <h2>Structured Chess Training Academy Led by Professional Coach for Young Champions</h2>
 
 <p>
-We train and guide you like a PRO to help you achieve your dreams. Join us and become a FIDE-rated player, win state and national championships, and achieve your chess goals through structured coaching and guided chess education.
+We train and guide you like a PRO to help you achieve your dreams. Join us to develop competitive chess skills, become a FIDE-rated player, and pursue success in state and national championships.
 </p>
 
   
@@ -72,17 +81,17 @@ We train and guide you like a PRO to help you achieve your dreams. Join us and b
 </a>
   
   
-  
-  
 
    <a           href="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/PaymentLogo/VenmoPayment.JPG"
    target="_blank"
+   rel="noopener"
    class="btn btn-payment">
    Pay-Venmo
 </a>
   
 <a href="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/PaymentLogo/ZellePayment.jpeg" 
    target="_blank"
+   rel="noopener"        
    class="btn btn-payment">
    Pay - Zelle
 </a>
@@ -328,7 +337,7 @@ We train and guide you like a PRO to help you achieve your dreams. Join us and b
                     ♟
                 </div>
 
-                <h3>Subhash</h3>
+                <h3>Subhash Chargbandarupalli</h3>
 
                 <span class="student-role">
                     Student Coach & Junior Mentor
@@ -660,7 +669,10 @@ We train and guide you like a PRO to help you achieve your dreams. Join us and b
   
 <section id="registration" class="registration-section">
 
-<div class="container">
+<div id="registrationContent">
+
+  <div class="container">
+
 
 <div class="section-header">
     <span class="section-tag">Summer Program Registration</span>
@@ -670,11 +682,20 @@ We train and guide you like a PRO to help you achieve your dreams. Join us and b
         Complete the registration form below and submit your payment.
     </p>
 </div>
-
-<form
-id="registrationForm"
+  
+<iframe
+    name="hidden_iframe"
+    id="hidden_iframe"
+    style="display:none;">
+</iframe>
+  
+  
+  <form id="registrationForm"
 class="registration-form"
-<form id="registrationForm" class="registration-form">  
+action="https://docs.google.com/forms/d/e/1FAIpQLScgSXIj8ehMvWdfgrYMZMfSvYH5qv4p4QnBSq_qkpUEuZHhIg/formResponse"
+method="POST"
+target="hidden_iframe">
+  
   
  <input type="text"
        name="entry.623997903"
@@ -693,17 +714,17 @@ class="registration-form"
 
 <input type="text"
        name="entry.60020519"
-       placeholder="Parent Name"
+       placeholder="Parent/Guardian Name"
        required>
 
 <input type="email"
        name="entry.2057450137"
-       placeholder="Parent Email"
+       placeholder="Parent Email ID"
        required>
 
 <input type="tel"
        name="entry.798606852"
-       placeholder="Parent Contact"
+       placeholder="Parent Phone Number"
        required>
 
 <select name="entry.1580185495" required>
@@ -718,7 +739,29 @@ class="registration-form"
     <option>Yes</option>
     <option>No</option>
 </select>
+  
+<div class="consent-note">
+    <p>
+        <strong>Photo & Media Permission:</strong><br>
+        Hamilton Chess Club occasionally takes photographs and videos during classes,
+        tournaments, award ceremonies, and club events. These images may be used on
+        our website, social media pages, newsletters, and promotional materials to
+        showcase student achievements and club activities.
+        Please indicate whether you give permission for your child's photo/video to be used.
+    </p>
+</div>
 
+<select name="entry.522550062" required>
+    <option value="">Photo Consent</option>
+    <option value="Yes">Yes - I give permission</option>
+    <option value="No">No - I do not give permission</option>
+</select>
+  
+  <p class="payment-note">
+    <strong>Payment Confirmation Screenshot:</strong>
+    Please upload a screenshot of your completed Venmo or Zelle payment using the Payment Reference Upload link below. This helps us verify and confirm your registration.
+</p>
+  
 <select
     id="paymentMethod"
     name="entry.2138061187"
@@ -728,67 +771,20 @@ class="registration-form"
     <option value="Zelle">Zelle</option>
 </select>
 
-<select name="entry.522550062" required>
-    <option value="">Photo Consent</option>
-    <option value="Yes">Yes</option>
-    <option value="No">No</option>
-</select>
-  
-<script>
-
-document.getElementById("registrationForm")
-.addEventListener("submit", function(e){
-
-    e.preventDefault();
-
-    const formData = new FormData(this);
-
-    fetch(
-        "https://docs.google.com/forms/d/e/1FAIpQLScgSXIj8ehMvWdfgrYMZMfSvYH5qv4p4QnBSq_qkpUEuZHhIg/formResponse",
-        {
-            method: "POST",
-            mode: "no-cors",
-            body: formData
-        }
-    )
-    .then(() => {
-
-        document.getElementById("registrationForm").innerHTML = `
-            <div class="success-message">
-                <h3>✅ Registration Submitted!</h3>
-
-                <p>
-                    Thank you for registering with Hamilton Chess Club.
-                </p>
-
-                <p>
-                    Please complete payment using Venmo or Zelle.
-                </p>
-
-                <p>
-                    Questions? Contact:
-                    <br>
-                    hamiltonsdchess@gmail.com
-                </p>
-            </div>
-        `;
-
-    });
-
-});
-
-</script>
-  
-<div id="paymentSection"></div>
-
+  <div id="paymentSection">
+    <p>Select a payment method to view payment instructions.</p>
+</div>
+    
 <button type="submit" class="register-submit">
     Complete Registration
 </button>
+ 
+    </form>
 
-</form>
+
   
-  <script>
-
+<script>
+    
 const paymentMethod =
 document.getElementById("paymentMethod");
 
@@ -799,8 +795,7 @@ document.getElementById("paymentSection");
 
 if(this.value==="Venmo"){
 
-div.innerHTML=`
-
+div.innerHTML = `
 <div class="payment-display">
 
 <h3>Pay Using Venmo</h3>
@@ -811,14 +806,14 @@ div.innerHTML=`
 
 <a href="https://venmo.com/"
    target="_blank"
+   rel="noopener"
    class="btn">
    Open Venmo
 </a>
 
 </div>
-
 `;
-
+  
 }
 
 else if(this.value==="Zelle"){
@@ -847,7 +842,74 @@ hamiltonsdchess@gmail.com
 
 </script>
 
+<script>
+
+const form = document.getElementById("registrationForm");
+
+form.addEventListener("submit", function () {
+
+    form.querySelector("button").disabled = true;
+
+    setTimeout(function () {
+
+        document.getElementById("successPopup").style.display = "flex";
+
+    }, 1500);
+
+});
+
   
+function closePopup() {
+
+    // Close popup
+    document.getElementById("successPopup").style.display = "none";
+
+    // Reset form fields
+  const form = document.getElementById("registrationForm");
+
+form.reset();
+
+form.querySelectorAll("input").forEach(field => {
+    field.value = "";
+});
+
+form.querySelectorAll("select").forEach(select => {
+    select.selectedIndex = 0;
+});
+  
+
+    // Reset payment instructions section
+    document.getElementById("paymentSection").innerHTML =
+        "<p>Select a payment method to view payment instructions.</p>";
+
+    // Re-enable submit button
+    document.querySelector(".register-submit").disabled = false;
+}
+  
+  
+
+</script>
+    
+    <div id="successMessage" class="success-message" style="display:none;">
+    <h3>🎉 Registration Submitted!</h3>
+
+    <p>
+        Thank you for registering with Hamilton Chess Club.
+    </p>
+
+    <p>
+        Your registration has been received successfully.
+    </p>
+
+    <p>
+        Please upload your payment confirmation screenshot
+        using the Payment Reference Upload link for verification.
+    </p>
+
+</div>
+                                                    </div>
+
+
 </div>
 
 </section>
@@ -910,7 +972,7 @@ hamiltonsdchess@gmail.com
         </div>
 
         <!-- Discounts -->
-
+<!--
         <div class="discount-section">
 
             <h3>Special Discounts</h3>
@@ -949,7 +1011,7 @@ hamiltonsdchess@gmail.com
                         Receive a one-time $10 credit for every new student you successfully refer.
                     </p>
 
-                </div>
+                </div>   --> 
 
             </div>
 
@@ -1034,7 +1096,8 @@ hamiltonsdchess@gmail.com
                 <h4>Venmo</h4>
 
                 <a href="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/PaymentLogo/VenmoPayment.JPG"
-                   target="_blank">
+                   target="_blank"
+                   rel="noopener">
 
                     <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/PaymentLogo/VenmoPayment.JPG"
                          alt="Venmo QR Code">
@@ -1048,7 +1111,8 @@ hamiltonsdchess@gmail.com
                 <h4>Zelle</h4>
 
                 <a href="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/PaymentLogo/ZellePayment.jpeg"
-                   target="_blank">
+                   target="_blank"
+                   rel="noopener">
 
                     <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/PaymentLogo/ZellePayment.jpeg"
                          alt="Zelle QR Code">
@@ -1069,36 +1133,65 @@ hamiltonsdchess@gmail.com
 
 <div class="container">
 
-    <div class="section-header">
-        <span class="section-tag">Memories & Achievements</span>
-        <h2>Tournament Gallery</h2>
-    </div>
+<div class="section-header">
+    <span class="section-tag">Memories & Achievements</span>
+    <h2>Tournament Gallery</h2>
+</div>
 
-    <!-- Tournament 1 -->
+<!-- Album 1 -->
 
-    <div class="event-gallery">
+<div class="event-gallery">
 
-        <h3>Spring Scholastic Tournament 2026</h3>
+<h3>🏆 Wisconsin Scholastic Chess Federation (WSCF) Tournament 2026 - UW Milwaukee</h3>
 
-        <div class="gallery-grid">
+<div class="gallery-grid">
 
-            <a href="FULL_IMAGE_URL_1" target="_blank">
-                <img src="THUMBNAIL_URL_1" alt="">
-            </a>
+<img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg" alt="WSCF Tournament Photo 1">
 
-            <a href="FULL_IMAGE_URL_2" target="_blank">
-                <img src="THUMBNAIL_URL_2" alt="">
-            </a>
+<img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg" alt="WSCF Tournament Photo 2">
 
-            <a href="FULL_IMAGE_URL_3" target="_blank">
-                <img src="THUMBNAIL_URL_3" alt="">
-            </a>
+<img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/3.jpeg" alt="WSCF Tournament Photo 3">
 
-            <!-- Continue up to 10 photos -->
+<img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg" alt="WSCF Tournament Photo 4">
 
-        </div>
+<img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/5.jpeg" alt="WSCF Tournament Photo 5">
 
-    </div>
+</div>
+  </div>
+  
+<!-- Album 2 -->
+
+<div class="event-gallery">
+
+<h3>♟ Summer Championship 2026</h3>
+
+<div class="gallery-grid">
+
+<img src="Gallery/Summer2026/Photo1.jpg" alt="">
+<img src="Gallery/Summer2026/Photo2.jpg" alt="">
+<img src="Gallery/Summer2026/Photo3.jpg" alt="">
+<img src="Gallery/Summer2026/Photo4.jpg" alt="">
+
+</div>
+
+</div>
+
+<!-- Album 3 -->
+
+<div class="event-gallery">
+
+<h3>🎖 Hamilton Open Tournament 2026</h3>
+
+<div class="gallery-grid">
+
+<img src="Gallery/HamiltonOpen2026/Photo1.jpg" alt="">
+<img src="Gallery/HamiltonOpen2026/Photo2.jpg" alt="">
+<img src="Gallery/HamiltonOpen2026/Photo3.jpg" alt="">
+<img src="Gallery/HamiltonOpen2026/Photo4.jpg" alt="">
+
+</div>
+
+</div>
 
 </div>
 
@@ -1169,11 +1262,11 @@ hamiltonsdchess@gmail.com
         </div>
 
         <div class="testimonial-actions">
-
-            <a href="https://forms.gle/SYRbHfcER9odKCP19"
-               target="_blank"
-               class="btn-testimonial">
-                Submit Your Review
+<a href="https://forms.gle/SYRbHfcER9odKCP19"
+   target="_blank"
+   rel="noopener"
+   class="btn-testimonial">
+  Submit Your Review
             </a>
 
         </div>
@@ -1298,6 +1391,7 @@ hamiltonsdchess@gmail.com
 
     <a href="https://mail.google.com/mail/?view=cm&fs=1&to=hamiltonsdchess@gmail.com&su=Hamilton%20Chess%20Club%20-%20Sponsorship"
    target="_blank"
+   rel="noopener"
    class="btn-sponsor">
    🏆 Become a Proud Sponsor
 </a>
@@ -1351,24 +1445,26 @@ hamiltonsdchess@gmail.com
 
 
 <!-- CONTACT -->
-<section id="contact" class="contact-section">
+
+      <section id="contact" class="contact-section">
 
     <div class="container">
 
-        <span class="section-tag">Get In Touch</span>
+        <div class="section-header">
+            <span class="section-tag">Get In Touch</span>
+            <h2>Contact Us</h2>
+        </div>
 
-    <div class="contact-header">
+        <div class="contact-header">
 
-    <h2>Contact Us</h2>
-
-    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=hamiltonsdchess@gmail.com&su=Hamilton%20Chess%20Club%20Inquiry"
+<a href="https://mail.google.com/mail/?view=cm&fs=1&to=hamiltonsdchess@gmail.com&su=Hamilton%20Chess%20Club%20Inquiry"
        target="_blank"
+       rel="noopener"
        class="btn-contact">
        ✉ Email Us
     </a>
 
-</div>
-
+        </div>
 
         <div class="contact-card">
 
@@ -1406,7 +1502,196 @@ hamiltonsdchess@gmail.com
     </p>
 </footer>
   
+<div id="successPopup" class="success-popup">
+
+    <div class="popup-box">
+
+        <div class="success-icon">✓</div>
+
+        <h2>Registration Successfully Submitted !!</h2>
+
+        <p>
+            Thank you for registering with Hamilton Chess Club.
+        </p>
+
+  <p>
+<strong>Final Step:</strong><br>
+Click Email Receipt and attach your payment screenshot to reserve your spot.
+</p>
+        <p>
+            📧 Email: hamiltonsdchess@gmail.com
+        </p>
+
+        <div class="popup-buttons">
+
+   <button
+    type="button"
+    onclick="sendReceiptEmail()"
+    class="email-btn">
+    📧 Email Receipt
+</button>       
+         
+            <button onclick="closePopup()" class="close-btn-popup">
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
   
-  </body>
+</div>
+ 
+<script>
+
+function sendReceiptEmail() {
+
+    const student =
+        document.querySelector('[name="entry.623997903"]').value || '';
+
+    const parent =
+        document.querySelector('[name="entry.60020519"]').value || '';
+
+    const email =
+        document.querySelector('[name="entry.2057450137"]').value || '';
+
+    const payment =
+        document.getElementById('paymentMethod').value || '';
+
+    const subject = encodeURIComponent(
+       `Hamilton Chess Club Payment Receipt - ${student} (${parent})`
+);
+
+    const body = encodeURIComponent(
+`Hello Hamilton Chess Club,
+
+I have completed payment for  ${student}. 
+
+Student Name: ${student}
+Parent Name: ${parent}
+Parent Email: ${email}
+Payment Method: ${payment}
+
+I have attached payment screenshot for your reference.
+
+Thank you.
+`
+    );
+
+    window.open(
+        `https://mail.google.com/mail/?view=cm&fs=1&to=hamiltonsdchess@gmail.com&su=${subject}&body=${body}`,
+        '_blank'
+    );
+}
+  
+</script>
+  
+<div id="lightbox" class="lightbox">
+
+<button id="prevBtn" class="nav-btn">&#10094;</button>
+
+<img id="lightbox-img" src="" alt="">
+
+<button id="nextBtn" class="nav-btn">&#10095;</button>
+
+<span class="lightbox-close">&times;</span>
+
+</div>
+  
+<script>
+
+const images =
+document.querySelectorAll('.gallery-grid img');
+
+const lightbox =
+document.getElementById('lightbox');
+
+const lightboxImg =
+document.getElementById('lightbox-img');
+
+let currentIndex = 0;
+
+function showImage(index){
+
+    lightboxImg.src = images[index].src;
+    currentIndex = index;
+}
+
+images.forEach((img,index)=>{
+
+    img.addEventListener('click',()=>{
+
+        lightbox.style.display='flex';
+
+        showImage(index);
+
+    });
+
+});
+
+document.getElementById('nextBtn')
+.addEventListener('click',()=>{
+
+    currentIndex =
+    (currentIndex + 1) % images.length;
+
+    showImage(currentIndex);
+
+});
+
+document.getElementById('prevBtn')
+.addEventListener('click',()=>{
+
+    currentIndex =
+    (currentIndex - 1 + images.length)
+    % images.length;
+
+    showImage(currentIndex);
+
+});
+
+document.querySelector('.lightbox-close')
+.addEventListener('click',()=>{
+
+    lightbox.style.display='none';
+
+});
+
+lightbox.addEventListener('click',(e)=>{
+
+    if(e.target===lightbox){
+
+        lightbox.style.display='none';
+
+    }
+
+});
+
+</script>
+<script>
+
+const menuToggle = document.getElementById('menuToggle');
+const mainNav = document.getElementById('mainNav');
+
+menuToggle.addEventListener('click', () => {
+    mainNav.classList.toggle('active');
+});
+
+/* Close menu after selecting a section */
+
+document.querySelectorAll('#mainNav a').forEach(link => {
+
+    link.addEventListener('click', () => {
+
+        mainNav.classList.remove('active');
+
+    });
+
+});
+
+</script>
+  
+</body>
 
 </html>
