@@ -2056,4 +2056,108 @@ nav ul li a:hover{
     resize:vertical;
     min-height:120px;
     box-sizing:border-box;
+}/* Student Spotlight */
+
+.student-spotlight{
+    padding:80px 0;
+    background:#f8f9fa;
+    text-align:center;
+}
+
+.spotlight-carousel{
+    position:relative;
+    max-width:700px;
+    margin:40px auto;
+}
+
+.spotlight-slide{
+    display:none;
+    background:#fff;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+.spotlight-slide.active{
+    display:block;
+}
+
+.spotlight-slide img{
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    object-fit:cover;
+    margin-bottom:20px;
+    border:5px solid #90a955;
+}
+
+.spotlight-slide h3{
+    color:#132a13;
+    margin-bottom:10px;
+}
+
+.spotlight-title{
+    color:#4f772d;
+    font-weight:600;
+    margin-bottom:15px;
+}
+
+.carousel-btn{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    background:#31572c;
+    color:#fff;
+    border:none;
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:20px;
+}
+
+.carousel-btn:hover{
+    background:#132a13;
+}
+
+.prev{
+    left:-60px;
+}
+
+.next{
+    right:-60px;
+}
+
+.carousel-dots{
+    margin-top:20px;
+}
+
+.dot{
+    display:inline-block;
+    width:12px;
+    height:12px;
+    margin:0 5px;
+    background:#ccc;
+    border-radius:50%;
+    cursor:pointer;
+}
+
+.dot.active{
+    background:#31572c;
+}
+
+@media(max-width:768px){
+
+    .prev{
+        left:5px;
+    }
+
+    .next{
+        right:5px;
+    }
+
+    .spotlight-slide img{
+        width:180px;
+        height:180px;
+    }
 }
