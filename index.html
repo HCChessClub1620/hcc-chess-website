@@ -847,7 +847,7 @@ hamiltonsdchess@gmail.com
 
 const form = document.getElementById("registrationForm");
 
-form.addEventListener("submit", function () {
+form.addEventListener("submit", function (e) {
 
     form.querySelector("button").disabled = true;
 
@@ -855,7 +855,7 @@ form.addEventListener("submit", function () {
 
         document.getElementById("successPopup").style.display = "flex";
 
-    }, 1500);
+    }, 1200);
 
 });
 
@@ -1127,118 +1127,168 @@ form.querySelectorAll("select").forEach(select => {
     </div>
 
 </div>
-
-
-
 <section id="gallery" class="gallery-section">
 
 <div class="container">
 
-<div class="section-header">
+  <div class="section-header">
     <span class="section-tag">Memories & Achievements</span>
     <h2>Tournament Gallery</h2>
-</div>
-
-<!-- Album 1 -->
-
-<div class="event-gallery">
-
-<h3>🏆 Wisconsin Scholastic Chess Federation (WSCF) Tournament 2026 - UW Milwaukee</h3>
-
-<div class="gallery-grid">
-
-<img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg" alt="WSCF Tournament Photo 1">
-
-<img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg" alt="WSCF Tournament Photo 2">
-
-<img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/3.jpeg" alt="WSCF Tournament Photo 3">
-
-<img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg" alt="WSCF Tournament Photo 4">
-
-<img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/5.jpeg" alt="WSCF Tournament Photo 5">
-
-</div>
   </div>
+
+  <!-- TOURNAMENT GRID -->
+  <div class="tournament-grid" id="tournamentGrid">
+
+    <div class="tournament-card" onclick="openTournament('wscf-Jan-2026')">
+      <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg">
+      <h4>WSCF - Jan 2026</h4>
+    </div>
+    
+    
+    <div class="tournament-card" onclick="openTournament('wscf-Feb-2026')">
+      <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg">
+      <h4>WSCF - Feb 2026</h4>
+    </div>
+
+
+    <div class="tournament-card" onclick="openTournament('wscf-Mar-2026')">
+      <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg">
+      <h4>WSCF - Mar 2026</h4>
+    </div>
+
+        <div class="tournament-card" onclick="openTournament('wscf-Apr-2026')">
+      <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg">
+      <h4>WSCF - Apr 2026</h4>
+    </div>
+    
+        <div class="tournament-card" onclick="openTournament('wscf-May-2026')">
+      <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg">
+      <h4>WSCF - May 2026</h4>
+    </div>
+    
+        <div class="tournament-card" onclick="openTournament('wscf-Jun-2026')">
+      <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg">
+      <h4>WSCF - Jun 2026</h4>
+    </div>
+
+
+
+    <div class="tournament-card" onclick="openTournament('wscf-Jul-2026')">
+      <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/3.jpeg">
+      <h4>WSCF - Jul 2026</h4>
+    </div>
+
+    <div class="tournament-card" onclick="openTournament('wscf-Aug-2026')">
+      <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg">
+      <h4>WSCF - Aug 2026</h4>
+    </div>
+
+    
+  </div>
+
+  <!-- PAGINATION -->
+  <div class="gallery-pagination">
+    <button id="prevBtn" onclick="prevTournamentPage()">❮</button>
+    <span id="galleryPageInfo"></span>
+    <button id="nextBtn" onclick="nextTournamentPage()">❯</button>
+</div>
   
-<!-- Album 2 -->
-
-<div class="event-gallery">
-
-<h3>♟ Summer Championship 2026</h3>
-
-<div class="gallery-grid">
-
-<img src="Gallery/Summer2026/Photo1.jpg" alt="">
-<img src="Gallery/Summer2026/Photo2.jpg" alt="">
-<img src="Gallery/Summer2026/Photo3.jpg" alt="">
-<img src="Gallery/Summer2026/Photo4.jpg" alt="">
-
 </div>
-
-</div>
-
-<!-- Album 3 -->
-
-<div class="event-gallery">
-
-<h3>🎖 Hamilton Open Tournament 2026</h3>
-
-<div class="gallery-grid">
-
-<img src="Gallery/HamiltonOpen2026/Photo1.jpg" alt="">
-<img src="Gallery/HamiltonOpen2026/Photo2.jpg" alt="">
-<img src="Gallery/HamiltonOpen2026/Photo3.jpg" alt="">
-<img src="Gallery/HamiltonOpen2026/Photo4.jpg" alt="">
-
-</div>
-
-</div>
-
-</div>
-
 </section>
- <!-- Student Spotlight Carousel -->
+
 <section id="student-spotlight" class="student-spotlight">
-    <div class="container">
 
-        <h2 class="section-title">Student Spotlight</h2>
-        <p class="section-subtitle">
-            Celebrating the achievements of our young chess champions.
-        </p>
+<div class="container">
 
-        <div class="spotlight-carousel">
+    <div class="section-header">
+        <span class="section-tag">Our Rising Stars</span>
+        <h2>Student Spotlight</h2>
+    </div>
 
-            <div class="spotlight-slide active">
-                <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Student%20Spotlight/shravan.jpg" alt="Shravan">
-                <h3>Shravan Sabarish</h3>
-                <p class="spotlight-title">FIDE ACM Master Title Winner</p>
-                <p>
-                     <b>1808 USCF Rating & 1666 FIDE Rating</b>
-                </p>
+    <div class="spotlight-wrapper">
+
+        <button class="spotlight-btn prev" onclick="changeSpotlight(-1)">
+            &#10094;
+        </button>
+
+        <!-- PAGE 1 -->
+        <div class="spotlight-page active">
+            <div class="spotlight-grid">
+
+                <div class="spotlight-card">
+                    <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Student%20Spotlight/shravan.jpg"
+                         onclick="openSpotlightLightbox(this.src)">
+                    <h4>Shravan S</h4>
+                    <p>FIDE ACM Master Title Winner</p>
+                </div>
+
+                <div class="spotlight-card">
+                    <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Student%20Spotlight/shashwath.jpg"
+                         onclick="openSpotlightLightbox(this.src)">
+                    <h4>Shashwath S</h4>
+                    <p>Arena FIDE Rising Star</p>
+                </div>
+
+                <div class="spotlight-card">
+                    <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Student%20Spotlight/Karthik.jpeg"
+                         onclick="openSpotlightLightbox(this.src)">
+                    <h4>Karthik R</h4>
+                    <p>WSCF Champion</p>
+                </div>
+
+                <div class="spotlight-card">
+                    <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Student%20Spotlight/Vibha.jpeg"
+                         onclick="openSpotlightLightbox(this.src)">
+                    <h4>Vibha B</h4>
+                    <p>WSCF Champion</p>
+                </div>
+
+                <div class="spotlight-card">
+                    <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Student%20Spotlight/Neil.jpeg"
+                         onclick="openSpotlightLightbox(this.src)">
+                    <h4>Neil</h4>
+                    <p>WSCF Champion</p>
+                </div>
+
             </div>
-
-            <div class="spotlight-slide">
-                <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Student%20Spotlight/shashwath.jpg" alt="Sashwath">
-                <h3>Sashwath Sabarish</h3>
-                <p class="spotlight-title">Arena FIDE Rising Chess Star</p>
-                <p>
-                   <b>1664 USCF Rating & 1604 FIDE Rating</b>
-                </p>
-            </div>
-
-            <!-- Navigation Buttons -->
-            <button class="carousel-btn prev">&#10094;</button>
-            <button class="carousel-btn next">&#10095;</button>
-
         </div>
 
-        <!-- Dots -->
-        <div class="carousel-dots">
-            <span class="dot active"></span>
-            <span class="dot"></span>
+        <!-- PAGE 2 -->
+        <div class="spotlight-page">
+            <div class="spotlight-grid">
+
+                <div class="spotlight-card">
+                    <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Student%20Spotlight/Navya.jpeg"
+                         onclick="openSpotlightLightbox(this.src)">
+                    <h4>Navya</h4>
+                    <p>Budding Young Champion</p>
+                </div>
+
+                <div class="spotlight-card">
+                    <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Student%20Spotlight/Kian.jpeg"
+                         onclick="openSpotlightLightbox(this.src)">
+                    <h4>Kian</h4>
+                    <p>WSCF Champion</p>
+                </div>
+
+                <div class="spotlight-card">
+                    <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Student%20Spotlight/Subhash.jpeg"
+                         onclick="openSpotlightLightbox(this.src)">
+                    <h4>Subhash</h4>
+                    <p>WSCF & USCF Champion</p>
+                </div>
+
+            </div>
         </div>
+
+        <button class="spotlight-btn next" onclick="changeSpotlight(1)">
+            &#10095;
+        </button>
 
     </div>
+
+</div>
+
 </section>
 
 <section id="testimonials" class="testimonials-section">
@@ -1631,69 +1681,10 @@ Thank you.
   
 </script>
   
-<div id="lightbox" class="lightbox">
-
-<button id="prevBtn" class="nav-btn">&#10094;</button>
-
-<img id="lightbox-img" src="" alt="">
-
-<button id="nextBtn" class="nav-btn">&#10095;</button>
-
-<span class="lightbox-close">&times;</span>
-
-</div>
-  
 <script>
 
-const images =
-document.querySelectorAll('.gallery-grid img');
 
-const lightbox =
-document.getElementById('lightbox');
 
-const lightboxImg =
-document.getElementById('lightbox-img');
-
-let currentIndex = 0;
-
-function showImage(index){
-
-    lightboxImg.src = images[index].src;
-    currentIndex = index;
-}
-
-images.forEach((img,index)=>{
-
-    img.addEventListener('click',()=>{
-
-        lightbox.style.display='flex';
-
-        showImage(index);
-
-    });
-
-});
-
-document.getElementById('nextBtn')
-.addEventListener('click',()=>{
-
-    currentIndex =
-    (currentIndex + 1) % images.length;
-
-    showImage(currentIndex);
-
-});
-
-document.getElementById('prevBtn')
-.addEventListener('click',()=>{
-
-    currentIndex =
-    (currentIndex - 1 + images.length)
-    % images.length;
-
-    showImage(currentIndex);
-
-});
 
 document.querySelector('.lightbox-close')
 .addEventListener('click',()=>{
@@ -1837,41 +1828,291 @@ console.error("Review Load Error:", error);
 </script>
 
 <script>
-const slides = document.querySelectorAll('.spotlight-slide');
-const dots = document.querySelectorAll('.dot');
+document.addEventListener("DOMContentLoaded", () => {
 
-let currentSlide = 0;
+  let currentStudentPage = 0;
 
-function showSlide(index){
+  const studentPages =
+    document.querySelectorAll("#student-spotlight .spotlight-page");
 
-    slides.forEach(slide => slide.classList.remove('active'));
-    dots.forEach(dot => dot.classList.remove('active'));
+  const studentPrevBtn =
+    document.querySelector("#student-spotlight .spotlight-btn.prev");
 
-    slides[index].classList.add('active');
-    dots[index].classList.add('active');
+  const studentNextBtn =
+    document.querySelector("#student-spotlight .spotlight-btn.next");
 
-    currentSlide = index;
+  function updateStudentSpotlight() {
+
+    studentPages.forEach(page => page.classList.remove("active"));
+    studentPages[currentStudentPage].classList.add("active");
+
+    studentPrevBtn.style.display =
+      currentStudentPage === 0 ? "none" : "flex";
+
+    studentNextBtn.style.display =
+      currentStudentPage === studentPages.length - 1 ? "none" : "flex";
+  }
+
+  window.changeSpotlight = function(dir) {
+    currentStudentPage += dir;
+
+    if (currentStudentPage < 0)
+      currentStudentPage = 0;
+
+    if (currentStudentPage > studentPages.length - 1)
+      currentStudentPage = studentPages.length - 1;
+
+    updateStudentSpotlight();
+  };
+
+  // 🔥 IMPORTANT FIX: initialize state on load
+  updateStudentSpotlight();
+});
+  
+</script>
+
+<script>
+let currentTournament = null;
+let currentIndex = 0;
+let currentImages = [];
+
+const tournaments = {
+  "wscf-Jan-2026": [
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg",
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg"
+  ],
+  "wscf-Feb-2026": [
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg",
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg",
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/3.jpeg"
+  ],
+    "wscf-Mar-2026": [
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/3.jpeg",
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg",
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg",
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg"
+  ],
+    "wscf-Apr-2026": [
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg",
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg",
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/3.jpeg",
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg",
+        "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/5.jpeg"
+  ],
+    "wscf-May-2026": [
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/5.jpeg",
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg",
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/3.jpeg",
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg",
+        "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg",
+          "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg"
+  ],
+    "wscf-Jun-2026": [
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg",
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg",
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/3.jpeg",
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg",
+        "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/5.jpeg",
+          "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg",
+        "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg",
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/3.jpeg",
+    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg",
+        "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/5.jpeg",
+          "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg"
+  ],
+   "wscf-Jul-2026": [
+  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg",
+  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg",
+  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/3.jpeg",
+  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg",
+  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Student%20Spotlight/Vibha.jpeg",
+  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg",
+  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/5.jpeg",
+   "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Student%20Spotlight/Vibha.jpeg"
+],
+   "wscf-Aug-2026": [
+  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg",
+     "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Student%20Spotlight/Vibha.jpeg",
+  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg",
+  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/5.jpeg",
+     "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Student%20Spotlight/Vibha.jpeg",
+  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg",
+  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/5.jpeg",
+     "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Student%20Spotlight/Vibha.jpeg",
+       "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg"
+]
+};
+
+// OPEN LIGHTBOX FROM TOURNAMENT CARD
+function openTournament(name) {
+  currentTournament = name;
+  currentImages = tournaments[name];
+  currentIndex = 0;
+
+  document.getElementById("lightbox").style.display = "flex";
+
+  updateImage(); // this now handles arrows correctly
+}
+  
+// UPDATE IMAGE
+  function updateImage() {
+  const img = document.getElementById("lightbox-img");
+  const prevBtn = document.querySelector(".lightbox-prev");
+  const nextBtn = document.querySelector(".lightbox-next");
+
+  img.src = currentImages[currentIndex];
+
+  // FIRST IMAGE → hide left arrow
+  if (currentIndex === 0) {
+    prevBtn.style.display = "none";
+  } else {
+    prevBtn.style.display = "flex";
+  }
+
+  // LAST IMAGE → hide right arrow
+  if (currentIndex === currentImages.length - 1) {
+    nextBtn.style.display = "none";
+  } else {
+    nextBtn.style.display = "flex";
+  }
 }
 
-function nextSlide(){
-    let index = (currentSlide + 1) % slides.length;
-    showSlide(index);
+// NEXT (LOOP)
+function nextImage() {
+  currentIndex = (currentIndex + 1) % currentImages.length;
+  updateImage();
 }
 
-function prevSlide(){
-    let index = (currentSlide - 1 + slides.length) % slides.length;
-    showSlide(index);
+// PREV (LOOP)
+function prevImage() {
+  currentIndex =
+    (currentIndex - 1 + currentImages.length) % currentImages.length;
+  updateImage();
 }
 
-document.querySelector('.next').addEventListener('click', nextSlide);
-document.querySelector('.prev').addEventListener('click', prevSlide);
+// CLOSE LIGHTBOX
+function closeLightbox() {
+  document.getElementById("lightbox").style.display = "none";
+}
 
-dots.forEach((dot,index)=>{
-    dot.addEventListener('click', ()=>showSlide(index));
+function changeImage(dir) {
+  currentIndex += dir;
+
+  if (currentIndex < 0) {
+    currentIndex = currentImages.length - 1;
+  }
+
+  if (currentIndex >= currentImages.length) {
+    currentIndex = 0;
+  }
+
+  updateImage();
+}
+  
+// OPTIONAL: keyboard support
+document.addEventListener("keydown", (e) => {
+  const lb = document.getElementById("lightbox");
+  if (lb.style.display !== "flex") return;
+
+  if (e.key === "ArrowRight") nextImage();
+  if (e.key === "ArrowLeft") prevImage();
+  if (e.key === "Escape") closeLightbox();
+});
+</script>
+
+<div id="galleryLightbox" class="gallery-lightbox">
+
+  <span class="close-lightbox"
+        onclick="closeLightbox()">&times;</span>
+
+  <button class="lightbox-arrow left"
+          onclick="changeImage(-1)">❮</button>
+
+  <img id="lightboxImage">
+
+  <button class="lightbox-arrow right"
+          onclick="changeImage(1)">❯</button>
+
+</div>
+  <div id="lightbox" class="lightbox" style="display:none;">
+
+  <span class="lightbox-close" onclick="closeLightbox()">×</span>
+
+  <span class="lightbox-prev" onclick="prevImage()">&#10094;</span>
+
+  <img id="lightbox-img" src="" alt="Tournament Image">
+
+  <span class="lightbox-next" onclick="nextImage()">&#10095;</span>
+
+</div>
+
+
+<script>
+
+let currentPage = 1;
+const albumsPerPage = 3;
+
+function showTournamentPage(page) {
+
+    const cards = document.querySelectorAll('.tournament-card');
+    const totalPages = Math.ceil(cards.length / albumsPerPage);
+
+    currentPage = Math.max(1, Math.min(page, totalPages));
+
+    cards.forEach((card, index) => {
+
+        const start = (currentPage - 1) * albumsPerPage;
+        const end = start + albumsPerPage;
+
+        if(index >= start && index < end){
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+
+    document.getElementById('galleryPageInfo').textContent =
+        `${currentPage} / ${totalPages}`;
+
+    document.getElementById('prevBtn').style.display =
+        currentPage === 1 ? 'none' : 'inline-flex';
+
+    document.getElementById('nextBtn').style.display =
+        currentPage === totalPages ? 'none' : 'inline-flex';
+}
+
+function nextTournamentPage() {
+    showTournamentPage(currentPage + 1);
+}
+
+function prevTournamentPage() {
+    showTournamentPage(currentPage - 1);
+}
+
+window.addEventListener('load', function() {
+    showTournamentPage(1);
 });
 
-/* Auto Scroll Every 4 Seconds */
-setInterval(nextSlide, 4000);
+</script>  
+
+<div id="spotlightLightbox" class="lightbox" style="display:none;">
+  <span class="lightbox-close" onclick="closeSpotlightLightbox()">×</span>
+
+  <img id="spotlightLightboxImg" src="" alt="Student Spotlight Image">
+</div>
+
+<script>
+function openSpotlightLightbox(src) {
+  const box = document.getElementById("spotlightLightbox");
+  const img = document.getElementById("spotlightLightboxImg");
+
+  img.src = src;
+  box.style.display = "flex";
+}
+
+function closeSpotlightLightbox() {
+  document.getElementById("spotlightLightbox").style.display = "none";
+}
 </script>
 
 </body>
