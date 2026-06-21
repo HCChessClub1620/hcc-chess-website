@@ -1139,18 +1139,13 @@ form.querySelectorAll("select").forEach(select => {
   <!-- TOURNAMENT GRID -->
   <div class="tournament-grid" id="tournamentGrid">
 
-    <div class="tournament-card" onclick="openTournament('wscf-Jan-2026')">
-      <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg">
-      <h4>WSCF - Jan 2026</h4>
-    </div>
-    
     
     <div class="tournament-card" onclick="openTournament('wscf-Feb-2026')">
-      <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg">
+      <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/v1782000239/3_s7nyq5.jpg">
       <h4>WSCF - Feb 2026</h4>
     </div>
 
-
+<!--
     <div class="tournament-card" onclick="openTournament('wscf-Mar-2026')">
       <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg">
       <h4>WSCF - Mar 2026</h4>
@@ -1166,21 +1161,10 @@ form.querySelectorAll("select").forEach(select => {
       <h4>WSCF - May 2026</h4>
     </div>
     
+-->
         <div class="tournament-card" onclick="openTournament('wscf-Jun-2026')">
       <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg">
       <h4>WSCF - Jun 2026</h4>
-    </div>
-
-
-
-    <div class="tournament-card" onclick="openTournament('wscf-Jul-2026')">
-      <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/3.jpeg">
-      <h4>WSCF - Jul 2026</h4>
-    </div>
-
-    <div class="tournament-card" onclick="openTournament('wscf-Aug-2026')">
-      <img src="https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg">
-      <h4>WSCF - Aug 2026</h4>
     </div>
 
     
@@ -1878,69 +1862,19 @@ let currentIndex = 0;
 let currentImages = [];
 
 const tournaments = {
-  "wscf-Jan-2026": [
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg",
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg"
-  ],
   "wscf-Feb-2026": [
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg",
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg",
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/3.jpeg"
-  ],
-    "wscf-Mar-2026": [
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/3.jpeg",
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg",
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg",
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg"
-  ],
-    "wscf-Apr-2026": [
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg",
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg",
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/3.jpeg",
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg",
-        "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/5.jpeg"
-  ],
-    "wscf-May-2026": [
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/5.jpeg",
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg",
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/3.jpeg",
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg",
-        "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg",
-          "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg"
+    "https://res.cloudinary.com/dtwkmx7ih/image/upload/v1782000237/1_owjwt7.jpg",
+    "https://res.cloudinary.com/dtwkmx7ih/image/upload/v1782000239/3_s7nyq5.jpg",
+    "https://res.cloudinary.com/dtwkmx7ih/image/upload/v1782000238/2_y4xqyp.jpg",
+    "https://res.cloudinary.com/dtwkmx7ih/image/upload/v1782000242/5_x6qb93.jpg",
+    "https://res.cloudinary.com/dtwkmx7ih/image/upload/v1782000241/4_brkdaz.jpg"
   ],
     "wscf-Jun-2026": [
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg",
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg",
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/3.jpeg",
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg",
-        "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/5.jpeg",
-          "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg",
-        "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg",
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/3.jpeg",
-    "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg",
-        "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/5.jpeg",
-          "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg"
-  ],
-   "wscf-Jul-2026": [
-  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/1.jpeg",
-  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/2.jpeg",
-  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/3.jpeg",
-  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg",
-  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Student%20Spotlight/Vibha.jpeg",
-  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg",
-  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/5.jpeg",
-   "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Student%20Spotlight/Vibha.jpeg"
-],
-   "wscf-Aug-2026": [
-  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg",
-     "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Student%20Spotlight/Vibha.jpeg",
-  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg",
-  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/5.jpeg",
-     "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Student%20Spotlight/Vibha.jpeg",
-  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg",
-  "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/5.jpeg",
-     "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Student%20Spotlight/Vibha.jpeg",
-       "https://raw.githubusercontent.com/HCChessClub1620/hcc-chess-website/main/Tournament%20Photos/WSCF/4.jpeg"
+    "https://res.cloudinary.com/dtwkmx7ih/image/upload/v1782000237/1_owjwt7.jpg",
+    "https://res.cloudinary.com/dtwkmx7ih/image/upload/v1782000239/3_s7nyq5.jpg",
+    "https://res.cloudinary.com/dtwkmx7ih/image/upload/v1782000238/2_y4xqyp.jpg",
+    "https://res.cloudinary.com/dtwkmx7ih/image/upload/v1782000242/5_x6qb93.jpg",
+    "https://res.cloudinary.com/dtwkmx7ih/image/upload/v1782000241/4_brkdaz.jpg"
 ]
 };
 
