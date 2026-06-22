@@ -435,6 +435,14 @@ section[id]{
     background:#f8faf8;
 }
 
+.coach-section p {
+    text-align: justify;
+}
+
+.coach-content p {
+    text-align: justify;
+    line-height: 1.7;
+}
 
 .section-header{
     max-width:900px;
