@@ -429,7 +429,9 @@ section[id]{
 }
 
 .coach-section p {
-    text-align: justify;
+    text-align: centre;
+    line-height: 1.8;
+    letter-spacing: 0.2px;
 }
 
 .coach-content p {
@@ -443,6 +445,9 @@ section[id]{
     text-align:center;
 }
 
+.section-header p {
+    text-align: centre;
+}
 .section-tag{
     display:inline-block;
     background:#31572c;
