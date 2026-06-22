@@ -2158,9 +2158,10 @@ nav ul li a:hover{
     .spotlight-grid{
         grid-template-columns:repeat(2,1fr);
     }
-
-    .spotlight-grid img{
-        height:10px;
+   .spotlight-card img{
+        height:180px;        /* ✅ proper height */
+        object-fit:cover;    /* fills nicely */
+        object-position:center top; /* ✅ keeps face visible */
     }
 
 }
