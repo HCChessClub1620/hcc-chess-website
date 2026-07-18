@@ -427,7 +427,7 @@ html{
 }
 
 .coach-section p {
-    text-align: centre;
+    text-align: center;
     line-height: 1.8;
     letter-spacing: 0.2px;
 }
@@ -444,7 +444,7 @@ html{
 }
 
 .section-header p {
-    text-align: centre;
+    text-align: center;
 }
 .section-tag{
     display:inline-block;
