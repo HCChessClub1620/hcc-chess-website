@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Students | Hamilton Chess Club</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <section id="student-spotlight" class="student-spotlight">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Our Rising Stars</span>
+        <h2>Student Spotlight</h2>
+      </div>
+      <div class="spotlight-wrapper">
+        <button class="spotlight-btn prev" onclick="changeSpotlight(-1)">❮</button>
+        <div class="spotlight-page active">
+          <div class="spotlight-grid">
+            <div class="spotlight-card">
+              <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782104307/shravan_sayv5m.jpg" loading="lazy" onclick="openSpotlightLightbox(this.src)" alt="Shravan S" />
+              <h4>Shravan S</h4>
+              <p>FIDE ACM Master Title Winner</p>
+            </div>
+            <div class="spotlight-card">
+              <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782104305/shashwath_q7itkn.jpg" loading="lazy" onclick="openSpotlightLightbox(this.src)" alt="Shashwath S" />
+              <h4>Shashwath S</h4>
+              <p>Arena FIDE Rising Star</p>
+            </div>
+            <div class="spotlight-card">
+              <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000104/Karthik_yqti7s.jpg" loading="lazy" onclick="openSpotlightLightbox(this.src)" alt="Karthik R" />
+              <h4>Karthik R</h4>
+              <p>WSCF Champion</p>
+            </div>
+            <div class="spotlight-card">
+              <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782104860/Vibha_wvax4e.jpg" loading="lazy" onclick="openSpotlightLightbox(this.src)" alt="Vibha B" />
+              <h4>Vibha B</h4>
+              <p>WSCF Champion</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="spotlight-page">
+          <div class="spotlight-grid">
+            <div class="spotlight-card">
+              <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782104304/Neil_ciwgwf.jpg" loading="lazy" onclick="openSpotlightLightbox(this.src)" alt="Neil" />
+              <h4>Neil</h4>
+              <p>WSCF Champion</p>
+            </div>
+            <div class="spotlight-card">
+              <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782102786/copy_of_navya_fzubna.jpg" loading="lazy" onclick="openSpotlightLightbox(this.src)" alt="Navya" />
+              <h4>Navya</h4>
+              <p>Budding Young Champion</p>
+            </div>
+            <div class="spotlight-card">
+              <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000105/Kian_zg1xeb.jpg" loading="lazy" onclick="openSpotlightLightbox(this.src)" alt="Kian" />
+              <h4>Kian</h4>
+              <p>WSCF Champion</p>
+            </div>
+            <div class="spotlight-card">
+              <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000106/Subhash_nsxdnj.jpg" loading="lazy" onclick="openSpotlightLightbox(this.src)" alt="Subhash" />
+              <h4>Subhash</h4>
+              <p>WSCF & USCF Champion</p>
+            </div>
+          </div>
+        </div>
+
+        <button class="spotlight-btn next" onclick="changeSpotlight(1)">❯</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="spotlightLightbox" class="lightbox" style="display:none;">
+    <span class="lightbox-close" onclick="closeSpotlightLightbox()">×</span>
+    <img id="spotlightLightboxImg" src="" alt="Student Spotlight Image" />
+  </div>
+
+  <div id="site-footer"></div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

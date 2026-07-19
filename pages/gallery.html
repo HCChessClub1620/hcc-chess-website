@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery | Hamilton Chess Club</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <section id="gallery" class="gallery-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Memories & Achievements</span>
+        <h2>Tournament Gallery</h2>
+      </div>
+      <div class="tournament-grid" id="tournamentGrid">
+        <div class="tournament-card" onclick="openTournament('wscf-Feb-2026')">
+          <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000239/3_s7nyq5.jpg" loading="lazy" alt="Tournament gallery" />
+          <h4>WSCF - Feb 2026</h4>
+        </div>
+      </div>
+      <div class="gallery-pagination">
+        <button id="prevBtn" onclick="prevTournamentPage()">❮</button>
+        <span id="galleryPageInfo"></span>
+        <button id="nextBtn" onclick="nextTournamentPage()">❯</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="lightbox" class="lightbox" style="display:none;">
+    <span class="lightbox-close" onclick="closeLightbox()">×</span>
+    <span class="lightbox-prev" onclick="prevImage()">❮</span>
+    <img id="lightbox-img" src="" alt="Tournament Image" />
+    <span class="lightbox-next" onclick="nextImage()">❯</span>
+  </div>
+
+  <div id="site-footer"></div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

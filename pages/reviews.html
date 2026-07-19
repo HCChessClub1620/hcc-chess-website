@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reviews | Hamilton Chess Club</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <section id="testimonials" class="testimonials-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Parent & Student Feedback</span>
+        <h2>What Families Are Saying</h2>
+        <p>We are proud of the progress our students make both on and off the chessboard. Here are experiences shared by parents and students from our programs.</p>
+      </div>
+      <div id="dynamicReviews" class="testimonial-grid"></div>
+
+      <iframe name="review_iframe" id="review_iframe" style="display:none;"></iframe>
+      <form id="reviewForm" class="registration-form" action="https://docs.google.com/forms/d/e/1FAIpQLSeYOyfPwfSXGvYwc7TGKXEjzlRCDl_yExsBE1564RqKcUicPw/formResponse" method="POST" target="review_iframe">
+        <input type="text" name="entry.837417622" placeholder="Parent Name" required />
+        <input type="text" name="entry.528486610" placeholder="Student Name" required />
+        <select name="entry.1776943804" required>
+          <option value="">Select Program</option>
+          <option value="Spring">Spring</option>
+          <option value="Summer">Summer</option>
+          <option value="Winter">Winter</option>
+          <option value="Fall">Fall</option>
+        </select>
+        <select name="entry.472770536" required>
+          <option value="">Select Rating</option>
+          <option value="5">★★★★★ Excellent</option>
+          <option value="4">★★★★☆ Very Good</option>
+          <option value="3">★★★☆☆ Good</option>
+          <option value="2">★★☆☆☆ Fair</option>
+          <option value="1">★☆☆☆☆ Poor</option>
+        </select>
+        <textarea name="entry.1798985644" rows="5" placeholder="Share your experience with Hamilton Chess Club..." required></textarea>
+        <input type="hidden" name="entry.1630017653" value="Yes" />
+        <button type="submit" class="register-submit">Submit Review</button>
+      </form>
+
+      <div class="review-policy">
+        <h4>Review Policy</h4>
+        <p>All testimonials are reviewed before publication. Hamilton Chess Club reserves the right to decline, edit, or remove submissions that are inappropriate, off-topic, promotional, offensive, or do not reflect a genuine program experience.</p>
+      </div>
+    </div>
+  </section>
+
+  <div id="reviewSuccessPopup" class="success-popup">
+    <div class="popup-box">
+      <div class="success-icon">✓</div>
+      <h2>Review Submitted Successfully!</h2>
+      <p>Thank you for sharing your experience with Hamilton Chess Club.</p>
+      <p>Your review has been received and is currently under review.</p>
+      <p>Approved reviews may be published on our website to help other families learn about our programs.</p>
+      <button onclick="closeReviewPopup()" class="close-btn-popup">Close</button>
+    </div>
+  </div>
+
+  <div id="site-footer"></div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

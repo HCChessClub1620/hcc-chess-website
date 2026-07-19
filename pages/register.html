@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register | Hamilton Chess Club</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <section id="registration" class="registration-section">
+    <div id="registrationContent">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Summer Program Registration</span>
+          <h2>Register Online</h2>
+          <p>Complete the registration form below and submit your payment information to reserve your spot.</p>
+        </div>
+
+        <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+        <form id="registrationForm" class="registration-form" action="https://docs.google.com/forms/d/e/1FAIpQLScgSXIj8ehMvWdfgrYMZMfSvYH5qv4p4QnBSq_qkpUEuZHhIg/formResponse" method="POST" target="hidden_iframe">
+          <input type="text" name="entry.623997903" placeholder="Student Name" required />
+          <input type="text" name="entry.986433280" placeholder="School Name" required />
+          <input type="text" name="entry.1501321346" placeholder="Grade" required />
+          <input type="text" name="entry.60020519" placeholder="Parent/Guardian Name" required />
+          <input type="email" name="entry.2057450137" placeholder="Parent Email ID" required />
+          <input type="tel" name="entry.798606852" placeholder="Parent Phone Number" required />
+
+          <select name="entry.1580185495" required>
+            <option value="">Select Chess Level</option>
+            <option>Beginner</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+          </select>
+
+          <select name="entry.521185981" required>
+            <option value="">Tournament Interest</option>
+            <option>Yes</option>
+            <option>No</option>
+          </select>
+
+          <div class="consent-note">
+            <p><strong>Photo & Media Permission:</strong><br />Hamilton Chess Club occasionally takes photographs and videos during classes, tournaments, award ceremonies, and club events. These images may be used on our website, social media pages, newsletters, and promotional materials to showcase student achievements and club activities. Please indicate whether you give permission for your child's photo/video to be used.</p>
+          </div>
+
+          <select name="entry.522550062" required>
+            <option value="">Photo Consent</option>
+            <option value="Yes">Yes - I give permission</option>
+            <option value="No">No - I do not give permission</option>
+          </select>
+
+          <p class="payment-note">
+            <strong>Payment Confirmation Screenshot:</strong> Please upload a screenshot of your completed Venmo or Zelle payment using the Payment Reference Upload link below. This helps us verify and confirm your registration.
+          </p>
+
+          <select id="paymentMethod" name="entry.2138061187" required>
+            <option value="">Payment Method</option>
+            <option value="Venmo">Venmo</option>
+            <option value="Zelle">Zelle</option>
+          </select>
+
+          <div id="paymentSection">
+            <p>Select a payment method to view payment instructions.</p>
+          </div>
+
+          <button type="submit" class="register-submit">Complete Registration</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div id="successPopup" class="success-popup">
+    <div class="popup-box">
+      <div class="success-icon">✓</div>
+      <h2>Registration Successfully Submitted !!</h2>
+      <p>Thank you for registering with Hamilton Chess Club.</p>
+      <p><strong>Final Step:</strong><br />Click Email Receipt and attach your payment screenshot to reserve your spot.</p>
+      <p>📧 Email: hamiltonsdchess@gmail.com</p>
+      <div class="popup-buttons">
+        <button type="button" onclick="sendReceiptEmail()" class="email-btn">📧 Email Receipt</button>
+        <button onclick="closePopup()" class="close-btn-popup">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="site-footer"></div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
