@@ -76,6 +76,51 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  const initMobileNav = (target) => {
+    if (!target) return;
+    const menuToggle = target.querySelector("#menuToggle");
+    const mainNav = target.querySelector("#mainNav");
+    if (!menuToggle || !mainNav) return;
+
+    const closeMenu = () => {
+      mainNav.classList.remove("active");
+      menuToggle.setAttribute("aria-expanded", "false");
+    };
+
+    menuToggle.setAttribute("aria-expanded", "false");
+    menuToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isOpen = mainNav.classList.toggle("active");
+      menuToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
+
+    mainNav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", closeMenu);
+    });
+
+    if (!window.__mobileNavOutsideClickInit) {
+      document.addEventListener("click", (e) => {
+        const clickedInsideNav = e.target.closest("#mainNav") || e.target.closest("#menuToggle");
+        if (!clickedInsideNav) {
+          document.querySelectorAll("#mainNav.active").forEach((nav) => nav.classList.remove("active"));
+          document.querySelectorAll("#menuToggle[aria-expanded='true']").forEach((btn) => {
+            btn.setAttribute("aria-expanded", "false");
+          });
+        }
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key !== "Escape") return;
+        document.querySelectorAll("#mainNav.active").forEach((nav) => nav.classList.remove("active"));
+        document.querySelectorAll("#menuToggle[aria-expanded='true']").forEach((btn) => {
+          btn.setAttribute("aria-expanded", "false");
+        });
+      });
+
+      window.__mobileNavOutsideClickInit = true;
+    }
+  };
+
   const loadSharedIncludes = () => {
     const headerTarget = document.getElementById("site-header");
     const footerTarget = document.getElementById("site-footer");
@@ -107,6 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
               fixInjectedNavLinks(target);
               try {
                 initNavDropdowns(target);
+                initMobileNav(target);
               } catch (err) {
                 console.error('initNavDropdowns error', err);
               }
@@ -123,21 +169,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   loadSharedIncludes();
-
-  const menuToggle = document.getElementById("menuToggle");
-  const mainNav = document.getElementById("mainNav");
-
-  if (menuToggle && mainNav) {
-    menuToggle.addEventListener("click", () => {
-      mainNav.classList.toggle("active");
-    });
-
-    document.querySelectorAll("#mainNav a").forEach((link) => {
-      link.addEventListener("click", () => {
-        mainNav.classList.remove("active");
-      });
-    });
-  }
 
   const paymentMethod = document.getElementById("paymentMethod");
   const paymentSection = document.getElementById("paymentSection");
