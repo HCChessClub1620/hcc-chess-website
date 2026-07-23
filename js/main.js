@@ -208,6 +208,10 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="payment-display">
             <h3>Pay Using Venmo</h3>
             <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782076247/VenmoPayment_jsrtv4.jpg" loading="lazy" alt="Venmo payment">
+            <p>
+              Send payment to Venmo Account :<br>
+              @Bala-Narayanan
+            </p>
             <br>
             <a href="https://venmo.com/" target="_blank" rel="noopener" class="btn">Open Venmo</a>
           </div>
