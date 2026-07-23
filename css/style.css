@@ -116,34 +116,50 @@ header {
   justify-content: space-between;
   align-items: center;
   gap: 24px;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .nav {
+    gap: 14px;
+  }
 }
 
 @media (max-width: 768px) {
   .nav {
-    flex-direction: column;
-    gap: 15px;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: center;
   }
+}
 
-  nav ul {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
+@media (max-width: 480px) {
+  .nav {
+    gap: 4px;
   }
 }
 
 .logo-img {
   height: 90px;
   width: auto;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1024px) {
+  .logo-img {
+    height: 70px;
+  }
 }
 
 @media (max-width: 768px) {
-  .brand {
-    flex-direction: column;
-    text-align: center;
-  }
-
   .logo-img {
-    height: 70px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-img {
+    height: 50px;
   }
 }
 
@@ -156,41 +172,123 @@ header {
 }
 
 .club-tagline {
-  font-size: 12px;
+  font-size: clamp(10px, 2vw, 12px);
   font-weight: 500;
   white-space: nowrap;
 }
 
+@media (max-width: 1024px) {
+  .club-title {
+    font-size: clamp(16px, 4vw, 26px);
+  }
+
+  .club-tagline {
+    font-size: clamp(9px, 1.8vw, 11px);
+  }
+}
+
 @media (max-width: 768px) {
   .club-title {
-    font-size: clamp(16px, 5vw, 22px);
+    font-size: clamp(14px, 4vw, 20px);
     white-space: nowrap;
   }
 
   .club-tagline {
-    font-size: 11px;
+    font-size: clamp(8px, 1.5vw, 10px);
     white-space: nowrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .club-title {
+    font-size: clamp(12px, 3.5vw, 16px);
+  }
+
+  .club-tagline {
+    font-size: clamp(7px, 1.2vw, 8px);
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 360px) {
+  .club-title {
+    font-size: clamp(11px, 3vw, 14px);
+  }
+
+  .club-tagline {
+    font-size: clamp(6px, 1vw, 7px);
+    white-space: nowrap;
+  }
+
+  .brand {
+    gap: 4px;
+  }
+
+  .logo-img {
+    height: 48px;
+  }
+
+  .brand-text h2 {
+    font-size: clamp(0.8rem, 2.5vw, 1rem);
+  }
+
+  .brand-text p {
+    font-size: clamp(0.6rem, 1vw, 0.65rem);
   }
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 15px;
-  flex-shrink: 0;
+  gap: 12px;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+@media (max-width: 1024px) {
+  .brand {
+    gap: 10px;
+    flex-shrink: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .brand {
+    gap: 8px;
+    flex-shrink: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand {
+    gap: 6px;
+  }
 }
 .brand-text h2 {
   margin: 0;
   color: black;
-  font-size: 1.4rem;
+  font-size: clamp(1rem, 2vw, 1.4rem);
   font-weight: 700;
+  white-space: nowrap;
 }
+
 .brand-text p {
   color: red;
   font-style: italic;
   font-weight: 600;
   letter-spacing: 0.5px;
   white-space: nowrap;
+  font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+}
+
+@media (max-width: 480px) {
+  .brand-text h2 {
+    font-size: clamp(0.9rem, 3vw, 1.1rem);
+  }
+
+  .brand-text p {
+    font-size: clamp(0.65rem, 1.2vw, 0.75rem);
+  }
 }
 
 nav ul {
@@ -241,6 +339,27 @@ nav a {
 
   nav a {
     font-size: 0.84rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  nav ul {
+    gap: 6px;
+  }
+
+  nav a {
+    font-size: 0.75rem;
+    padding: 6px 4px;
+  }
+}
+
+@media (max-width: 768px) {
+  nav ul {
+    gap: 4px;
+  }
+
+  nav a {
+    font-size: 0.7rem;
   }
 }
 
@@ -2238,8 +2357,8 @@ nav ul li a:hover {
   display: none;
 }
 
-/* MOBILE ONLY */
-@media (max-width: 768px) {
+/* TABLET & MOBILE */
+@media (max-width: 1024px) {
   .menu-toggle {
     display: block;
     background: none;
@@ -2264,8 +2383,9 @@ nav ul li a:hover {
   .brand {
     flex-direction: row;
     text-align: left;
-    max-width: calc(100% - 56px);
-    padding-right: 46px;
+    max-width: calc(100% - 50px);
+    min-width: 0;
+    flex-shrink: 1;
   }
 
   .club-title,
@@ -2276,7 +2396,7 @@ nav ul li a:hover {
 
   .club-title {
     white-space: nowrap;
-    font-size: clamp(16px, 5vw, 34px);
+    font-size: clamp(14px, 4.5vw, 24px);
   }
 
   #mainNav {
@@ -2322,6 +2442,31 @@ nav ul li a:hover {
   html,
   body {
     overflow-x: hidden;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav {
+    gap: 4px;
+    padding: 0 50px 0 10px;
+  }
+
+  .brand {
+    max-width: calc(100% - 45px);
+    gap: 6px;
+  }
+
+  .menu-toggle {
+    right: 8px;
+    font-size: 28px;
+  }
+
+  header {
+    padding: 12px 0;
+  }
+
+  .container {
+    padding: 0 10px;
   }
 }
 
