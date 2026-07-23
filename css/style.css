@@ -115,7 +115,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 60px;
+  gap: 24px;
 }
 
 @media (max-width: 768px) {
@@ -176,6 +176,7 @@ header {
   display: flex;
   align-items: center;
   gap: 15px;
+  flex-shrink: 0;
 }
 .brand-text h2 {
   margin: 0;
@@ -194,8 +195,24 @@ header {
 nav ul {
   display: flex;
   list-style: none;
-  gap: 18px;
+  gap: 12px;
   flex-wrap: nowrap;
+  justify-content: flex-end;
+}
+
+#mainNav {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (min-width: 769px) {
+  .nav {
+    gap: 12px;
+  }
+
+  #mainNav {
+    margin-left: 18px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -212,11 +229,60 @@ nav a {
   text-decoration: none;
   color: #000;
   font-weight: 600;
+  font-size: 0.88rem;
   transition: 0.3s;
+}
+
+@media (max-width: 1200px) {
+  nav ul {
+    gap: 8px;
+  }
+
+  nav a {
+    font-size: 0.84rem;
+  }
 }
 
 nav a:hover {
   color: #31572c;
+}
+
+#mainNav a[data-home-link="true"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 2px solid currentColor;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  color: inherit;
+  padding: 0;
+}
+
+@media (min-width: 769px) {
+  #mainNav a[data-home-link="true"] {
+    margin: 0 6px;
+  }
+}
+
+#mainNav a[data-home-link="true"] svg {
+  display: block;
+}
+
+.nav-student-link {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.1;
+}
+
+#mainNav ul li a.nav-student-link {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .hero {
@@ -1036,7 +1102,8 @@ body {
 
 .fees-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  justify-items: center;
   gap: 30px;
   margin-top: 50px;
 }
@@ -1044,15 +1111,18 @@ body {
 .fee-card {
   background: #f8faf8;
   text-align: center;
+  width: 100%;
+  max-width: 520px;
   padding: 40px;
   border-radius: 24px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 .fee-card img {
+  display: block;
   width: 180px;
   height: 180px;
   object-fit: contain;
-  margin-bottom: 15px;
+  margin: 0 auto 15px;
   transition: 0.3s;
 }
 
@@ -2123,17 +2193,31 @@ nav ul li a:hover {
     font-size: 32px;
     cursor: pointer;
     color: #000;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1100;
   }
 
   .nav {
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
+    position: relative;
   }
 
   .brand {
     flex-direction: row;
     text-align: left;
+    max-width: calc(100% - 56px);
+    padding-right: 46px;
+  }
+
+  .club-title,
+  .club-tagline,
+  .brand-text p {
+    white-space: normal;
   }
 
   #mainNav {
@@ -2162,8 +2246,23 @@ nav ul li a:hover {
     align-items: center;
   }
 
+  #mainNav ul li {
+    width: 100%;
+    text-align: center;
+  }
+
+  #mainNav ul li a {
+    display: block;
+    padding: 12px 0;
+  }
+
   header {
     position: sticky;
+  }
+
+  html,
+  body {
+    overflow-x: hidden;
   }
 }
 
@@ -2172,13 +2271,13 @@ nav ul li a:hover {
 }
 
 #mainNav ul li {
-  width: 100%;
-  text-align: center;
+  width: auto;
+  text-align: left;
 }
 
 #mainNav ul li a {
-  display: block;
-  padding: 12px 0;
+  display: inline-block;
+  padding: 0;
 }
 
 .review-submit {

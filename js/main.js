@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const fixInjectedNavLinks = (target) => {
     if (!target) return;
     const isInPagesFolder = window.location.pathname.includes("/pages/");
+    const normalizedPath = window.location.pathname.toLowerCase().replace(/\/+$/, "") || "/";
+    const isHomePage = normalizedPath === "/" || normalizedPath.endsWith("/index.html");
 
     target.querySelectorAll('a[href]').forEach((link) => {
       const href = link.getAttribute("href");
@@ -38,6 +40,32 @@ document.addEventListener("DOMContentLoaded", () => {
         link.setAttribute("href", isInPagesFolder ? "contact.html" : "pages/contact.html");
       }
     });
+
+    const navList = target.querySelector("#mainNav ul");
+    const existingHomeItem = navList?.querySelector('a[data-home-link="true"]')?.closest("li");
+
+    if (isHomePage) {
+      existingHomeItem?.remove();
+      return;
+    }
+
+    if (!navList || existingHomeItem) return;
+
+    const homeItem = document.createElement("li");
+    const homeLink = document.createElement("a");
+    homeLink.setAttribute("href", isInPagesFolder ? "../index.html" : "index.html");
+    homeLink.setAttribute("data-home-link", "true");
+    homeLink.setAttribute("aria-label", "Home");
+    homeLink.setAttribute("title", "Home");
+    homeLink.innerHTML = '<svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" focusable="false"><path fill="currentColor" d="M12 3l9 8h-3v10h-5v-6H11v6H6V11H3l9-8z"></path></svg>';
+    homeItem.appendChild(homeLink);
+
+    const aboutItem = navList.querySelector('a[href="about.html"], a[href="pages/about.html"]')?.closest("li");
+    if (aboutItem) {
+      navList.insertBefore(homeItem, aboutItem);
+    } else {
+      navList.prepend(homeItem);
+    }
   };
 
   const initNavDropdowns = (target) => {
