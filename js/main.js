@@ -376,11 +376,17 @@ Thank you.
   if (studentPages.length > 0 && studentPrevBtn && studentNextBtn) {
     let currentStudentPage = 0;
 
+    const totalStudents = document.querySelectorAll("#student-spotlight .spotlight-card").length;
+    const spotlightTotal = document.getElementById("spotlightTotalInfo");
+    if (spotlightTotal) spotlightTotal.textContent = `${totalStudents} Students Featured`;
+
     const updateStudentSpotlight = () => {
       studentPages.forEach((page) => page.classList.remove("active"));
       studentPages[currentStudentPage].classList.add("active");
       studentPrevBtn.style.display = currentStudentPage === 0 ? "none" : "flex";
       studentNextBtn.style.display = currentStudentPage === studentPages.length - 1 ? "none" : "flex";
+      const pageInfo = document.getElementById("spotlightPageInfo");
+      if (pageInfo) pageInfo.textContent = `Page ${currentStudentPage + 1} / ${studentPages.length}`;
     };
 
     window.changeSpotlight = function (dir) {

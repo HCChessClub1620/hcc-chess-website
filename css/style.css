@@ -148,10 +148,10 @@ header {
 }
 
 .club-title {
-  font-size: 34px;
+  font-size: clamp(16px, 3vw, 34px);
   font-weight: 700;
   line-height: 1;
-  white-space: nowrap; /* keeps it on one line */
+  white-space: nowrap;
   margin-bottom: 4px;
 }
 
@@ -163,7 +163,8 @@ header {
 
 @media (max-width: 768px) {
   .club-title {
-    font-size: 22px;
+    font-size: clamp(16px, 5vw, 22px);
+    white-space: nowrap;
   }
 
   .club-tagline {
@@ -2273,6 +2274,11 @@ nav ul li a:hover {
     white-space: normal;
   }
 
+  .club-title {
+    white-space: nowrap;
+    font-size: clamp(16px, 5vw, 34px);
+  }
+
   #mainNav {
     display: none;
 
@@ -2551,4 +2557,29 @@ right:0;
   font-weight: 600;
   min-width: 70px;
   text-align: center;
+}
+
+.spotlight-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+#spotlightPageInfo {
+  font-weight: 600;
+  color: #132a13;
+  font-size: 0.95rem;
+}
+
+.spotlight-count-divider {
+  color: #aaa;
+  font-size: 1rem;
+}
+
+#spotlightTotalInfo {
+  font-weight: 600;
+  color: #31572c;
+  font-size: 0.95rem;
 }
