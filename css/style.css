@@ -998,6 +998,17 @@ body {
   display: block;
 }
 
+.student-avatar.photo-avatar {
+  width: 280px;
+  height: 280px;
+}
+
+.student-avatar.photo-avatar img {
+  width: 280px;
+  height: 280px;
+  border: 8px solid #31572c;
+}
+
 .student-card h3 {
   color: #132a13;
   margin-bottom: 8px;
@@ -1641,6 +1652,16 @@ body {
     padding: 35px 20px;
   }
 
+
+  .student-avatar.photo-avatar {
+    width: 200px;
+    height: 200px;
+  }
+
+  .student-avatar.photo-avatar img {
+    width: 200px;
+    height: 200px;
+  }
   .enrollment-cta h2 {
     font-size: 2rem;
   }
