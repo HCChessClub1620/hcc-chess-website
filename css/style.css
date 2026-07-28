@@ -962,6 +962,7 @@ body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 30px;
+  align-items: stretch;
 }
 
 .student-card {
@@ -971,6 +972,10 @@ body {
   text-align: center;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
   transition: 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
 }
 
 .student-card:hover {
@@ -1012,18 +1017,26 @@ body {
 .student-card h3 {
   color: #132a13;
   margin-bottom: 8px;
+  min-height: 2.6em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .student-role {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #31572c;
   font-weight: 600;
   margin-bottom: 18px;
+  min-height: 3.2em;
 }
 
 .student-card p {
   color: #555;
   line-height: 1.7;
+  margin-top: 0;
 }
 
 /* ==========================
