@@ -222,8 +222,9 @@ document.addEventListener("DOMContentLoaded", () => {
             <h3>Pay Using Zelle</h3>
             <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782076247/ZellePayment_ehbzko.jpg" loading="lazy" alt="Zelle payment">
             <p>
-              Send payment to:<br>
-              hamiltonsdchess@gmail.com
+          
+              Send payment to Zelle Account:<br>
+              hamiltonsdchess
             </p>
           </div>
         `;
