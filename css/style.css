@@ -1321,7 +1321,7 @@ body {
   font-size: 1rem;
   color: #d4e8c2;
   margin-bottom: 22px;
-  display: inline-block;
+  display: block;
   animation: banner-zoom 1.4s ease-in-out infinite;
 }
 
@@ -1333,6 +1333,10 @@ body {
 .new-student-banner .highlight-text {
   color: #ffd60a;
   font-weight: 700;
+}
+
+.new-student-banner .plain-white {
+  color: #ffffff;
 }
 
 .btn-your-moves {
