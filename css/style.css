@@ -1336,8 +1336,11 @@ body {
 }
 
 .btn-your-moves {
-  display: block;
-  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: auto;
   margin: 0 auto;
   padding: 12px 28px;
   background: #ffd60a;
@@ -1347,15 +1350,16 @@ body {
   border-radius: 999px;
   border: 2px solid #d4b000;
   text-decoration: none;
+  white-space: nowrap;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .btn-tshirt-symbol {
   display: inline-flex;
+  flex: 0 0 auto;
   width: 26px;
   height: 26px;
   vertical-align: middle;
-  margin-right: 4px;
 }
 
 .btn-tshirt-symbol svg {
