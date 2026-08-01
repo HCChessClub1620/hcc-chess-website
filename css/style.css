@@ -1301,6 +1301,77 @@ body {
   background: #fff;
 }
 
+.new-student-banner {
+  background: #132a13;
+  color: #fff;
+  border-radius: 18px;
+  padding: 40px 50px;
+  text-align: center;
+  margin-top: 50px;
+}
+
+.new-student-banner h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.new-student-banner p {
+  font-size: 1rem;
+  color: #d4e8c2;
+  margin-bottom: 22px;
+  display: inline-block;
+  animation: banner-zoom 1.4s ease-in-out infinite;
+}
+
+@keyframes banner-zoom {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+.new-student-banner .highlight-text {
+  color: #ffd60a;
+  font-weight: 700;
+}
+
+.btn-your-moves {
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 12px 28px;
+  background: #ffd60a;
+  color: #132a13;
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: 999px;
+  border: 2px solid #d4b000;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-knight-img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+.btn-tshirt-img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-right: 4px;
+  border-radius: 4px;
+}
+
+.btn-your-moves:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(255, 214, 10, 0.4);
+}
+
 .fees-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(280px, 1fr));
@@ -1317,6 +1388,13 @@ body {
   padding: 40px;
   border-radius: 24px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fee-card .deadline {
+  margin-top: auto;
 }
 
 .highlight-badge {
