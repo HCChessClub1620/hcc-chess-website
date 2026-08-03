@@ -20,11 +20,13 @@ body {
 .story-text p {
   text-align: justify;
   line-height: 1.8;
+  text-indent: 2.5em;
 }
 
 @media (max-width: 768px) {
   .story-text p {
     text-align: justify; /* better readability on mobile */
+    text-indent: 1.25em;
   }
 }
 
@@ -1204,6 +1206,49 @@ body {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
+.policy-visual {
+  min-height: 280px;
+  padding: 30px;
+  border-radius: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.policy-visual h3 {
+  color: white;
+  font-size: 2rem;
+  margin: 0;
+}
+
+.policy-visual p {
+  color: rgba(255, 255, 255, 0.92);
+  margin: 0;
+  line-height: 1.7;
+}
+
+.policy-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.policy-visual.mission,
+.policy-visual.non-discrimination,
+.policy-visual.minors {
+  background: linear-gradient(135deg, #132a13 0%, #245c44 100%);
+}
+
 .feature-content {
   flex: 1;
 }
@@ -1218,6 +1263,14 @@ body {
   color: #555;
   line-height: 1.8;
   margin-bottom: 15px;
+}
+
+.mission-statement {
+  text-align: justify;
+}
+
+.policy-statement {
+  text-align: justify;
 }
 
 .feature-content ul {
@@ -1271,6 +1324,10 @@ body {
     flex-direction: column;
   }
 
+  .policy-visual {
+    min-height: 220px;
+  }
+
   .academy-highlights {
     grid-template-columns: 1fr;
   }
@@ -1283,6 +1340,111 @@ body {
 
   .image-pair img {
     height: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-story {
+    gap: 28px;
+  }
+
+  .story-text p {
+    text-indent: 1em;
+  }
+
+  .feature-row {
+    gap: 28px;
+    margin-bottom: 56px;
+  }
+
+  .policy-visual {
+    min-height: 200px;
+    padding: 22px;
+  }
+
+  .policy-step {
+    width: 48px;
+    height: 48px;
+    font-size: 0.95rem;
+  }
+
+  .policy-visual h3,
+  .feature-content h3 {
+    font-size: 1.6rem;
+  }
+
+  .feature-content ul {
+    padding-left: 18px;
+  }
+
+  .section-header h2 {
+    font-size: 1.8rem;
+  }
+
+  .section-header p,
+  .feature-content p,
+  .policy-visual p {
+    font-size: 0.98rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .story-text p {
+    text-indent: 0.85em;
+  }
+
+  .about-story {
+    gap: 22px;
+  }
+
+  .feature-row {
+    gap: 22px;
+    margin-bottom: 48px;
+  }
+
+  .policy-visual {
+    min-height: 180px;
+    padding: 18px;
+  }
+
+  .policy-visual h3,
+  .feature-content h3,
+  .section-header h2 {
+    font-size: 1.45rem;
+  }
+
+  .policy-step {
+    width: 42px;
+    height: 42px;
+    font-size: 0.85rem;
+  }
+
+  .feature-content ul {
+    padding-left: 16px;
+  }
+}
+
+@media (max-width: 414px) {
+  .about-story {
+    gap: 24px;
+  }
+
+  .feature-row {
+    gap: 24px;
+  }
+
+  .policy-visual {
+    min-height: 190px;
+    padding: 20px;
+  }
+
+  .policy-visual h3,
+  .feature-content h3 {
+    font-size: 1.55rem;
+  }
+
+  .section-header h2 {
+    font-size: 1.7rem;
   }
 }
 
