@@ -454,6 +454,13 @@ Thank you.
       "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000238/2_y4xqyp.jpg",
       "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000242/5_x6qb93.jpg",
       "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000241/4_brkdaz.jpg"
+    ],
+    "summer-july-2026": [
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1785793096/1_r5hqhs.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1785793096/2_ucrpz9.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1785793097/3_zpekfx.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1785793097/4_lipvwp.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1785793097/5_gjm7q3.jpg"
     ]
   };
 
@@ -471,6 +478,7 @@ Thank you.
   window.openTournament = function (name) {
     currentTournament = name;
     currentImages = tournaments[name] || [];
+    if (!currentImages.length) return;
     currentIndex = 0;
     const lightbox = document.getElementById("lightbox");
     if (lightbox) {
