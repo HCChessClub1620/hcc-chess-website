@@ -22,6 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
         link.setAttribute("href", isInPagesFolder ? "coaches.html" : "pages/coaches.html");
       } else if (href === "programs.html") {
         link.setAttribute("href", isInPagesFolder ? "programs.html" : "pages/programs.html");
+      } else if (href === "events.html") {
+        link.setAttribute("href", isInPagesFolder ? "events.html" : "pages/events.html");
       } else if (href === "why-us.html") {
         link.setAttribute("href", isInPagesFolder ? "why-us.html" : "pages/why-us.html");
       } else if (href === "register.html") {

@@ -96,7 +96,9 @@ header {
 
 .blink-upcoming,
 .blink-current,
-.cta-badge {
+.cta-badge,
+.session-zoom-heading,
+.schedule-pill-zoom {
     animation:none;
 }
 
@@ -806,6 +808,10 @@ body {
   letter-spacing: 0.5px;
 }
 
+.feature-content p.section-tag {
+  color: #fff;
+}
+
 .section-header h2 {
   font-size: 3rem;
   font-weight: 700;
@@ -1135,6 +1141,15 @@ body {
   line-height: 1.8;
 }
 
+.tournament-logo {
+  display: block;
+  width: 100%;
+  max-width: 160px;
+  height: 72px;
+  object-fit: contain;
+  margin: 0 auto 16px;
+}
+
 .featured-program {
   border-top: 5px solid #31572c;
 }
@@ -1259,6 +1274,45 @@ body {
   margin-bottom: 20px;
 }
 
+.session-zoom-heading {
+  color: #1f6f2a;
+  background: #ffd60a;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 2px solid #d6b000;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center;
+  animation: session-zoom-pulse 1.6s ease-in-out infinite;
+}
+
+.feature-content h3.schedule-pill-zoom {
+  color: #008000;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  border: 0;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes session-zoom-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+}
+
 .feature-content p {
   color: #555;
   line-height: 1.8;
@@ -1279,6 +1333,72 @@ body {
 
 .feature-content li {
   margin-bottom: 10px;
+}
+
+.events-current-row {
+  flex-direction: column;
+  align-items: center;
+  gap: 34px;
+}
+
+.events-current-row .feature-image {
+  width: 100%;
+  max-width: 980px;
+}
+
+.current-schedule-content {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.current-schedule-content ul {
+  display: inline-block;
+  text-align: left;
+  margin: 0 auto;
+}
+
+.schedule-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+.schedule-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.schedule-card .schedule-pill-zoom {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin: 0 0 12px;
+}
+
+.schedule-card .section-tag {
+  align-self: center;
+  margin: 0 auto 14px;
+}
+
+.schedule-card ul {
+  display: block;
+  list-style: none;
+  padding-left: 0;
+  margin-top: 10px;
+}
+
+.schedule-card li {
+  margin-bottom: 8px;
+  line-height: 1.7;
+}
+
+@media (max-width: 900px) {
+  .schedule-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .image-pair {
@@ -1348,6 +1468,23 @@ body {
     gap: 28px;
   }
 
+  .schedule-grid {
+    gap: 16px;
+  }
+
+  .schedule-card {
+    padding: 24px 18px;
+  }
+
+  .schedule-card p {
+    margin-bottom: 10px;
+  }
+
+  .schedule-card li {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
   .story-text p {
     text-indent: 1em;
   }
@@ -1391,6 +1528,18 @@ body {
 @media (max-width: 360px) {
   .story-text p {
     text-indent: 0.85em;
+  }
+
+  .schedule-card {
+    padding: 20px 14px;
+  }
+
+  .feature-content h3.schedule-pill-zoom {
+    font-size: 1.35rem;
+  }
+
+  .schedule-card li {
+    font-size: 0.95rem;
   }
 
   .about-story {
