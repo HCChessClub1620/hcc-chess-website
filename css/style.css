@@ -1327,6 +1327,10 @@ body {
   text-align: justify;
 }
 
+.tournament-justify {
+  text-align: justify;
+}
+
 .feature-content ul {
   padding-left: 20px;
 }
