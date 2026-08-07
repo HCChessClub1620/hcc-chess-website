@@ -54,6 +54,50 @@
             <option value="No">No - I do not give permission</option>
           </select>
 
+          <div class="consent-note">
+            <p>
+              <strong>Medical Conditions</strong><br />
+              Does your child have any allergies (Example: Peanut allergy), medical conditions(Example :Carrier EpiPen,Asthma Inhaler etc), medications, dietary restrictions, or special needs that Hamilton Chess Club staff should be aware of?
+            </p>
+          </div>
+
+          <select id="medicalConditionSelect" name="entry.1218179894" required>
+            <option value="">Select Medical Condition Response</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+
+          <div id="medicalDetailsGroup" hidden>
+            <div class="consent-note">
+              <p>
+                <strong>Medical Information Details</strong><br />
+                If you answered <strong>Yes</strong> above, please provide details of allergies, medications, medical conditions, dietary restrictions, or any other information we should know. If none, please enter <strong>N/A</strong>.
+              </p>
+            </div>
+
+            <textarea id="medicalDetailsTextarea" name="entry.1004726878" rows="4" placeholder="Enter medical details, or type N/A if not applicable" required></textarea>
+          </div>
+
+          <div class="consent-note">
+            <p><strong>Emergency Medical Treatment Consent:</strong><br />I understand that should a health problem arise and I or the emergency contact is unable to be reached, I consent to emergency medical treatment, which may include surgery, ambulance transportation, or other treatment as deemed necessary by medical personnel. I consent to the release of information for insurance purposes and guarantee payment in full for all required medical costs.</p>
+          </div>
+
+          <select name="entry.849719487" required>
+            <option value="">Emergency Medical Treatment Consent</option>
+            <option value="Yes">Yes - I consent</option>
+            <option value="No">No - I do not consent</option>
+          </select>
+
+          <div class="consent-note">
+            <p><strong>Parental Consent and Release of Liability:</strong><br />By clicking "Yes - I give permission" and submitting this form, I certify that I am the parent or legal guardian of the above-named participant. I release Hamilton Chess Club, its coaches, volunteers, representatives, employees, and affiliated partners from liability for injuries or damages arising from participation in club activities, except in cases of willful misconduct. I understand that participation involves inherent risks, authorize my child to participate voluntarily, agree to assume those risks, consent to necessary emergency medical care if I cannot be reached, and agree to indemnify and hold Hamilton Chess Club harmless from claims, damages, costs, or expenses arising from my child's participation.</p>
+          </div>
+
+          <select name="entry.184834857" required>
+            <option value="">Parental Consent and Release of Liability</option>
+            <option value="Yes">Yes - I agree</option>
+            <option value="No">No - I do not agree</option>
+          </select>
+
           <p class="payment-note">
             <strong>Payment Confirmation Screenshot:</strong> Please upload a screenshot of your completed Venmo or Zelle payment using the Payment Reference Upload link below. This helps us verify and confirm your registration.
           </p>

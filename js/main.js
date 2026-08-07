@@ -262,6 +262,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  const medicalConditionSelect = document.getElementById("medicalConditionSelect");
+  const medicalDetailsGroup = document.getElementById("medicalDetailsGroup");
+  const medicalDetailsTextarea = document.getElementById("medicalDetailsTextarea");
+
+  if (medicalConditionSelect && medicalDetailsGroup && medicalDetailsTextarea) {
+    const toggleMedicalDetails = (value) => {
+      const shouldShow = value === "Yes";
+      medicalDetailsGroup.hidden = !shouldShow;
+      medicalDetailsTextarea.required = shouldShow;
+      if (!shouldShow) {
+        medicalDetailsTextarea.value = "";
+      }
+    };
+
+    toggleMedicalDetails(medicalConditionSelect.value);
+    medicalConditionSelect.addEventListener("change", function () {
+      toggleMedicalDetails(this.value);
+    });
+  }
+
   const registrationForm = document.getElementById("registrationForm");
   const successPopup = document.getElementById("successPopup");
 
