@@ -271,7 +271,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const shouldShow = value === "Yes";
       medicalDetailsGroup.hidden = !shouldShow;
       medicalDetailsTextarea.required = shouldShow;
-      if (!shouldShow) {
+      if (shouldShow && medicalDetailsTextarea.value.trim().toUpperCase() === "N/A") {
+        medicalDetailsTextarea.value = "";
+      }
+
+      if (value === "No") {
+        medicalDetailsTextarea.value = "N/A";
+      } else if (!shouldShow) {
         medicalDetailsTextarea.value = "";
       }
     };
@@ -287,6 +293,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (registrationForm) {
     registrationForm.addEventListener("submit", function () {
+      if (medicalConditionSelect?.value === "No" && medicalDetailsTextarea) {
+        medicalDetailsTextarea.value = "N/A";
+      }
+
       const submitButton = registrationForm.querySelector("button");
       if (submitButton) {
         submitButton.disabled = true;
