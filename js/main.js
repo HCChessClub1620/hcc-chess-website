@@ -151,6 +151,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  const fixInjectedFooterLinks = (target) => {
+    if (!target) return;
+    const isInPagesFolder = window.location.pathname.includes("/pages/");
+
+    target.querySelectorAll('a[data-page-link], a[href$="privacy-policy.html"]').forEach((link) => {
+      const page = link.getAttribute("data-page-link") || "privacy-policy.html";
+      if (!page) return;
+      link.setAttribute("href", isInPagesFolder ? page : `pages/${page}`);
+    });
+  };
+
   const loadSharedIncludes = () => {
     const headerTarget = document.getElementById("site-header");
     const footerTarget = document.getElementById("site-footer");
@@ -186,6 +197,8 @@ document.addEventListener("DOMContentLoaded", () => {
               } catch (err) {
                 console.error('initNavDropdowns error', err);
               }
+            } else if (fileName === "footer.html") {
+              fixInjectedFooterLinks(target);
             }
           })
           .catch(() => tryFetch(index + 1));
