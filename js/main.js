@@ -500,24 +500,205 @@ Thank you.
       "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000242/5_x6qb93.jpg",
       "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000241/4_brkdaz.jpg"
     ],
-    "summer-july-2026": [
+    "summer-june-2026": [
       "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1785793096/1_r5hqhs.jpg",
       "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1785793096/2_ucrpz9.jpg",
       "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1785793097/3_zpekfx.jpg",
       "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1785793097/4_lipvwp.jpg",
       "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1785793097/5_gjm7q3.jpg"
+    ],
+    "summer-july-2026": [
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1786204605/Anay_Jadhav_mweqhi.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1786204605/Hayan_Nissar_tznk0a.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1786204605/Nayonika_Arun_bxorne.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1786204605/Karthik_Ramesh_jcbrbr.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1786204606/Vibha_Iyer_unieha.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1786204604/Aathvik_Ananth_uyglcf.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1786204605/Aayushi_Jadhav_cbgdor.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1786204605/Ronit_Ekshinge_x7cgv9.jpg"
     ]
   };
+
+  const tournamentCoachNames = {
+    "summer-july-2026": "Coach - Edgar"
+  };
+
+  const sideSwapNames = new Set([
+    "anay jadhav",
+    "hayan nissar",
+    "hayaan nissar",
+    "nayonika arun",
+    "vibha iyer",
+    "aayushi jadhav",
+    "ronit ekshinge"
+  ]);
+
+  const studentNameOverrides = {
+    "Hayan_Nissar": "Hayaan Nissar"
+  };
+
+  const shouldSwapSides = (name) => {
+    const normalized = (name || "")
+      .toLowerCase()
+      .replace(/[^a-z\s]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+    return sideSwapNames.has(normalized);
+  };
+
+  const isRonit = (name) => {
+    const normalized = (name || "")
+      .toLowerCase()
+      .replace(/[^a-z\s]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+    return normalized === "ronit ekshinge";
+  };
+
+  const getDisplayNameFromUrl = (url) => {
+    const fileName = url.split("/").pop() || "Tournament photo";
+    const publicId = fileName.split(".")[0];
+    const baseName = publicId.replace(/_[^_]+$/, "");
+    if (studentNameOverrides[baseName]) {
+      return studentNameOverrides[baseName];
+    }
+    return baseName.replace(/_/g, " ");
+  };
+
+  const buildTournamentCollages = () => {
+    const collageBlocks = document.querySelectorAll(".tournament-collage[data-tournament]");
+    if (!collageBlocks.length) return;
+
+    collageBlocks.forEach((block) => {
+      const tournamentKey = block.getAttribute("data-tournament");
+      const images = tournaments[tournamentKey] || [];
+      block.innerHTML = "";
+
+      images.slice(0, 8).forEach((src) => {
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = getDisplayNameFromUrl(src);
+        img.loading = "lazy";
+        img.decoding = "async";
+        block.appendChild(img);
+      });
+    });
+  };
+
+  const buildTournamentReels = () => {
+    const reelBlocks = document.querySelectorAll(".tournament-reel[data-tournament]");
+    if (!reelBlocks.length) return;
+
+    reelBlocks.forEach((block) => {
+      const tournamentKey = block.getAttribute("data-tournament");
+      const images = tournaments[tournamentKey] || [];
+      if (!images.length) return;
+
+      block.innerHTML = "";
+
+      const preview = document.createElement("img");
+      preview.src = images[0];
+      preview.alt = getDisplayNameFromUrl(images[0]);
+      preview.loading = "lazy";
+      preview.decoding = "async";
+
+      const nameTag = document.createElement("div");
+      nameTag.className = "reel-name-tag left";
+
+      const coachTag = document.createElement("div");
+      coachTag.className = "reel-coach-tag right";
+      coachTag.textContent = "Coach - Edgar";
+
+      const progress = document.createElement("div");
+      progress.className = "reel-progress";
+      const progressBars = images.map(() => {
+        const bar = document.createElement("span");
+        progress.appendChild(bar);
+        return bar;
+      });
+
+      block.appendChild(preview);
+      block.appendChild(progress);
+      block.appendChild(nameTag);
+      block.appendChild(coachTag);
+
+      let index = 0;
+      const draw = () => {
+        const currentImage = images[index];
+        const studentName = getDisplayNameFromUrl(currentImage);
+        const isSwap = shouldSwapSides(studentName);
+        const studentOnLeft = isSwap ? index % 2 !== 0 : index % 2 === 0;
+
+        preview.src = currentImage;
+        preview.alt = studentName;
+        nameTag.textContent = studentName;
+        nameTag.classList.toggle("lowered", isRonit(studentName));
+        nameTag.classList.toggle("left", studentOnLeft);
+        nameTag.classList.toggle("right", !studentOnLeft);
+        coachTag.classList.toggle("left", !studentOnLeft);
+        coachTag.classList.toggle("right", studentOnLeft);
+        progressBars.forEach((bar, barIndex) => {
+          bar.classList.toggle("active", barIndex <= index);
+        });
+      };
+
+      draw();
+
+      let timer = setInterval(() => {
+        index = (index + 1) % images.length;
+        draw();
+      }, 1400);
+
+      block.addEventListener("mouseenter", () => {
+        clearInterval(timer);
+      });
+
+      block.addEventListener("mouseleave", () => {
+        timer = setInterval(() => {
+          index = (index + 1) % images.length;
+          draw();
+        }, 1400);
+      });
+    });
+  };
+
+  buildTournamentCollages();
+  buildTournamentReels();
 
   const updateImage = () => {
     const img = document.getElementById("lightbox-img");
     const prevBtn = document.querySelector(".lightbox-prev");
     const nextBtn = document.querySelector(".lightbox-next");
+    const studentTag = document.getElementById("lightbox-student-tag");
+    const coachTag = document.getElementById("lightbox-coach-tag");
     if (!img || !currentImages.length) return;
 
     img.src = currentImages[currentIndex];
     if (prevBtn) prevBtn.style.display = currentIndex === 0 ? "none" : "flex";
     if (nextBtn) nextBtn.style.display = currentIndex === currentImages.length - 1 ? "none" : "flex";
+
+    if (studentTag && coachTag) {
+      const coachName = tournamentCoachNames[currentTournament];
+      if (!coachName) {
+        studentTag.style.display = "none";
+        coachTag.style.display = "none";
+        return;
+      }
+
+      const studentName = getDisplayNameFromUrl(currentImages[currentIndex]);
+      const isSwap = shouldSwapSides(studentName);
+      const studentOnLeft = isSwap ? currentIndex % 2 !== 0 : currentIndex % 2 === 0;
+
+      studentTag.textContent = studentName;
+      coachTag.textContent = coachName;
+      studentTag.style.display = "block";
+      coachTag.style.display = "block";
+      studentTag.classList.toggle("lowered", isRonit(studentName));
+      studentTag.classList.toggle("left", studentOnLeft);
+      studentTag.classList.toggle("right", !studentOnLeft);
+      coachTag.classList.toggle("left", !studentOnLeft);
+      coachTag.classList.toggle("right", studentOnLeft);
+    }
   };
 
   window.openTournament = function (name) {
