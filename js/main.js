@@ -610,14 +610,19 @@ Thank you.
         return bar;
       });
 
+      const reelCounter = document.createElement("div");
+      reelCounter.className = "reel-image-counter";
+
       block.appendChild(preview);
       block.appendChild(progress);
+      block.appendChild(reelCounter);
 
       let index = 0;
       const draw = () => {
         const currentImage = images[index];
         preview.src = currentImage;
         preview.alt = getDisplayNameFromUrl(currentImage);
+        reelCounter.textContent = `${index + 1}/${images.length}`;
         progressBars.forEach((bar, barIndex) => {
           bar.classList.toggle("active", barIndex <= index);
         });
@@ -643,20 +648,47 @@ Thank you.
     });
   };
 
+  const buildTournamentCardTotalBadges = () => {
+    const cards = document.querySelectorAll(".tournament-card[data-tournament]");
+    if (!cards.length) return;
+
+    cards.forEach((card) => {
+      if (card.querySelector(".tournament-reel")) return;
+
+      const tournamentKey = card.getAttribute("data-tournament") || "";
+      const images = tournaments[tournamentKey] || [];
+      if (!images.length) return;
+
+      const existingBadge = card.querySelector(".tournament-total-badge");
+      if (existingBadge) existingBadge.remove();
+
+      const badge = document.createElement("div");
+      badge.className = "tournament-total-badge";
+      badge.textContent = `${images.length} photos`;
+      card.appendChild(badge);
+    });
+  };
+
   buildTournamentCollages();
   buildTournamentReels();
+  buildTournamentCardTotalBadges();
 
   const updateImage = () => {
     const img = document.getElementById("lightbox-img");
     const prevBtn = document.querySelector(".lightbox-prev");
     const nextBtn = document.querySelector(".lightbox-next");
+    const imageCounter = document.getElementById("lightbox-image-counter");
     const studentTag = document.getElementById("lightbox-student-tag");
     const coachTag = document.getElementById("lightbox-coach-tag");
     if (!img || !currentImages.length) return;
 
     img.src = currentImages[currentIndex];
-    if (prevBtn) prevBtn.style.display = currentIndex === 0 ? "none" : "flex";
-    if (nextBtn) nextBtn.style.display = currentIndex === currentImages.length - 1 ? "none" : "flex";
+    if (prevBtn) prevBtn.style.display = currentImages.length > 1 ? "flex" : "none";
+    if (nextBtn) nextBtn.style.display = currentImages.length > 1 ? "flex" : "none";
+    if (imageCounter) {
+      imageCounter.textContent = `${currentIndex + 1}/${currentImages.length}`;
+      imageCounter.style.display = "block";
+    }
 
     if (studentTag && coachTag) {
       const coachName = tournamentCoachNames[currentTournament];

@@ -2939,6 +2939,22 @@ nav ul li a:hover {
   display: none;
 }
 
+.lightbox-image-counter {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.62);
+  color: #fff;
+  font-size: 0.86rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  line-height: 1;
+  z-index: 10002;
+}
+
 .lightbox-name-tag {
   top: auto;
   bottom: 24px;
@@ -2993,6 +3009,12 @@ nav ul li a:hover {
   .lightbox-name-tag.right,
   .lightbox-coach-tag.right {
     right: 8px;
+  }
+
+  .lightbox-image-counter {
+    top: 8px;
+    font-size: 0.78rem;
+    padding: 4px 10px;
   }
 }
 
@@ -3288,6 +3310,23 @@ right:0;
 .tournament-card {
   cursor: pointer;
   text-align: center;
+  position: relative;
+}
+
+.tournament-total-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.62);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.15px;
+  z-index: 3;
+  pointer-events: none;
 }
 
 .tournament-card > img {
@@ -3342,6 +3381,22 @@ right:0;
 
 .reel-progress span.active {
   background: rgba(255, 255, 255, 0.95);
+}
+
+.reel-image-counter {
+  position: absolute;
+  top: 18px;
+  right: 10px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.58);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.15px;
+  z-index: 3;
+  pointer-events: none;
 }
 
 .reel-name-tag {
