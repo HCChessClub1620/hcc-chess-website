@@ -602,13 +602,6 @@ Thank you.
       preview.loading = "lazy";
       preview.decoding = "async";
 
-      const nameTag = document.createElement("div");
-      nameTag.className = "reel-name-tag left";
-
-      const coachTag = document.createElement("div");
-      coachTag.className = "reel-coach-tag right";
-      coachTag.textContent = "Coach - Edgar";
-
       const progress = document.createElement("div");
       progress.className = "reel-progress";
       const progressBars = images.map(() => {
@@ -619,24 +612,12 @@ Thank you.
 
       block.appendChild(preview);
       block.appendChild(progress);
-      block.appendChild(nameTag);
-      block.appendChild(coachTag);
 
       let index = 0;
       const draw = () => {
         const currentImage = images[index];
-        const studentName = getDisplayNameFromUrl(currentImage);
-        const isSwap = shouldSwapSides(studentName);
-        const studentOnLeft = isSwap ? index % 2 !== 0 : index % 2 === 0;
-
         preview.src = currentImage;
-        preview.alt = studentName;
-        nameTag.textContent = studentName;
-        nameTag.classList.toggle("lowered", isRonit(studentName));
-        nameTag.classList.toggle("left", studentOnLeft);
-        nameTag.classList.toggle("right", !studentOnLeft);
-        coachTag.classList.toggle("left", !studentOnLeft);
-        coachTag.classList.toggle("right", studentOnLeft);
+        preview.alt = getDisplayNameFromUrl(currentImage);
         progressBars.forEach((bar, barIndex) => {
           bar.classList.toggle("active", barIndex <= index);
         });
