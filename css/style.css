@@ -1165,6 +1165,10 @@ body {
   }
 }
 
+.coach-image img.face-center {
+  object-position: center top;
+}
+
 /* ==========================
    WHAT WE OFFER
 ========================== */
