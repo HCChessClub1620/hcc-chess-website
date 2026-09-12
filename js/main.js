@@ -304,7 +304,8 @@ document.addEventListener("DOMContentLoaded", () => {
         paymentGroup.hidden = sponsored;
         paymentMethod.required = !sponsored;
         if (sponsored) {
-          paymentMethod.value = "";
+          // Google Form still requires a valid Payment Via choice, so default to Venmo since no payment is actually due
+          paymentMethod.value = "Venmo";
           paymentSection.innerHTML = "<p>No payment is required.</p>";
         }
       }
