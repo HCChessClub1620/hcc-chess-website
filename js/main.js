@@ -213,17 +213,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadSharedIncludes();
 
+  // ============================================
+  // TOURNAMENT FEE DATE CONFIGURATION
+  // ============================================
+  // Set to true ONLY when testing.
+  // Set back to false before going live.
+  const USE_TEST_DATE = false;
+
+  // Test dates:
+  // Sep 26 = Early Bird ($20)
+  // Sep 28 = Regular ($25)
+  //
+  // Change this value to test different scenarios.
+  const TEST_DATE = new Date(2026, 8, 26, 12, 0, 0);
+
+  // Actual Early Bird deadline: Sep 27, 2026 11:30 PM
+  const earlyBirdCutoff = new Date(2026, 8, 27, 23, 30, 0);
+
+  // Use test date or actual current date
+  const currentDate = USE_TEST_DATE ? TEST_DATE : new Date();
+
   const paymentMethod = document.getElementById("paymentMethod");
   const paymentSection = document.getElementById("paymentSection");
   const fallKickoffAttendance = document.getElementById("fallKickoffAttendance");
   const feeMessage = document.getElementById("feeMessage");
   const paymentGroup = document.getElementById("paymentGroup");
-  const earlyBirdCutoff = new Date(2026, 8, 27, 23, 30, 0); // Sep 27, 2026 11:30 PM
 
   // Returns null when sponsored (no fee) or attendance not yet selected
   const getTournamentFee = () => {
     if (!fallKickoffAttendance || fallKickoffAttendance.value !== "No") return null;
-    return new Date() <= earlyBirdCutoff ? 20 : 25;
+    return currentDate <= earlyBirdCutoff ? 20 : 25;
   };
 
   if (paymentMethod && paymentSection) {
@@ -289,7 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (value === "Yes") {
         feeMessage.textContent = "Your tournament registration fee is 100% sponsored by Hamilton Chess Club and your fees is waived. You pay $0.";
       } else if (value === "No") {
-        if (new Date() <= earlyBirdCutoff) {
+        if (currentDate <= earlyBirdCutoff) {
           feeMessage.textContent = "Thank you for the information. You have received the Early Bird registration discount. Your tournament registration fee is $20.";
         } else {
           feeMessage.textContent = "Thank you for the information. Your tournament registration fee is $25.";
