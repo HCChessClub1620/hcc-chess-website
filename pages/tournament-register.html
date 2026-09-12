@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tournament Registration | Hamilton Chess Club</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <section id="registration" class="registration-section">
+    <div id="registrationContent">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Hamilton Chess Club Tournament</span>
+          <h2>Tournament Registration</h2>
+          <p>Complete the registration form below and submit your payment information to reserve your spot for the next Hamilton Chess Club Tournament on <strong>Oct 03, 2026</strong>.</p>
+        </div>
+
+        <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+        <form id="registrationForm" class="registration-form" action="https://docs.google.com/forms/d/e/1FAIpQLSda8nx0zoTFJSB3MbTJTvt6qpQbwIZcUj2gHAl4jOzbdxJM5w/formResponse" method="POST" target="hidden_iframe">
+          <input id="studentName" type="text" name="entry.1757382853" placeholder="Student Name" aria-label="Student Name" required />
+          <input id="schoolName" type="text" name="entry.1204105598" placeholder="School Name" aria-label="School Name" required />
+          <input id="schoolGrade" type="text" name="entry.244040744" placeholder="School Grade" aria-label="School Grade" required />
+          <input id="chessClubName" type="text" name="entry.240482085" placeholder="Chess Club Name" aria-label="Chess Club Name" required />
+
+          <select id="ratedStatus" name="entry.1543450422" aria-label="Rated or Unrated" required>
+            <option value="">Select Rated/Unrated</option>
+            <option value="Rated">Rated</option>
+            <option value="Unrated">Unrated</option>
+          </select>
+
+          <input id="wscfRating" type="text" name="entry.1797616251" placeholder="WSCF Rating (optional)" aria-label="WSCF Rating (optional)" />
+          <input id="uscfRating" type="text" name="entry.549655144" placeholder="USCF Rating (optional)" aria-label="USCF Rating (optional)" />
+
+          <select id="tournamentSection" name="entry.471961648" aria-label="Tournament Section Group" required>
+            <option value="">Select Tournament Section Group</option>
+            <option value="K-4">K-4</option>
+            <option value="K-8">K-8</option>
+            <option value="K-12">K-12</option>
+          </select>
+
+          <input id="parentName" type="text" name="entry.318366699" placeholder="Parent/Guardian Name" aria-label="Parent or Guardian Name" required />
+          <input id="parentEmail" type="email" name="entry.1713739749" placeholder="Parent Email ID" aria-label="Parent Email ID" required />
+          <input id="parentContact" type="tel" name="entry.1565733564" placeholder="Parent Contact Number" aria-label="Parent Contact Number" required />
+
+          <select id="fallKickoffAttendance" name="entry.1233763181" aria-label="Fall Kick-Off Attendance" required>
+            <option value="">Did your child attend Fall Kick-Off Session(Aug 14-Sep18) ?</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+
+          <div id="feeMessage" class="consent-note" hidden></div>
+
+          <div id="paymentGroup">
+            <select id="paymentMethod" name="entry.816402599" aria-label="Payment Via" required>
+              <option value="">Select Payment Via</option>
+              <option value="Venmo">Venmo</option>
+              <option value="Zelle">Zelle</option>
+            </select>
+
+            <div id="paymentSection">
+              <p>Select a payment method to view payment instructions.</p>
+            </div>
+          </div>
+
+          <button type="submit" class="register-submit">Complete Tournament Registration</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div id="successPopup" class="success-popup">
+    <div class="popup-box">
+      <div class="success-icon">✓</div>
+      <h2>Tournament Registration Successfully Submitted !!</h2>
+      <p>Thank you for registering for the Hamilton Chess Club Tournament.</p>
+      <div id="paymentReceiptSteps">
+        <p><strong>Final Step:</strong><br />Click Email Receipt and attach your payment screenshot to reserve your spot.</p>
+        <p>📧 Email: hamiltonsdchess@gmail.com</p>
+      </div>
+      <div class="popup-buttons">
+        <button type="button" onclick="sendReceiptEmail()" class="email-btn" id="emailReceiptBtn">📧 Email Receipt</button>
+        <button onclick="closePopup()" class="close-btn-popup">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="site-footer"></div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

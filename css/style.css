@@ -461,9 +461,17 @@ nav a:hover {
 
 .buttons {
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.button-row {
+  display: flex;
   flex-wrap: wrap;
   gap: 12px;
 }
+
 .learn-more-row {
   margin-top: 12px;
 }
@@ -538,7 +546,7 @@ nav a:hover {
   color: white;
   font-weight: 700;
   text-decoration: none;
-  padding: 12px 24px;
+  padding: 6px 12px;
   border: 2px solid white;
   border-radius: 6px;
   display: inline-block;
@@ -555,6 +563,8 @@ nav a:hover {
   color: white;
   text-decoration: none;
   border-radius: 6px;
+  text-align: center;
+  white-space: normal;
 }
 
 .btn:hover {
@@ -574,11 +584,19 @@ nav a:hover {
 }
 
 .btn-outline {
-  padding: 12px 25px;
+  padding: 12px 18px;
   border: 2px solid white;
   color: white;
   text-decoration: none;
-  margin-left: 10px;
+  border-radius: 6px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 600;
+  transition: 0.2s ease;
+  line-height: 1.3;
 }
 
 .registration-card {
@@ -587,10 +605,29 @@ nav a:hover {
   padding: 18px;
   border-radius: 12px;
   box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+  font-size: 15px;
+  line-height: 1.6;
 
   width: 100%;
   max-width: 420px;
   margin: 0 auto;
+}
+
+.registration-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.registration-card h3 {
+  font-size: 1.15rem;
+}
+
+.registration-card p,
+.registration-card li {
+  font-size: 0.94rem;
+  margin: 0 0 10px;
 }
 
 @media (max-width: 1200px) {
@@ -626,11 +663,27 @@ nav a:hover {
 }
 
 .learn-more-card {
-  background: red;
+  background: #b30059;
   color: white;
-  padding: 12px 24px;
-  border-radius: 6px;
-  font-weight: 600;
+  flex: 1 1 160px;
+}
+
+.tournament-fees-card {
+  background: #b30059;
+  color: white;
+  flex: 1 1 190px;
+}
+
+@media (max-width: 768px) {
+  .registration-card-actions {
+    flex-direction: column;
+  }
+
+  .learn-more-card,
+  .tournament-fees-card {
+    width: 100%;
+    flex-basis: 100%;
+  }
 }
 
 .about-story {
@@ -749,7 +802,7 @@ body {
   margin-bottom: 14px;
   line-height: 1.7;
   color: #555;
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 .founder-achievements li::before {
@@ -1166,6 +1219,27 @@ body {
 .program-card p {
   color: #555;
   line-height: 1.8;
+}
+
+.tournament-grid .program-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.tournament-grid .program-card > .upcoming-tournament-btn,
+.tournament-grid .program-card > p:last-child {
+  margin-top: auto;
+}
+
+.tournament-grid .upcoming-tournament-btn {
+  width: 100%;
+  max-width: none;
+  min-height: 96px;
+  margin-bottom: 0;
+}
+
+.tournament-grid .program-card > p:last-child .upcoming-tournament-btn {
+  margin-top: 20px;
 }
 
 .tournament-logo {
@@ -1663,19 +1737,32 @@ body {
 }
 
 .new-student-banner {
-  background: #132a13;
+  background: linear-gradient(135deg, #112d15 0%, #1d4e2f 100%);
   color: #fff;
-  border-radius: 18px;
-  padding: 40px 50px;
+  border-radius: 22px;
+  padding: 38px 42px;
   text-align: center;
   margin-top: 50px;
+  box-shadow: 0 18px 35px rgba(19, 42, 19, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .new-student-banner h3 {
-  font-size: 1.6rem;
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
   font-weight: 700;
   color: #ffffff;
   margin-bottom: 12px;
+  line-height: 1.35;
+}
+
+.sponsored-banner-title {
+  display: inline-block;
+  background: rgba(255, 214, 10, 0.12);
+  color: #fff7bf;
+  padding: 12px 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 0 0 1px rgba(255, 214, 10, 0.08);
 }
 
 .new-student-banner p {
@@ -1757,23 +1844,34 @@ body {
 
 .fees-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, minmax(260px, 1fr));
   justify-items: center;
   gap: 30px;
   margin-top: 50px;
 }
 
+.class-program-fees-grid {
+  grid-template-columns: repeat(2, minmax(260px, 1fr));
+}
+
 .fee-card {
-  background: #f8faf8;
+  background: linear-gradient(180deg, #ffffff 0%, #f8faf8 100%);
   text-align: center;
   width: 100%;
+  min-width: 0;
   max-width: 520px;
-  padding: 40px;
+  padding: 40px 30px 32px;
   border-radius: 24px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 14px 28px rgba(19, 42, 19, 0.08);
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fee-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 30px rgba(19, 42, 19, 0.12);
 }
 
 .fee-card .deadline {
@@ -1944,6 +2042,149 @@ body {
 
 /* Included */
 
+.info-grid,
+.steps-grid,
+.details-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.info-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 30px;
+}
+
+.info-card,
+.details-card,
+.payment-box,
+.post-registration-box,
+.policy-box,
+.requirements-box,
+.deadline-box,
+.step-box {
+  background: linear-gradient(180deg, #ffffff 0%, #f7faf7 100%);
+  border: 1px solid #e3eadc;
+  border-radius: 18px;
+  padding: 24px 28px;
+  box-shadow: 0 10px 22px rgba(19, 42, 19, 0.05);
+}
+
+.info-card h4,
+.details-card h3,
+.payment-box h3,
+.post-registration-box h3,
+.policy-box h3,
+.requirements-box h3,
+.deadline-box h4,
+.registration-flow h3,
+.step-box h4 {
+  margin-top: 0;
+  color: #132a13;
+}
+
+.highlight-card {
+  background: linear-gradient(135deg, #eef9ee, #f8faf8);
+  border-left: 5px solid #31572c;
+}
+
+.deadline-box {
+  margin-top: 30px;
+  background: linear-gradient(135deg, #fff7d6, #fff0a8);
+  text-align: center;
+  border: 1px solid #f0d54b;
+  box-shadow: 0 14px 28px rgba(255, 214, 10, 0.12);
+}
+
+.deadline-box h4 {
+  margin-bottom: 8px;
+  font-size: 1.4rem;
+  color: #132a13;
+}
+
+.deadline-box p {
+  margin: 0;
+  color: #132a13;
+  font-weight: 700;
+}
+
+.details-card,
+.registration-flow,
+.payment-box,
+.post-registration-box,
+.policy-box,
+.requirements-box {
+  margin-top: 28px;
+}
+
+.details-card {
+  background: #ffffff;
+  border: 0;
+  padding: 34px 38px;
+  box-shadow: 0 10px 24px rgba(19, 42, 19, 0.08);
+}
+
+.details-card h3 {
+  text-align: center;
+  margin-bottom: 28px;
+  color: #138a13;
+  font-size: 2rem;
+}
+
+.details-grid {
+  grid-template-columns: 1fr;
+  gap: 0;
+  margin-top: 0;
+}
+
+.details-grid div {
+  min-height: 58px;
+  padding: 14px 0;
+  display: grid;
+  grid-template-columns: minmax(150px, 0.8fr) minmax(0, 1.8fr);
+  gap: 24px;
+  align-items: start;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #e6ece2;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.details-grid div strong {
+  display: block;
+  margin-right: 0;
+  color: #333333;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.steps-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 18px;
+}
+
+.step-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.step-box h4 {
+  margin-bottom: 10px;
+}
+
+.payment-box p,
+.post-registration-box p,
+.policy-box p,
+.requirements-box p,
+.info-card p,
+.step-box p,
+.details-grid div {
+  color: #2d3f2a;
+  line-height: 1.7;
+}
+
 .refund-policy-box {
   margin-top: 40px;
   background: #f3f7ef;
@@ -1951,6 +2192,29 @@ body {
   border-left: 5px solid #31572c;
   border-radius: 18px;
   padding: 28px 30px;
+}
+
+@media (max-width: 900px) {
+  .info-grid,
+  .steps-grid,
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .details-card {
+    padding: 26px 20px;
+  }
+
+  .details-card h3 {
+    font-size: 1.6rem;
+  }
+
+  .details-grid div {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
 }
 
 .refund-policy-box h3 {
@@ -1998,10 +2262,16 @@ body {
 }
 
 @media (max-width: 900px) {
-  .fees-grid,
   .discount-grid,
   .value-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1100px) {
+  .fees-grid {
+    grid-template-columns: repeat(2, minmax(260px, 1fr));
+    gap: 24px;
   }
 }
 
@@ -2087,16 +2357,19 @@ body {
 
 .btn-register-now {
   display: inline-block;
+  width: fit-content;
+  max-width: 100%;
 
   background: #ffd60a;
   color: #132a13;
 
-  padding: 18px 40px;
+  padding: 6px 12px;
 
   border-radius: 40px;
 
-  font-size: 1.2rem;
+  font-size: 0.8rem;
   font-weight: 700;
+  white-space: nowrap;
 
   text-decoration: none;
 
@@ -2107,6 +2380,28 @@ body {
 
 .btn-register-now:hover {
   transform: translateY(-3px) scale(1.05);
+}
+
+.btn-register-now.blink-btn {
+  animation: blink-btn-pulse 1.2s ease-in-out infinite;
+}
+
+.upcoming-tournament-btn {
+  width: min(100%, 360px);
+  padding: 14px 24px;
+  font-size: 1rem;
+  line-height: 1.35;
+  white-space: normal;
+  text-align: center;
+}
+
+@keyframes blink-btn-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
 }
 
 /* PAYMENT */
@@ -2174,6 +2469,22 @@ body {
 /* MOBILE */
 
 @media (max-width: 768px) {
+  .fees-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 32px;
+  }
+
+  .fee-card {
+    max-width: 100%;
+    padding: 30px 20px 26px;
+  }
+
+  .fee-card img {
+    width: min(180px, 70vw);
+    height: min(180px, 70vw);
+  }
+
   .enrollment-cta {
     padding: 35px 20px;
   }
@@ -2649,6 +2960,19 @@ footer a:hover {
 
   .buttons {
     justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .button-row {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .button-row .btn {
+    flex: 1 1 170px;
+    min-width: 0;
+    max-width: 100%;
   }
 
   .hero h2 {

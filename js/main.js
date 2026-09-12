@@ -215,16 +215,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const paymentMethod = document.getElementById("paymentMethod");
   const paymentSection = document.getElementById("paymentSection");
+  const fallKickoffAttendance = document.getElementById("fallKickoffAttendance");
+  const feeMessage = document.getElementById("feeMessage");
+  const paymentGroup = document.getElementById("paymentGroup");
+  const earlyBirdCutoff = new Date(2026, 8, 30, 23, 59, 59); // Sep 30, 2026 end of day
+
+  // Returns null when sponsored (no fee) or attendance not yet selected
+  const getTournamentFee = () => {
+    if (!fallKickoffAttendance || fallKickoffAttendance.value !== "No") return null;
+    return new Date() <= earlyBirdCutoff ? 20 : 25;
+  };
 
   if (paymentMethod && paymentSection) {
     const renderPaymentSection = (method) => {
+      const fee = getTournamentFee();
+      const feeLine = fee ? `Tournament Registration Fee: $${fee}` : "";
+
       if (method === "Venmo") {
         paymentSection.innerHTML = `
           <div class="payment-display">
             <h3>Pay Using Venmo</h3>
             <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782076247/VenmoPayment_jsrtv4.jpg" loading="lazy" alt="Venmo payment">
             <p>
-              Send payment to Venmo Account :<br>
+              ${feeLine ? `<strong>${feeLine}</strong><br>` : ""}
+              Please send${fee ? ` $${fee}` : ""} to Venmo Account:<br>
               @Bala-Narayanan
             </p>
             <br>
@@ -237,14 +251,16 @@ document.addEventListener("DOMContentLoaded", () => {
             <h3>Pay Using Zelle</h3>
             <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782076247/ZellePayment_ehbzko.jpg" loading="lazy" alt="Zelle payment">
             <p>
-          
-              Send payment to Zelle Account:<br>
+              ${feeLine ? `<strong>${feeLine}</strong><br>` : ""}
+              Please send${fee ? ` $${fee}` : ""} to Zelle Account:<br>
               hamiltonsdchess
             </p>
           </div>
         `;
       } else {
-        paymentSection.innerHTML = "<p>Select a payment method to view payment instructions.</p>";
+        paymentSection.innerHTML = feeLine
+          ? `<p><strong>${feeLine}</strong></p><p>Select a payment method to view payment instructions.</p>`
+          : "<p>Select a payment method to view payment instructions.</p>";
       }
     };
 
@@ -260,6 +276,44 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("paymentSection")?.scrollIntoView({ behavior: "smooth" });
       }, 200);
     }
+
+    if (fallKickoffAttendance) {
+      fallKickoffAttendance.addEventListener("change", () => {
+        renderPaymentSection(paymentMethod.value);
+      });
+    }
+  }
+
+  if (fallKickoffAttendance && feeMessage) {
+    const renderFeeMessage = (value) => {
+      if (value === "Yes") {
+        feeMessage.textContent = "Your tournament registration fee is 100% sponsored by Hamilton Chess Club and your fees is waived. You pay $0.";
+      } else if (value === "No") {
+        if (new Date() <= earlyBirdCutoff) {
+          feeMessage.textContent = "Thank you for the information. You have received the Early Bird registration discount. Your tournament registration fee is $20.";
+        } else {
+          feeMessage.textContent = "Thank you for the information. Your tournament registration fee is $25.";
+        }
+      } else {
+        feeMessage.textContent = "";
+      }
+      feeMessage.hidden = value !== "Yes" && value !== "No";
+
+      if (paymentGroup && paymentMethod) {
+        const sponsored = value === "Yes";
+        paymentGroup.hidden = sponsored;
+        paymentMethod.required = !sponsored;
+        if (sponsored) {
+          paymentMethod.value = "";
+          paymentSection.innerHTML = "<p>No payment is required.</p>";
+        }
+      }
+    };
+
+    renderFeeMessage(fallKickoffAttendance.value);
+    fallKickoffAttendance.addEventListener("change", function () {
+      renderFeeMessage(this.value);
+    });
   }
 
   const medicalConditionSelect = document.getElementById("medicalConditionSelect");
@@ -290,6 +344,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const registrationForm = document.getElementById("registrationForm");
   const successPopup = document.getElementById("successPopup");
+  const paymentReceiptSteps = document.getElementById("paymentReceiptSteps");
+  const emailReceiptBtn = document.getElementById("emailReceiptBtn");
 
   if (registrationForm) {
     registrationForm.addEventListener("submit", function () {
@@ -300,6 +356,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const submitButton = registrationForm.querySelector("button");
       if (submitButton) {
         submitButton.disabled = true;
+      }
+
+      const sponsored = fallKickoffAttendance?.value === "Yes";
+      if (paymentReceiptSteps) {
+        paymentReceiptSteps.hidden = sponsored;
+      }
+      if (emailReceiptBtn) {
+        emailReceiptBtn.hidden = sponsored;
       }
 
       setTimeout(() => {
@@ -330,6 +394,28 @@ document.addEventListener("DOMContentLoaded", () => {
       paymentContainer.innerHTML = "<p>Select a payment method to view payment instructions.</p>";
     }
 
+    const feeMessageContainer = document.getElementById("feeMessage");
+    if (feeMessageContainer) {
+      feeMessageContainer.hidden = true;
+      feeMessageContainer.textContent = "";
+    }
+
+    const paymentGroupContainer = document.getElementById("paymentGroup");
+    const paymentMethodField = document.getElementById("paymentMethod");
+    if (paymentGroupContainer) {
+      paymentGroupContainer.hidden = false;
+    }
+    if (paymentMethodField) {
+      paymentMethodField.required = true;
+    }
+
+    if (paymentReceiptSteps) {
+      paymentReceiptSteps.hidden = false;
+    }
+    if (emailReceiptBtn) {
+      emailReceiptBtn.hidden = false;
+    }
+
     const submitButton = document.querySelector(".register-submit");
     if (submitButton) {
       submitButton.disabled = false;
@@ -337,9 +423,9 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   window.sendReceiptEmail = function () {
-    const student = document.querySelector('[name="entry.623997903"]')?.value || "";
-    const parent = document.querySelector('[name="entry.60020519"]')?.value || "";
-    const email = document.querySelector('[name="entry.2057450137"]')?.value || "";
+    const student = document.querySelector('[name="entry.1757382853"]')?.value || "";
+    const parent = document.querySelector('[name="entry.318366699"]')?.value || "";
+    const email = document.querySelector('[name="entry.1713739749"]')?.value || "";
     const payment = document.getElementById("paymentMethod")?.value || "";
 
     const subject = encodeURIComponent(`Hamilton Chess Club Payment Receipt - ${student} (${parent})`);
