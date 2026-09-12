@@ -232,14 +232,32 @@ document.addEventListener("DOMContentLoaded", () => {
   // $25 applies from Sep 28 onwards
   const earlyBirdCutoff = new Date(2026, 8, 27, 23, 59, 59);
 
+  // ============================================
+  // CLASS PROGRAM FEE DATE CONFIGURATION
+  // ============================================
+  // Set to true while testing register.html, then set back to false before going live.
+  const USE_CLASS_PROGRAM_TEST_DATE = false;
+
+  // Sep 29, 2026 = Early Bird pricing.
+  // Change to Oct 1, 2026 to test regular pricing after the Sep 30 cutoff.
+  const CLASS_PROGRAM_TEST_DATE = new Date(2026, 8, 29, 12, 0, 0);
+
+  // Early Bird pricing applies through Sep 30, 2026.
+  const classProgramEarlyBirdCutoff = new Date(2026, 8, 30, 23, 59, 59);
+
   // Use test date or actual current date
   const currentDate = USE_TEST_DATE ? TEST_DATE : new Date();
+  const classProgramCurrentDate = USE_CLASS_PROGRAM_TEST_DATE
+    ? CLASS_PROGRAM_TEST_DATE
+    : new Date();
 
   const paymentMethod = document.getElementById("paymentMethod");
   const paymentSection = document.getElementById("paymentSection");
   const fallKickoffAttendance = document.getElementById("fallKickoffAttendance");
   const feeMessage = document.getElementById("feeMessage");
   const paymentGroup = document.getElementById("paymentGroup");
+  const chessLevel = document.getElementById("chessLevel");
+  const familyDiscount = document.getElementById("familyDiscount");
 
   // Returns null when sponsored (no fee) or attendance not yet selected
   const getTournamentFee = () => {
@@ -247,10 +265,31 @@ document.addEventListener("DOMContentLoaded", () => {
     return currentDate <= earlyBirdCutoff ? 20 : 25;
   };
 
+  const getClassProgramFee = () => {
+    if (!chessLevel || !chessLevel.value) return null;
+
+    const earlyBird = classProgramCurrentDate <= classProgramEarlyBirdCutoff;
+    const fees = {
+      Beginner: earlyBird ? 100 : 115,
+      Intermediate: earlyBird ? 125 : 140,
+      Advanced: earlyBird ? 125 : 140
+    };
+    const baseFee = fees[chessLevel.value];
+    if (!baseFee) return null;
+
+    return familyDiscount?.value === "Yes" ? baseFee - 10 : baseFee;
+  };
+
   if (paymentMethod && paymentSection) {
     const renderPaymentSection = (method) => {
-      const fee = getTournamentFee();
-      const feeLine = fee ? `Tournament Registration Fee: $${fee}` : "";
+      const isClassProgram = Boolean(chessLevel);
+      const fee = isClassProgram ? getClassProgramFee() : getTournamentFee();
+      const programName = chessLevel?.value || "";
+      const feeLine = fee
+        ? isClassProgram
+          ? `${programName} Program Registration Fee: $${fee}`
+          : `Tournament Registration Fee: $${fee}`
+        : "";
 
       if (method === "Venmo") {
         paymentSection.innerHTML = `
@@ -303,6 +342,12 @@ document.addEventListener("DOMContentLoaded", () => {
         renderPaymentSection(paymentMethod.value);
       });
     }
+
+    [chessLevel, familyDiscount].forEach((field) => {
+      field?.addEventListener("change", () => {
+        renderPaymentSection(paymentMethod.value);
+      });
+    });
   }
 
   if (fallKickoffAttendance && feeMessage) {
