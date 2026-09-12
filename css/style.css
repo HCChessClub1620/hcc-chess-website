@@ -876,6 +876,54 @@ body {
 .section-header p {
   text-align: center;
 }
+
+.collaboration-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  flex-wrap: wrap;
+  margin: 26px auto 30px;
+}
+
+.collaboration-partner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #132a13;
+}
+
+.collaboration-partner img {
+  width: 76px;
+  height: 58px;
+  object-fit: contain;
+}
+
+.collaboration-symbol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #132a51;
+  font-size: 3rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.cause-logo {
+  display: block;
+  width: min(220px, 80%);
+  height: auto;
+  margin: 24px auto 0;
+}
+
+.detail-symbol {
+  width: 32px;
+  height: 26px;
+  margin-right: 5px;
+  vertical-align: -4px;
+  object-fit: contain;
+}
+
 .section-tag {
   display: inline-block;
   background: #31572c;
