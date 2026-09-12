@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const fallKickoffAttendance = document.getElementById("fallKickoffAttendance");
   const feeMessage = document.getElementById("feeMessage");
   const paymentGroup = document.getElementById("paymentGroup");
-  const earlyBirdCutoff = new Date(2026, 8, 30, 23, 59, 59); // Sep 30, 2026 end of day
+  const earlyBirdCutoff = new Date(2026, 8, 11, 23, 30, 0); // Sep 11, 2026 11:30 PM
 
   // Returns null when sponsored (no fee) or attendance not yet selected
   const getTournamentFee = () => {
