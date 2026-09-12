@@ -227,8 +227,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Change this value to test different scenarios.
   const TEST_DATE = new Date(2026, 8, 26, 12, 0, 0);
 
-  // Actual Early Bird deadline: Sep 27, 2026 11:30 PM
-  const earlyBirdCutoff = new Date(2026, 8, 27, 23, 30, 0);
+  // Actual Early Bird deadline: Sep 27, 2026 11:59:59 PM
+  // $20 applies through all of Sep 27
+  // $25 applies from Sep 28 onwards
+  const earlyBirdCutoff = new Date(2026, 8, 27, 23, 59, 59);
 
   // Use test date or actual current date
   const currentDate = USE_TEST_DATE ? TEST_DATE : new Date();
