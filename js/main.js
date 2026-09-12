@@ -221,11 +221,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const USE_TEST_DATE = false;
 
   // Test dates:
-  // Sep 26 = Early Bird ($20)
-  // Sep 28 = Regular ($25)
+  // Sep 26,2026 = Early Bird ($20)
+  // Sep 28 = Standard ($25)
   //
   // Change this value to test different scenarios.
-  const TEST_DATE = new Date(2026, 8, 26, 12, 0, 0);
+  const TEST_DATE = new Date(2027, 8, 12, 12, 0, 0);
 
   // Actual Early Bird deadline: Sep 27, 2026 11:59:59 PM
   // $20 applies through all of Sep 27
