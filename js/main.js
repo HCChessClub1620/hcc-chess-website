@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ============================================
   // Set to true ONLY when testing.
   // Set back to false before going live.
-  const USE_TEST_DATE = true;
+  const USE_TEST_DATE = false;
 
   // Test dates:
   // Sep 27,2026 = Early Bird ($20)
