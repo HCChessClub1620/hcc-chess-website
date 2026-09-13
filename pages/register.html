@@ -125,19 +125,32 @@
             <option value="No">No - I do not agree</option>
           </select>
 
-          <p class="payment-note">
-            <strong>Payment Confirmation Screenshot:</strong> Please upload a screenshot of your completed Venmo or Zelle payment using the Payment Reference Upload link below. This helps us verify and confirm your registration.
-          </p>
+          <div class="consent-note">
+            <p><strong>Payment Methods - Processing Fees Information :</strong></p>
+            <ul>
+              <li><strong>Zelle:</strong> Payments have a <strong>0% processing fee.</strong></li>
+              <li><strong>Venmo:</strong> Payments have a <strong>0% processing fee.</strong></li>
+              <li><strong>Credit/Debit Card using Square:</strong> Payments are subject to a <strong>3.3% processing fee plus a $0.30 flat transaction fee.</strong> The applicable processing fee and total amount due will be displayed above before payment is completed.</li>
+            </ul>
+            <br />
+            <p><strong>Processing Fee Consent</strong></p>
+            <p>By selecting your preferred payment method, you acknowledge and agree to the applicable processing fee, if any, and authorize the <strong>full amount displayed at checkout.</strong></p>
+          </div>
 
           <select id="paymentMethod" name="entry.2138061187" required>
             <option value="">Payment Method</option>
             <option value="Venmo">Venmo</option>
             <option value="Zelle">Zelle</option>
+            <option value="Credit/Debit Card(Square)">Credit/Debit Card using Square</option>
           </select>
 
           <div id="paymentSection">
             <p>Select a payment method to view payment instructions.</p>
           </div>
+
+            <p id="paymentScreenshotNote" class="payment-note">
+            <strong>Payment Confirmation Screenshot:</strong> Please upload a screenshot of your completed Venmo or Zelle payment using the Payment Reference Upload link below. This helps us verify and confirm your registration.
+          </p>
 
           <button type="submit" class="register-submit">Complete Registration</button>
         </form>
