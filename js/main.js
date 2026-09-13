@@ -240,7 +240,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Sep 29, 2026 = Early Bird pricing.
   // Change to Oct 1, 2026 to test regular pricing after the Sep 30 cutoff.
-  const CLASS_PROGRAM_TEST_DATE = new Date(2026, 8, 29, 12, 0, 0);
+  const CLASS_PROGRAM_TEST_DATE = new Date(2026, 9, 01, 12, 0, 0);
 
   // Early Bird pricing applies through Sep 30, 2026.
   const classProgramEarlyBirdCutoff = new Date(2026, 8, 30, 23, 59, 59);
@@ -253,11 +253,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const paymentMethod = document.getElementById("paymentMethod");
   const paymentSection = document.getElementById("paymentSection");
+    const paymentScreenshotNote = document.getElementById("paymentScreenshotNote");
   const fallKickoffAttendance = document.getElementById("fallKickoffAttendance");
   const feeMessage = document.getElementById("feeMessage");
   const paymentGroup = document.getElementById("paymentGroup");
   const chessLevel = document.getElementById("chessLevel");
   const familyDiscount = document.getElementById("familyDiscount");
+  const squarePaymentUrl = "https://square.link/u/uTetALxk";
+  const squarePaymentMethod = "Credit/Debit Card(Square)";
 
   // Returns null when sponsored (no fee) or attendance not yet selected
   const getTournamentFee = () => {
@@ -280,16 +283,31 @@ document.addEventListener("DOMContentLoaded", () => {
     return familyDiscount?.value === "Yes" ? baseFee - 10 : baseFee;
   };
 
+  const calculateSquareTotal = (registrationFee) => {
+    const squareRate = 0.033;
+    const squareFlatFee = 0.3;
+    const total = (registrationFee + squareFlatFee) / (1 - squareRate);
+
+    return Math.ceil(total * 100) / 100;
+  };
+
   if (paymentMethod && paymentSection) {
     const renderPaymentSection = (method) => {
+        if (paymentScreenshotNote) {
+          paymentScreenshotNote.hidden = method === squarePaymentMethod;
+        }
+
       const isClassProgram = Boolean(chessLevel);
       const fee = isClassProgram ? getClassProgramFee() : getTournamentFee();
       const programName = chessLevel?.value || "";
       const feeLine = fee
         ? isClassProgram
-          ? `${programName} Program Registration Fee: $${fee}`
-          : `Tournament Registration Fee: $${fee}`
+          ? `${programName} Program Registration Fee: $${fee.toFixed(2)}`
+          : `Tournament Registration Fee: $${fee.toFixed(2)}`
         : "";
+      const squareTotalAmount = fee ? calculateSquareTotal(fee) : 0;
+      const squareProcessingFee = (squareTotalAmount - (fee || 0)).toFixed(2);
+      const squareTotal = squareTotalAmount.toFixed(2);
 
       if (method === "Venmo") {
         paymentSection.innerHTML = `
@@ -317,6 +335,19 @@ document.addEventListener("DOMContentLoaded", () => {
             </p>
           </div>
         `;
+      } else if (method === squarePaymentMethod) {
+        paymentSection.innerHTML = `
+          <div class="payment-display">
+            <h3>Pay with Credit/Debit Card using Square</h3>
+            ${feeLine ? `
+              <p><strong>${feeLine}</strong></p>
+              <p>Square Processing Fee: <strong>$${squareProcessingFee}</strong><br>
+              Total Amount Due: <strong>$${squareTotal}</strong></p>
+            ` : ""}
+            <p>Complete your payment securely with a credit or debit card.</p>
+            <a href="${squarePaymentUrl}" target="_blank" rel="noopener" class="btn btn-payment">Pay with Credit/Debit Card</a>
+          </div>
+        `;
       } else {
         paymentSection.innerHTML = feeLine
           ? `<p><strong>${feeLine}</strong></p><p>Select a payment method to view payment instructions.</p>`
@@ -329,9 +360,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     const urlMethod = new URLSearchParams(window.location.search).get("method");
-    if (urlMethod === "Venmo" || urlMethod === "Zelle") {
-      paymentMethod.value = urlMethod;
-      renderPaymentSection(urlMethod);
+    if (urlMethod === "Venmo" || urlMethod === "Zelle" || urlMethod === "Square") {
+      const selectedMethod = urlMethod === "Square" ? squarePaymentMethod : urlMethod;
+      paymentMethod.value = selectedMethod;
+      renderPaymentSection(selectedMethod);
       setTimeout(() => {
         document.getElementById("paymentSection")?.scrollIntoView({ behavior: "smooth" });
       }, 200);
@@ -413,6 +445,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const successPopup = document.getElementById("successPopup");
   const paymentReceiptSteps = document.getElementById("paymentReceiptSteps");
   const emailReceiptBtn = document.getElementById("emailReceiptBtn");
+  const submissionFrame = document.getElementById("hidden_iframe");
+  let awaitingRegistrationResponse = false;
+
+  submissionFrame?.addEventListener("load", () => {
+    if (!awaitingRegistrationResponse) return;
+
+    awaitingRegistrationResponse = false;
+    if (successPopup) {
+      successPopup.style.display = "flex";
+    }
+  });
 
   if (registrationForm) {
     registrationForm.addEventListener("submit", function () {
@@ -433,11 +476,7 @@ document.addEventListener("DOMContentLoaded", () => {
         emailReceiptBtn.hidden = sponsored;
       }
 
-      setTimeout(() => {
-        if (successPopup) {
-          successPopup.style.display = "flex";
-        }
-      }, 1200);
+      awaitingRegistrationResponse = true;
     });
   }
 

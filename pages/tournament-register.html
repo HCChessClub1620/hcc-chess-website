@@ -51,11 +51,23 @@
 
           <div id="feeMessage" class="consent-note" hidden></div>
 
+          <div class="consent-note">
+            <p><strong>Payment Methods &amp; Processing Fees</strong></p>
+            <ul>
+              <li><strong>Zelle:</strong> Payments have a <strong>0% processing fee.</strong></li>
+              <li><strong>Credit/Debit Card using Square:</strong> Payments are subject to a <strong>3.3% processing fee plus a $0.30 flat transaction fee.</strong> The applicable processing fee and total amount due will be displayed above before payment is completed.</li>
+              <li><strong>Venmo:</strong> Payments have a <strong>0% processing fee.</strong></li>
+            </ul>
+            <p><strong>Processing Fee Consent</strong></p>
+            <p>By selecting your preferred payment method, you acknowledge and agree to the applicable processing fee, if any, and authorize the <strong>full amount displayed at checkout.</strong></p>
+          </div>
+
           <div id="paymentGroup">
             <select id="paymentMethod" name="entry.816402599" aria-label="Payment Via" required>
               <option value="">Select Payment Via</option>
               <option value="Venmo">Venmo</option>
               <option value="Zelle">Zelle</option>
+              <option value="Square">Credit/Debit Card using Square</option>
             </select>
 
             <div id="paymentSection">
