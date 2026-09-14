@@ -257,6 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const fallKickoffAttendance = document.getElementById("fallKickoffAttendance");
   const feeMessage = document.getElementById("feeMessage");
   const paymentGroup = document.getElementById("paymentGroup");
+  const paymentFeeNotice = document.getElementById("paymentFeeNotice");
   const chessLevel = document.getElementById("chessLevel");
   const familyDiscount = document.getElementById("familyDiscount");
   const squarePaymentUrl = "https://square.link/u/uTetALxk";
@@ -306,7 +307,7 @@ document.addEventListener("DOMContentLoaded", () => {
           : `Tournament Registration Fee: $${fee.toFixed(2)}`
         : "";
       const squareTotalAmount = fee ? calculateSquareTotal(fee) : 0;
-      const squareProcessingFee = (squareTotalAmount - (fee || 0)).toFixed(2);
+      const squareProcessingFee = (squareTotalAmount * 0.033 + 0.3).toFixed(3);
       const squareTotal = squareTotalAmount.toFixed(2);
 
       if (method === "Venmo") {
@@ -335,7 +336,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </p>
           </div>
         `;
-      } else if (method === squarePaymentMethod) {
+      } else if (method === squarePaymentMethod || method === "Square") {
         paymentSection.innerHTML = `
           <div class="payment-display">
             <h3>Pay with Credit/Debit Card using Square</h3>
@@ -400,6 +401,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (paymentGroup && paymentMethod) {
         const sponsored = value === "Yes";
         paymentGroup.hidden = sponsored;
+        if (paymentFeeNotice) {
+          paymentFeeNotice.hidden = sponsored;
+        }
         paymentMethod.required = !sponsored;
         if (sponsored) {
           // Google Form still requires a valid Payment Via choice, so default to Venmo since no payment is actually due
@@ -510,6 +514,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const paymentMethodField = document.getElementById("paymentMethod");
     if (paymentGroupContainer) {
       paymentGroupContainer.hidden = false;
+    }
+    const paymentFeeNotice = document.getElementById("paymentFeeNotice");
+    if (paymentFeeNotice) {
+      paymentFeeNotice.hidden = false;
     }
     if (paymentMethodField) {
       paymentMethodField.required = true;
