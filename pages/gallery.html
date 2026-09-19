@@ -35,7 +35,16 @@
           <h4>Hamilton Chess Club - Summer Program Tournament Winners</h4>
           <h4>Jul 2026</h4>
         </div>
-      
+         <div class="tournament-card" data-tournament="fall-kickoff-aug-2026" onclick="openTournament('fall-kickoff-aug-2026')">
+          <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788508/Fall_Kick-Off_Session_b8xxps.jpg" loading="lazy" alt="March 2026 tournament gallery" />
+          <h4>Hamilton Chess Club - Fall Kick-Off Program</h4>
+          <h4>Aug-Sep 2026</h4>
+        </div>
+        <div class="tournament-card" data-tournament="fall-kickoff-sep-2026" onclick="openTournament('fall-kickoff-sep-2026')">
+          <div class="tournament-reel" data-tournament="fall-kickoff-sep-2026" aria-label="Fall Kick-Off Sep 2026 tournament winners reel"></div>
+          <h4>Hamilton Chess Club - Fall Kick-Off Program Tournament Winners</h4>
+          <h4>Sep 2026</h4>
+        </div>
       </div>
 
       
@@ -52,10 +61,11 @@
     <span class="lightbox-close" onclick="closeLightbox()">×</span>
     <span class="lightbox-prev" onclick="prevImage()">❮</span>
     <div class="lightbox-media">
-      <img id="lightbox-img" src="" alt="Tournament Image" />
+      <img id="lightbox-img" src="" alt="" />
       <div id="lightbox-image-counter" class="lightbox-image-counter" aria-live="polite"></div>
       <div id="lightbox-student-tag" class="lightbox-name-tag left" aria-live="polite"></div>
       <div id="lightbox-coach-tag" class="lightbox-coach-tag right"></div>
+      <div id="lightbox-award-tag" class="lightbox-award-tag left" aria-live="polite"></div>
     </div>
     <span class="lightbox-next" onclick="nextImage()">❯</span>
   </div>

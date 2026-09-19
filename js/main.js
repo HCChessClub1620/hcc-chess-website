@@ -716,11 +716,38 @@ Thank you.
       "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1786204604/Aathvik_Ananth_uyglcf.jpg",
       "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1786204605/Aayushi_Jadhav_cbgdor.jpg",
       "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1786204605/Ronit_Ekshinge_x7cgv9.jpg"
+    ],
+     "fall-kickoff-aug-2026": [
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789792029/Fall_Kick_Off_Session_-2_ur3xv3.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788508/Fall_Kick-Off_Session_b8xxps.jpg",
+    ],
+     "fall-kickoff-sep-2026": [
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788567/Laila_-_1st_-_Beginner_lcycqh.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788558/Aliya-_2nd_-_Beginner_qapozz.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788563/Athreyan_-_3rd_-_Beginner_ilaevs.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788567/Shrivas_-_1st_-Intermediate_fzr2b2.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788561/Arjay-_2nd_-_Intermediate_kf932q.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788567/Hayan_-_3rd_-Intermediate_yoabus.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788570/Suhas_-_1st_-_Advanced_mfixkp.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788562/Anika_Vibha_Aathvik_-_2nd_-_Advanced_o7g8hr.jpg"
     ]
   };
 
   const tournamentCoachNames = {
-    "summer-july-2026": "Coach - Edgar"
+    "summer-july-2026": "Coach Edgar"
+  };
+
+  const tournamentStudentNames = {
+    "fall-kickoff-sep-2026": {
+      0: "Leila Sajan- 1st (Beginner)",
+      1: "Aliya Sajan- 2nd (Beginner)",
+      2: "Athreyan Uthamraj - 3rd (Beginner)",
+      3: "Shrivas Polineni - 1st (Intermediate)",
+      4: "Arjay Vijay - 2nd (Intermediate)",
+      5: "Hayan Nissar - 3rd (Intermediate)",
+      6: "Suhas Vemparala - 1st (Advanced)",
+      7: "Anika Gupta, Vibha Iyer, Aathvik Ananth - 2nd (Advanced)"
+    }
   };
 
   const sideSwapNames = new Set([
@@ -734,7 +761,8 @@ Thank you.
   ]);
 
   const studentNameOverrides = {
-    "Hayan_Nissar": "Hayaan Nissar"
+    "Hayan_Nissar": "Hayaan Nissar",
+    "Laila_-_1st_-_Beginner": "Leila Sajan"
   };
 
   const shouldSwapSides = (name) => {
@@ -764,6 +792,12 @@ Thank you.
     }
     return baseName.replace(/_/g, " ");
   };
+
+  const getStudentLabel = (tournamentKey, imageIndex, imageUrl) =>
+    tournamentStudentNames[tournamentKey]?.[imageIndex] || getDisplayNameFromUrl(imageUrl);
+
+  const shouldDisplayStudentLabels = (tournamentKey) =>
+    Boolean(tournamentCoachNames[tournamentKey] || tournamentStudentNames[tournamentKey]);
 
   const buildTournamentCollages = () => {
     const collageBlocks = document.querySelectorAll(".tournament-collage[data-tournament]");
@@ -817,12 +851,32 @@ Thank you.
       block.appendChild(progress);
       block.appendChild(reelCounter);
 
+      const studentTag = document.createElement("div");
+      studentTag.className = "reel-name-tag";
+      const coachTag = document.createElement("div");
+      coachTag.className = "reel-coach-tag";
+      block.appendChild(studentTag);
+      block.appendChild(coachTag);
+
       let index = 0;
       const draw = () => {
         const currentImage = images[index];
         preview.src = currentImage;
         preview.alt = getDisplayNameFromUrl(currentImage);
         reelCounter.textContent = `${index + 1}/${images.length}`;
+        const studentName = getDisplayNameFromUrl(currentImage);
+        const coachName = tournamentCoachNames[tournamentKey];
+        const isSwap = shouldSwapSides(studentName);
+        const studentOnLeft = isSwap ? index % 2 !== 0 : index % 2 === 0;
+        studentTag.textContent = getStudentLabel(tournamentKey, index, currentImage);
+        coachTag.textContent = coachName || "";
+        studentTag.classList.toggle("lowered", isRonit(studentName));
+        studentTag.classList.toggle("left", studentOnLeft);
+        studentTag.classList.toggle("right", !studentOnLeft);
+        coachTag.classList.toggle("left", !studentOnLeft);
+        coachTag.classList.toggle("right", studentOnLeft);
+        studentTag.style.display = shouldDisplayStudentLabels(tournamentKey) ? "block" : "none";
+        coachTag.style.display = coachName ? "block" : "none";
         progressBars.forEach((bar, barIndex) => {
           bar.classList.toggle("active", barIndex <= index);
         });
@@ -883,6 +937,7 @@ Thank you.
     if (!img || !currentImages.length) return;
 
     img.src = currentImages[currentIndex];
+    img.alt = getDisplayNameFromUrl(currentImages[currentIndex]);
     if (prevBtn) prevBtn.style.display = currentImages.length > 1 ? "flex" : "none";
     if (nextBtn) nextBtn.style.display = currentImages.length > 1 ? "flex" : "none";
     if (imageCounter) {
@@ -892,9 +947,18 @@ Thank you.
 
     if (studentTag && coachTag) {
       const coachName = tournamentCoachNames[currentTournament];
+      const showStudentLabel = shouldDisplayStudentLabels(currentTournament);
       if (!coachName) {
-        studentTag.style.display = "none";
+        const studentName = getDisplayNameFromUrl(currentImages[currentIndex]);
+        const isSwap = shouldSwapSides(studentName);
+        const studentOnLeft = isSwap ? currentIndex % 2 !== 0 : currentIndex % 2 === 0;
+
+        studentTag.textContent = getStudentLabel(currentTournament, currentIndex, currentImages[currentIndex]);
+        studentTag.style.display = showStudentLabel ? "block" : "none";
         coachTag.style.display = "none";
+        studentTag.classList.toggle("lowered", isRonit(studentName));
+        studentTag.classList.toggle("left", studentOnLeft);
+        studentTag.classList.toggle("right", !studentOnLeft);
         return;
       }
 
@@ -902,9 +966,9 @@ Thank you.
       const isSwap = shouldSwapSides(studentName);
       const studentOnLeft = isSwap ? currentIndex % 2 !== 0 : currentIndex % 2 === 0;
 
-      studentTag.textContent = studentName;
+      studentTag.textContent = getStudentLabel(currentTournament, currentIndex, currentImages[currentIndex]);
       coachTag.textContent = coachName;
-      studentTag.style.display = "block";
+      studentTag.style.display = showStudentLabel ? "block" : "none";
       coachTag.style.display = "block";
       studentTag.classList.toggle("lowered", isRonit(studentName));
       studentTag.classList.toggle("left", studentOnLeft);
