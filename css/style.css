@@ -3383,6 +3383,24 @@ nav ul li a:hover {
   justify-content: center;
 }
 
+.lightbox-actions {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10002;
+}
+
+.lightbox-actions .tournament-action {
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.lightbox-actions .tournament-action.is-liked {
+  background: #fff0f5;
+}
+
 .lightbox-name-tag,
 .lightbox-coach-tag {
   position: absolute;
@@ -3768,9 +3786,17 @@ right:0;
   gap: 15px;
 }
 
+.tournament-entry {
+  min-width: 0;
+}
+
 .tournament-card {
   cursor: pointer;
   text-align: center;
+  position: relative;
+}
+
+.tournament-media {
   position: relative;
 }
 
@@ -3798,6 +3824,11 @@ right:0;
   transition: background-color 0.2s, color 0.2s, transform 0.2s;
 }
 
+.tournament-media .tournament-actions {
+  position: static;
+  margin-top: 8px;
+}
+
 .tournament-action:hover {
   background: #ecf4e9;
   transform: translateY(-1px);
@@ -3820,6 +3851,14 @@ right:0;
 .like-icon {
   font-size: 27px;
   line-height: 1;
+}
+
+.like-count {
+  min-width: 16px;
+  color: #8f1747;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
 }
 
 .share-button {
@@ -3851,7 +3890,8 @@ right:0;
   pointer-events: none;
 }
 
-.tournament-card > img {
+.tournament-card > img,
+.tournament-media > img {
   width: 100%;
   height: 180px;
   object-fit: cover;
@@ -3859,7 +3899,7 @@ right:0;
   transition: 0.2s;
 }
 
-.tournament-card > img:hover,
+.tournament-media > img:hover,
 .tournament-card .tournament-collage:hover,
 .tournament-card .tournament-reel:hover {
   transform: scale(1.03);

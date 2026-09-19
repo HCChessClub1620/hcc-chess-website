@@ -653,7 +653,7 @@ Thank you.
   const albumsPerPage = 3;
 
   const showTournamentPage = (page) => {
-    const cards = document.querySelectorAll(".tournament-card");
+    const cards = document.querySelectorAll(".tournament-entry");
     if (!cards.length) return;
 
     const totalPages = Math.ceil(cards.length / albumsPerPage);
@@ -693,10 +693,18 @@ Thank you.
   };
 
   const likedTournaments = JSON.parse(localStorage.getItem("likedTournaments") || "[]");
+  const tournamentLikeCounts = JSON.parse(localStorage.getItem("tournamentLikeCounts") || "{}");
 
   const updateTournamentLikeButton = (button, isLiked) => {
     button.classList.toggle("is-liked", isLiked);
-    button.querySelector("span").textContent = isLiked ? "\u2665" : "\u2661";
+    button.querySelector(".like-icon").textContent = isLiked ? "\u2665" : "\u2661";
+    const tournamentKey = button.dataset.tournament;
+    const likeCount = tournamentLikeCounts[tournamentKey] || 0;
+    const countElement = button.querySelector(".like-count");
+    if (countElement) {
+      countElement.textContent = likeCount;
+      countElement.setAttribute("aria-label", `${likeCount} ${likeCount === 1 ? "like" : "likes"}`);
+    }
     button.setAttribute("aria-label", isLiked ? "Unlike this tournament" : "Like this tournament");
     button.setAttribute("title", isLiked ? "Unlike this tournament" : "Like this tournament");
   };
@@ -707,10 +715,13 @@ Thank you.
     const likedIndex = likedTournaments.indexOf(tournamentKey);
     if (likedIndex === -1) {
       likedTournaments.push(tournamentKey);
+      tournamentLikeCounts[tournamentKey] = (tournamentLikeCounts[tournamentKey] || 0) + 1;
     } else {
       likedTournaments.splice(likedIndex, 1);
+      tournamentLikeCounts[tournamentKey] = Math.max((tournamentLikeCounts[tournamentKey] || 1) - 1, 0);
     }
     localStorage.setItem("likedTournaments", JSON.stringify(likedTournaments));
+    localStorage.setItem("tournamentLikeCounts", JSON.stringify(tournamentLikeCounts));
     updateTournamentLikeButton(button, likedIndex === -1);
   };
 
@@ -734,7 +745,7 @@ Thank you.
     }
   };
 
-  document.querySelectorAll(".like-button").forEach((button) => {
+  document.querySelectorAll(".like-button[data-tournament]").forEach((button) => {
     updateTournamentLikeButton(button, likedTournaments.includes(button.dataset.tournament));
   });
 
@@ -988,7 +999,15 @@ Thank you.
     const imageCounter = document.getElementById("lightbox-image-counter");
     const studentTag = document.getElementById("lightbox-student-tag");
     const coachTag = document.getElementById("lightbox-coach-tag");
+    const lightboxLikeButton = document.getElementById("lightbox-like-button");
+    const lightboxShareButton = document.getElementById("lightbox-share-button");
     if (!img || !currentImages.length) return;
+
+    if (lightboxLikeButton) {
+      lightboxLikeButton.dataset.tournament = currentTournament;
+      updateTournamentLikeButton(lightboxLikeButton, likedTournaments.includes(currentTournament));
+    }
+    if (lightboxShareButton) lightboxShareButton.dataset.tournament = currentTournament;
 
     img.src = currentImages[currentIndex];
     img.alt = getDisplayNameFromUrl(currentImages[currentIndex]);
