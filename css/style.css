@@ -3853,14 +3853,6 @@ right:0;
   line-height: 1;
 }
 
-.like-count {
-  min-width: 16px;
-  color: #8f1747;
-  font-size: 13px;
-  font-weight: 700;
-  text-align: center;
-}
-
 .share-button {
   width: auto;
   padding: 0 12px;

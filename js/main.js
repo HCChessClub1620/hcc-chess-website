@@ -698,13 +698,6 @@ Thank you.
   const updateTournamentLikeButton = (button, isLiked) => {
     button.classList.toggle("is-liked", isLiked);
     button.querySelector(".like-icon").textContent = isLiked ? "\u2665" : "\u2661";
-    const tournamentKey = button.dataset.tournament;
-    const likeCount = tournamentLikeCounts[tournamentKey] || 0;
-    const countElement = button.querySelector(".like-count");
-    if (countElement) {
-      countElement.textContent = likeCount;
-      countElement.setAttribute("aria-label", `${likeCount} ${likeCount === 1 ? "like" : "likes"}`);
-    }
     button.setAttribute("aria-label", isLiked ? "Unlike this tournament" : "Like this tournament");
     button.setAttribute("title", isLiked ? "Unlike this tournament" : "Like this tournament");
   };
