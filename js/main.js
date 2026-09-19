@@ -684,6 +684,60 @@ Thank you.
     showTournamentPage(currentPage + 1);
   };
 
+  const tournamentTitles = {
+    "wscf-Feb-2026": "19th Annual WSCF Grade Level Tournament",
+    "summer-june-2026": "Hamilton Chess Club - Summer Program",
+    "summer-july-2026": "Hamilton Chess Club - Summer Program Tournament Winners",
+    "fall-kickoff-aug-2026": "Hamilton Chess Club - Fall Kick-Off Program",
+    "fall-kickoff-sep-2026": "Hamilton Chess Club - Fall Kick-Off Program Tournament Winners"
+  };
+
+  const likedTournaments = JSON.parse(localStorage.getItem("likedTournaments") || "[]");
+
+  const updateTournamentLikeButton = (button, isLiked) => {
+    button.classList.toggle("is-liked", isLiked);
+    button.querySelector("span").textContent = isLiked ? "\u2665" : "\u2661";
+    button.setAttribute("aria-label", isLiked ? "Unlike this tournament" : "Like this tournament");
+    button.setAttribute("title", isLiked ? "Unlike this tournament" : "Like this tournament");
+  };
+
+  window.toggleTournamentLike = function (event, button) {
+    event.stopPropagation();
+    const tournamentKey = button.dataset.tournament;
+    const likedIndex = likedTournaments.indexOf(tournamentKey);
+    if (likedIndex === -1) {
+      likedTournaments.push(tournamentKey);
+    } else {
+      likedTournaments.splice(likedIndex, 1);
+    }
+    localStorage.setItem("likedTournaments", JSON.stringify(likedTournaments));
+    updateTournamentLikeButton(button, likedIndex === -1);
+  };
+
+  window.shareTournament = async function (event, tournamentKey) {
+    event.stopPropagation();
+    const shareData = {
+      title: tournamentTitles[tournamentKey] || "Hamilton Chess Club tournament",
+      text: "View this Hamilton Chess Club tournament gallery.",
+      url: window.location.href.split("#")[0] + `#${tournamentKey}`
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(shareData.url);
+        window.alert("Tournament link copied to clipboard.");
+      }
+    } catch (error) {
+      if (error.name !== "AbortError") console.error("Unable to share tournament", error);
+    }
+  };
+
+  document.querySelectorAll(".like-button").forEach((button) => {
+    updateTournamentLikeButton(button, likedTournaments.includes(button.dataset.tournament));
+  });
+
   window.addEventListener("load", () => {
     showTournamentPage(1);
   });
