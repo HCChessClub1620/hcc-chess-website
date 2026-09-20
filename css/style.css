@@ -4070,6 +4070,17 @@ right:0;
 }
 
 @media (max-width: 768px) {
+  .tournament-action .like-label,
+  .tournament-action .share-label {
+    display: none;
+  }
+
+  .tournament-action.like-button,
+  .tournament-action.share-button {
+    width: 34px;
+    padding: 0;
+  }
+
   .lightbox-prev,
   .lightbox-next {
     width: 42px;
