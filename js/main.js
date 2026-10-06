@@ -221,16 +221,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const USE_TEST_DATE = false;
 
   // Test dates:
-  // Sep 27,2026 = Early Bird ($20)
-  // Sep 28,2026 = Standard ($25)
+  // Jan 23, 2027 = Early Bird ($30)
+  // Jan 24, 2027 = Standard ($35)
   //
   // Change this value to test different scenarios.
-  const TEST_DATE = new Date(2026, 8, 28, 21, 0, 0);
+  const TEST_DATE = new Date(2027, 0, 24, 12, 0, 0);
 
-  // Actual Early Bird deadline: Sep 27, 2026 11:59:59 PM
-  // $20 applies through all of Sep 27
-  // $25 applies from Sep 28 onwards
-  const earlyBirdCutoff = new Date(2026, 8, 27, 23, 59, 59);
+  // Actual Early Bird deadline: Jan 23, 2027 11:59:59 PM
+  // $30 applies through all of Jan 23
+  // $35 applies from Jan 24 onwards
+  const earlyBirdCutoff = new Date(2027, 0, 23, 23, 59, 59);
 
   // ============================================
   // CLASS PROGRAM FEE DATE CONFIGURATION
@@ -389,9 +389,9 @@ document.addEventListener("DOMContentLoaded", () => {
         feeMessage.textContent = "Your tournament registration fee is 100% sponsored by Hamilton Chess Club and your fees is waived. You pay $0.";
       } else if (value === "No") {
         if (currentDate <= earlyBirdCutoff) {
-          feeMessage.textContent = "Thank you for the information. You have received the Early Bird registration discount. Your tournament registration fee is $20.";
+          feeMessage.textContent = "Thank you for the information. You have received the Early Bird registration discount. Your tournament registration fee is $30.";
         } else {
-          feeMessage.textContent = "Thank you for the information. Your tournament registration fee is $25.";
+          feeMessage.textContent = "Thank you for the information. Your tournament registration fee is $35.";
         }
       } else {
         feeMessage.textContent = "";

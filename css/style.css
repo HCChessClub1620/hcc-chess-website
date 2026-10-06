@@ -80,6 +80,13 @@ header {
     animation: green-blink 1s infinite;
 }
 
+.session-block p > .blink-current {
+    font-size: inherit;
+    font-weight: 700;
+    text-align: inherit;
+    color: red;
+}
+
 @keyframes green-blink {
     50% {
         opacity: 0;
@@ -1797,6 +1804,11 @@ body {
 .fees-section {
   padding: 100px 0;
   background: #fff;
+}
+
+#fees .section-header .tournament-title {
+  font-size: clamp(0.8rem, 4.2vw, 2rem);
+  white-space: nowrap;
 }
 
 .new-student-banner {
