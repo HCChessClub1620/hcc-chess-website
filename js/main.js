@@ -689,7 +689,9 @@ Thank you.
     "summer-june-2026": "Hamilton Chess Club - Summer Program",
     "summer-july-2026": "Hamilton Chess Club - Summer Program Tournament Winners",
     "fall-kickoff-aug-2026": "Hamilton Chess Club - Fall Kick-Off Program",
-    "fall-kickoff-sep-2026": "Hamilton Chess Club - Fall Kick-Off Program Tournament Winners"
+    "fall-kickoff-sep-2026": "Hamilton Chess Club - Fall Kick-Off Program Tournament Winners",
+    "hamilton-scholastic-program-oct-2026": "Hamilton Scholastic Chess Tournament Program",
+    "hamilton-scholastic-winners-oct-2026": "Hamilton Scholastic Chess Tournament Winners"
   };
 
   const likedTournaments = JSON.parse(localStorage.getItem("likedTournaments") || "[]");
@@ -788,6 +790,30 @@ Thank you.
       "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788567/Hayan_-_3rd_-Intermediate_yoabus.jpg",
       "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788570/Suhas_-_1st_-_Advanced_mfixkp.jpg",
       "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788562/Anika_Vibha_Aathvik_-_2nd_-_Advanced_o7g8hr.jpg"
+    ],
+    "hamilton-scholastic-program-oct-2026": [
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/v1791570931/HamiltonChessClub_Team_ikf5qz.jpg", 
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/v1791570940/Tournament_Pics2_rjntgv.jpg",   
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/v1791570944/TournamentPics1_hiflpj.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/v1791570950/MindMoversChess_Team_flvss9.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/v1791570958/Concessions_Team_okptno.jpg"
+    ],
+    "hamilton-scholastic-winners-oct-2026": [
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570619/Winn_Vignesh_Beginner_1st_o7fnwj.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570610/Amogh_Yelkana_Beginner_2nd_j7exa2.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570611/Anagha_Vullaganti_Beginner_3rd_gv5zml.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570619/Yasha_Chithic_Beginner_4th_gsxgge.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570611/Amrutha_Siva_Beginner_5th_dtjqmv.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570855/Madhav_Mankad_Intermediate_1st_tvjubg.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570864/Theo_Vignesh_Intermediate_2nd_oxksg4.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570858/Minal_Manral_Intermediate_3rd_tgfohp.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570635/Aathvik_Ananth_Intermediate_4th_ns8hgp.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570647/Brihad_Mishra_Intermediate_5th_umcagk.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570882/Arovon_Mukhopadhyay_Advanced_1st_v1x5sz.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570898/Kian_Batra_Advanced_2nd_ehhbuy.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570894/Karthik_Ramesh_Advanced_3rd_v5u9y5.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570889/Ashwadh_Dudipala_Advanced_4th_qkmv7d.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570904/Suhas_Vemparala_Advanced_5th_bpdsju.jpg"
     ]
   };
 
@@ -805,6 +831,23 @@ Thank you.
       5: "Hayan Nissar - 3rd (Intermediate)",
       6: "Suhas Vemparala - 1st (Advanced)",
       7: "Anika Gupta, Vibha Iyer, Aathvik Ananth - 2nd (Advanced)"
+    },
+    "hamilton-scholastic-winners-oct-2026": {
+      0: "Winn Vignesh - 1st (Beginner)",
+      1: "Amogh Yelkana - 2nd (Beginner)",
+      2: "Anagha Vullaganti - 3rd (Beginner)",
+      3: "Yasha Chithic - 4th (Beginner)",
+      4: "Amrutha Siva - 5th (Beginner)",
+      5: "Madhav Mankad - 1st (Intermediate)",
+      6: "Theo Vignesh - 2nd (Intermediate)",
+      7: "Minal Manral - 3rd (Intermediate)",
+      8: "Aathvik Ananth - 4th (Intermediate)",
+      9: "Brihad Mishra - 5th (Intermediate)",
+      10: "Arovon Mukhopadhyay - 1st (Advanced)",
+      11: "Kian Batra - 2nd (Advanced)",
+      12: "Karthik Ramesh - 3rd (Advanced)",
+      13: "Ashwadh Dudipala - 4th (Advanced)",
+      14: "Suhas Vemparala - 5th (Advanced)"
     }
   };
 
