@@ -20,12 +20,73 @@
       </div>
       
       <div class="tournament-grid" id="tournamentGrid">
-        <div class="tournament-entry">
+          <div id="student-spotlight" class="student-spotlight gallery-spotlight">
+            <div class="container">
+              <div class="spotlight-wrapper">
+                <button class="spotlight-btn prev" onclick="changeSpotlight(-1)">❮</button>
+                <div class="spotlight-page active">
+                  <div class="spotlight-grid">
+                    <div class="spotlight-card">
+                      <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782104307/shravan_sayv5m.jpg" loading="lazy" onclick="openSpotlightLightbox(this.src)" alt="Shravan S" />
+                      <h4>Shravan S</h4>
+                      <p>FIDE ACM Master Title Winner</p>
+                    </div>
+                    <div class="spotlight-card">
+                      <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782104305/shashwath_q7itkn.jpg" loading="lazy" onclick="openSpotlightLightbox(this.src)" alt="Shashwath S" />
+                      <h4>Shashwath S</h4>
+                      <p>Arena FIDE Rising Star</p>
+                    </div>
+                    <div class="spotlight-card">
+                      <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000104/Karthik_yqti7s.jpg" loading="lazy" onclick="openSpotlightLightbox(this.src)" alt="Karthik R" />
+                      <h4>Karthik R</h4>
+                      <p>WSCF Champion</p>
+                    </div>
+                    <div class="spotlight-card">
+                      <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782104860/Vibha_wvax4e.jpg" loading="lazy" onclick="openSpotlightLightbox(this.src)" alt="Vibha B" />
+                      <h4>Vibha B</h4>
+                      <p>WSCF Champion</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="spotlight-page">
+                  <div class="spotlight-grid">
+                    <div class="spotlight-card">
+                      <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782104304/Neil_ciwgwf.jpg" loading="lazy" onclick="openSpotlightLightbox(this.src)" alt="Neil" />
+                      <h4>Neil</h4>
+                      <p>WSCF Champion</p>
+                    </div>
+                    <div class="spotlight-card">
+                      <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782102786/copy_of_navya_fzubna.jpg" loading="lazy" onclick="openSpotlightLightbox(this.src)" alt="Navya" />
+                      <h4>Navya</h4>
+                      <p>Budding Young Champion</p>
+                    </div>
+                    <div class="spotlight-card">
+                      <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000105/Kian_zg1xeb.jpg" loading="lazy" onclick="openSpotlightLightbox(this.src)" alt="Kian" />
+                      <h4>Kian</h4>
+                      <p>WSCF Champion</p>
+                    </div>
+                    <div class="spotlight-card">
+                      <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000106/Subhash_nsxdnj.jpg" loading="lazy" onclick="openSpotlightLightbox(this.src)" alt="Subhash" />
+                      <h4>Subhash</h4>
+                      <p>WSCF &amp; USCF Champion</p>
+                    </div>
+                  </div>
+                </div>
+                <button class="spotlight-btn next" onclick="changeSpotlight(1)">❯</button>
+              </div>
+              <div class="spotlight-pagination">
+                <span id="spotlightPageInfo"></span>
+                <span class="spotlight-count-divider">|</span>
+                <span id="spotlightTotalInfo"></span>
+              </div>
+            </div>
+          </div>
+        <div class="tournament-entry" data-category="learn">
         <div class="tournament-card" data-tournament="hamilton-scholastic-program-oct-2026" onclick="openTournament('hamilton-scholastic-program-oct-2026')">
           <div class="tournament-media">
             <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/v1791570931/HamiltonChessClub_Team_ikf5qz.jpg" loading="lazy" alt="Hamilton Chess Club team at the Scholastic Chess Tournament" />
           </div>
-          <h4>Hamilton Scholastic Chess Tournament Program</h4>
+          <h4>Scholastic Tournament Moments</h4>
           <h4>Oct 2026</h4>
         </div>
         <div class="tournament-actions" aria-label="Tournament actions">
@@ -33,25 +94,25 @@
           <button class="tournament-action share-button" type="button" onclick="shareTournament(event, 'hamilton-scholastic-program-oct-2026')" aria-label="Share this tournament" title="Share this tournament"><span class="share-icon" aria-hidden="true">&#8599;</span><span class="share-label">Share</span></button>
         </div>
         </div>
-        <div class="tournament-entry">
+        <div class="tournament-entry" data-category="compete">
         <div class="tournament-card" data-tournament="hamilton-scholastic-winners-oct-2026" onclick="openTournament('hamilton-scholastic-winners-oct-2026')">
           <div class="tournament-media">
             <div class="tournament-reel" data-tournament="hamilton-scholastic-winners-oct-2026" aria-label="Hamilton Scholastic Chess Tournament October 2026 winners reel"></div>
           </div>
-          <h4>Hamilton Scholastic Chess Tournament Winners</h4>
-          <h4>Oct 2026</h4>
+          <h4>Scholastic Tournament Winners</h4>
+          <h4>Oct Classic - 03 Oct 2026</h4>
         </div>
         <div class="tournament-actions" aria-label="Tournament actions">
           <button class="tournament-action like-button" type="button" data-tournament="hamilton-scholastic-winners-oct-2026" onclick="toggleTournamentLike(event, this)" aria-label="Like this tournament" title="Like this tournament"><span class="like-icon" aria-hidden="true">&#9825;</span><span class="like-label">Like</span></button>
           <button class="tournament-action share-button" type="button" onclick="shareTournament(event, 'hamilton-scholastic-winners-oct-2026')" aria-label="Share this tournament" title="Share this tournament"><span class="share-icon" aria-hidden="true">&#8599;</span><span class="share-label">Share</span></button>
         </div>
         </div>
-        <div class="tournament-entry">
+        <div class="tournament-entry" data-category="compete">
         <div class="tournament-card" data-tournament="fall-kickoff-sep-2026" onclick="openTournament('fall-kickoff-sep-2026')">
           <div class="tournament-media">
             <div class="tournament-reel" data-tournament="fall-kickoff-sep-2026" aria-label="Fall Kick-Off Sep 2026 tournament winners reel"></div>
           </div>
-          <h4>Fall Kick-Off Program - Tournament Winners</h4>
+          <h4>Fall Kick-off Tournament Winners</h4>
           <h4>Sep 2026</h4>
         </div>
         <div class="tournament-actions" aria-label="Tournament actions">
@@ -59,12 +120,12 @@
           <button class="tournament-action share-button" type="button" onclick="shareTournament(event, 'fall-kickoff-sep-2026')" aria-label="Share this tournament" title="Share this tournament"><span class="share-icon" aria-hidden="true">&#8599;</span><span class="share-label">Share</span></button>
         </div>
         </div>
-        <div class="tournament-entry">
+        <div class="tournament-entry" data-category="learn">
         <div class="tournament-card" data-tournament="fall-kickoff-aug-2026" onclick="openTournament('fall-kickoff-aug-2026')">
           <div class="tournament-media">
             <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788508/Fall_Kick-Off_Session_b8xxps.jpg" loading="lazy" alt="March 2026 tournament gallery" />
           </div>
-          <h4>Fall Kick-Off Program </h4>
+          <h4>Fall Kick-off Program Session</h4>
           <h4>Aug-Sep 2026</h4>
         </div>
         <div class="tournament-actions" aria-label="Tournament actions">
@@ -72,12 +133,12 @@
           <button class="tournament-action share-button" type="button" onclick="shareTournament(event, 'fall-kickoff-aug-2026')" aria-label="Share this tournament" title="Share this tournament"><span class="share-icon" aria-hidden="true">&#8599;</span><span class="share-label">Share</span></button>
         </div>
         </div>
-        <div class="tournament-entry">
+        <div class="tournament-entry" data-category="compete">
         <div class="tournament-card" data-tournament="summer-july-2026" onclick="openTournament('summer-july-2026')">
           <div class="tournament-media">
             <div class="tournament-reel" data-tournament="summer-july-2026" aria-label="Summer July 2026 tournament winners reel"></div>
           </div>
-          <h4>Summer Program - Tournament Winners</h4>
+          <h4>Summer Tournament Winners</h4>
           <h4>Jul 2026</h4>
         </div>
         <div class="tournament-actions" aria-label="Tournament actions">
@@ -85,12 +146,12 @@
           <button class="tournament-action share-button" type="button" onclick="shareTournament(event, 'summer-july-2026')" aria-label="Share this tournament" title="Share this tournament"><span class="share-icon" aria-hidden="true">&#8599;</span><span class="share-label">Share</span></button>
         </div>
         </div>
-        <div class="tournament-entry">
+        <div class="tournament-entry" data-category="learn">
         <div class="tournament-card" data-tournament="summer-june-2026" onclick="openTournament('summer-june-2026')">
           <div class="tournament-media">
             <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1785793096/1_r5hqhs.jpg" loading="lazy" alt="March 2026 tournament gallery" />
           </div>
-          <h4>Summer Program</h4>
+          <h4>Summer Session</h4>
           <h4>Jun-Jul 2026</h4>
         </div>
         <div class="tournament-actions" aria-label="Tournament actions">
@@ -98,13 +159,15 @@
           <button class="tournament-action share-button" type="button" onclick="shareTournament(event, 'summer-june-2026')" aria-label="Share this tournament" title="Share this tournament"><span class="share-icon" aria-hidden="true">&#8599;</span><span class="share-label">Share</span></button>
         </div>
         </div>
-        <div class="tournament-entry">
+        <div class="tournament-entry" data-category="trail">
         <div class="tournament-card" data-tournament="wscf-Feb-2026" onclick="openTournament('wscf-Feb-2026')">
           <div class="tournament-media">
             <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000239/3_s7nyq5.jpg" loading="lazy" alt="Tournament gallery" />
           </div>
-          <h4>19th Annual WSCF Grade Level Tournament </h4>
-          <h4>Feb 2026 </h4>
+          <h4>19th Annual Grade Level Championship</h4>
+          <h4>WSCF Tournament Winners</h4>
+          <h4>UW - Milwaukee</h4>
+          <h4>28 FEB 2026</h4>
         </div>
         <div class="tournament-actions" aria-label="Tournament actions">
           <button class="tournament-action like-button" type="button" data-tournament="wscf-Feb-2026" onclick="toggleTournamentLike(event, this)" aria-label="Like this tournament" title="Like this tournament"><span class="like-icon" aria-hidden="true">&#9825;</span><span class="like-label">Like</span></button>
@@ -113,13 +176,6 @@
         </div>
       </div>
 
-      
-      
-      <div class="gallery-pagination">
-        <button id="prevBtn" onclick="prevTournamentPage()">❮</button>
-        <span id="galleryPageInfo"></span>
-        <button id="nextBtn" onclick="nextTournamentPage()">❯</button>
-      </div>
     </div>
   </section>
 
@@ -138,6 +194,11 @@
       </div>
     </div>
     <span class="lightbox-next" onclick="nextImage()">❯</span>
+  </div>
+
+  <div id="spotlightLightbox" class="lightbox" style="display:none;">
+    <span class="lightbox-close" onclick="closeSpotlightLightbox()">×</span>
+    <img id="spotlightLightboxImg" src="" alt="Student image" />
   </div>
 
   <div id="site-footer"></div>

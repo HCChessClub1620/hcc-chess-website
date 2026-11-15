@@ -3798,6 +3798,45 @@ right:0;
   gap: 15px;
 }
 
+.gallery-category {
+  grid-column: 1 / -1;
+  margin-top: 24px;
+  text-align: center;
+}
+
+.gallery-category:first-child {
+  margin-top: 0;
+}
+
+.gallery-category h3 {
+  display: inline-block;
+  margin: 0;
+  padding: 8px 18px;
+  border-radius: 30px;
+  background: #31572c;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.gallery-category p {
+  margin: 6px 0 0;
+  color: #333;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.gallery-spotlight {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 768px) {
+  .gallery-category h3 {
+    font-size: 1.25rem;
+  }
+}
+
 @media (max-width: 900px) {
   .tournament-grid {
     grid-template-columns: 1fr;
@@ -3903,7 +3942,7 @@ right:0;
 .tournament-card > img,
 .tournament-media > img {
   width: 100%;
-  height: 180px;
+  height: 300px;
   object-fit: cover;
   border-radius: 12px;
   transition: 0.2s;
@@ -3918,11 +3957,19 @@ right:0;
 .tournament-reel {
   position: relative;
   width: 100%;
-  height: 180px;
+  height: 300px;
   border-radius: 12px;
   overflow: hidden;
   background: #111;
   transition: 0.2s;
+}
+
+@media (max-width: 768px) {
+  .tournament-card > img,
+  .tournament-media > img,
+  .tournament-reel {
+    height: 180px;
+  }
 }
 
 .tournament-reel img {

@@ -649,49 +649,54 @@ Thank you.
     updateStudentSpotlight();
   }
 
-  let currentPage = 1;
-  const albumsPerPage = 3;
+  const organizeTournamentCategories = () => {
+    const grid = document.getElementById("tournamentGrid");
+    if (!grid) return;
 
-  const showTournamentPage = (page) => {
-    const cards = document.querySelectorAll(".tournament-entry");
-    if (!cards.length) return;
+    const categories = [
+      { key: "learn", title: "Learn & Grow", description: "From classroom learning and exciting chess activities to the thrill of tournament day — a collection of special moments and memories at Hamilton Chess Club." },
+      { key: "compete", title: "Tournaments & Championships", description: "Celebrating our students' achievements, tournament champions, winners, and outstanding performances across our in-house class tournaments and scholastic tournaments hosted by Hamilton Chess Club." },
+      { key: "trail", title: "Hall of Fame", description: "Celebrating our students who proudly represent Hamilton Chess Club at WSCF, USCF, and other scholastic tournaments. Every game, every achievement, and every milestone adds to our club's legacy!" },
+      { key: "spotlight", title: "Our Rising Champions", description: "Student achievements and inspiring chess journeys." }
+    ];
+    const entries = Array.from(grid.querySelectorAll(".tournament-entry"));
+    const studentSpotlight = grid.querySelector("#student-spotlight");
+    if (studentSpotlight) studentSpotlight.remove();
+    const fragment = document.createDocumentFragment();
 
-    const totalPages = Math.ceil(cards.length / albumsPerPage);
-    currentPage = Math.max(1, Math.min(page, totalPages));
+    categories.forEach(({ key, title, description }) => {
+      const heading = document.createElement("div");
+      heading.className = `gallery-category gallery-category-${key}`;
+      heading.innerHTML = `<h3>${title}</h3><p>${description}</p>`;
+      fragment.appendChild(heading);
 
-    cards.forEach((card, index) => {
-      const start = (currentPage - 1) * albumsPerPage;
-      const end = start + albumsPerPage;
-      card.style.display = index >= start && index < end ? "" : "none";
+      if (key === "spotlight" && studentSpotlight) {
+        fragment.appendChild(studentSpotlight);
+      }
+
+      entries
+        .filter((entry) => entry.dataset.category === key)
+        .forEach((entry) => fragment.appendChild(entry));
     });
 
-    const pageInfo = document.getElementById("galleryPageInfo");
-    if (pageInfo) {
-      pageInfo.textContent = `${currentPage} / ${totalPages}`;
-    }
-
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
-    if (prevBtn) prevBtn.style.display = currentPage === 1 ? "none" : "inline-flex";
-    if (nextBtn) nextBtn.style.display = currentPage === totalPages ? "none" : "inline-flex";
+    grid.replaceChildren(fragment);
   };
 
-  window.prevTournamentPage = function () {
-    showTournamentPage(currentPage - 1);
-  };
-
-  window.nextTournamentPage = function () {
-    showTournamentPage(currentPage + 1);
+  const showAllTournamentEntries = () => {
+    const cards = document.querySelectorAll(".tournament-entry");
+    cards.forEach((card) => {
+      card.style.display = "";
+    });
   };
 
   const tournamentTitles = {
-    "wscf-Feb-2026": "19th Annual WSCF Grade Level Tournament",
-    "summer-june-2026": "Hamilton Chess Club - Summer Program",
-    "summer-july-2026": "Hamilton Chess Club - Summer Program Tournament Winners",
-    "fall-kickoff-aug-2026": "Hamilton Chess Club - Fall Kick-Off Program",
-    "fall-kickoff-sep-2026": "Hamilton Chess Club - Fall Kick-Off Program Tournament Winners",
-    "hamilton-scholastic-program-oct-2026": "Hamilton Scholastic Chess Tournament Program",
-    "hamilton-scholastic-winners-oct-2026": "Hamilton Scholastic Chess Tournament Winners"
+    "wscf-Feb-2026": "19th Annual WSCF Grade Level Championship Tournament Winners",
+    "summer-june-2026": "Hamilton Chess Club Program Summer Session",
+    "summer-july-2026": "Hamilton Chess Club Program Summer Tournament Winners",
+    "fall-kickoff-aug-2026": "Hamilton Chess Club Program Fall Kick-off Program Session",
+    "fall-kickoff-sep-2026": "Hamilton Chess Club Program Fall Kick-off Tournament Winners",
+    "hamilton-scholastic-program-oct-2026": "Hamilton Chess Club - Program Scholastic Tournament Moments",
+    "hamilton-scholastic-winners-oct-2026": "Hamilton Chess Club - Program Scholastic Tournament Winners"
   };
 
   const likedTournaments = JSON.parse(localStorage.getItem("likedTournaments") || "[]");
@@ -745,7 +750,8 @@ Thank you.
   });
 
   window.addEventListener("load", () => {
-    showTournamentPage(1);
+    organizeTournamentCategories();
+    showAllTournamentEntries();
   });
 
   let currentTournament = null;
