@@ -98,3 +98,38 @@ test("renamed albums use the requested names on their pages and when sharing", (
     assert.ok(readPage(album).includes(`<h1>${name}</h1>`));
   }
 });
+
+test("the Rising Champions page uses the updated student names", () => {
+  const names = {
+    "shravan_sayv5m": "Shravan Sabarish",
+    "shashwath_q7itkn": "Shashwath Sabarish",
+    "Karthik_yqti7s": "Karthik Ramesh",
+    "Vibha_wvax4e": "Vibha Iyer",
+    "Neil_ciwgwf": "Neil Mathur",
+    "copy_of_navya": "Navya Iyer",
+    "Kian_zg1xeb": "Kian Batra",
+    "RiyaGupta_cpebea": "Riya Gupta",
+    "Hayan_lzfwrp": "Hayan Nissar"
+  };
+  const album = gallery.spotlight.albums[0];
+  const html = readPage(album);
+  for (const [image, name] of Object.entries(names)) {
+    const student = gallery.spotlight.students.find((entry) => entry.image.includes(image));
+    assert.equal(student.name, name);
+    assert.ok(html.includes(`alt="${name} - ${student.description.replace(/&/g, "&amp;")}"`));
+  }
+});
+
+test("Neil Mathur's achievements appear on his album photo", () => {
+  const student = gallery.spotlight.students.find((entry) => entry.name === "Neil Mathur");
+  assert.equal(student.description, "WSCF Champion & USCF Champion");
+  assert.ok(readPage(gallery.spotlight.albums[0]).includes("Neil Mathur - WSCF Champion &amp; USCF Champion"));
+});
+
+test("the junior open champions' achievements appear on their album photos", () => {
+  for (const name of ["Vibha Iyer", "Riya Gupta"]) {
+    const student = gallery.spotlight.students.find((entry) => entry.name === name);
+    assert.equal(student.description, "Wisconsin State Junior Open - Girls Champion");
+    assert.ok(readPage(gallery.spotlight.albums[0]).includes(`${name} - Wisconsin State Junior Open - Girls Champion`));
+  }
+});

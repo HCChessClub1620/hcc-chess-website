@@ -566,6 +566,29 @@ Thank you.
   const studentNameOverrides = galleryData.compete?.nameOverrides || {};
   const albumPath = (id) => `/pages/gallery/${id.toLowerCase()}/`;
 
+  const createAlbumActions = (album, subject) => {
+    const actions = document.createElement("div");
+    actions.className = "tournament-actions";
+    actions.setAttribute("aria-label", subject === "this tournament" ? "Tournament actions" : "Rising Champions actions");
+    const like = document.createElement("button");
+    like.className = "tournament-action like-button";
+    like.type = "button";
+    like.dataset.tournament = album.id;
+    like.setAttribute("aria-label", `Like ${subject}`);
+    like.title = `Like ${subject}`;
+    like.innerHTML = '<span class="like-icon" aria-hidden="true">&#9825;</span><span class="like-label">Like</span>';
+    like.addEventListener("click", (event) => window.toggleTournamentLike(event, like));
+    const share = document.createElement("button");
+    share.className = "tournament-action share-button";
+    share.type = "button";
+    share.setAttribute("aria-label", `Share ${subject}`);
+    share.title = `Share ${subject}`;
+    share.innerHTML = '<span class="share-icon" aria-hidden="true">&#8599;</span><span class="share-label">Share</span>';
+    share.addEventListener("click", (event) => window.shareTournament(event, album.id));
+    actions.append(like, share);
+    return actions;
+  };
+
   const createGalleryAlbum = (album, category) => {
     const entry = document.createElement("div");
     entry.className = "tournament-entry";
@@ -588,26 +611,7 @@ Thank you.
       heading.textContent = text;
       card.appendChild(heading);
     });
-    const actions = document.createElement("div");
-    actions.className = "tournament-actions";
-    actions.setAttribute("aria-label", "Tournament actions");
-    const like = document.createElement("button");
-    like.className = "tournament-action like-button";
-    like.type = "button";
-    like.dataset.tournament = album.id;
-    like.setAttribute("aria-label", "Like this tournament");
-    like.title = "Like this tournament";
-    like.innerHTML = '<span class="like-icon" aria-hidden="true">&#9825;</span><span class="like-label">Like</span>';
-    like.addEventListener("click", (event) => window.toggleTournamentLike(event, like));
-    const share = document.createElement("button");
-    share.className = "tournament-action share-button";
-    share.type = "button";
-    share.setAttribute("aria-label", "Share this tournament");
-    share.title = "Share this tournament";
-    share.innerHTML = '<span class="share-icon" aria-hidden="true">&#8599;</span><span class="share-label">Share</span>';
-    share.addEventListener("click", (event) => window.shareTournament(event, album.id));
-    actions.append(like, share);
-    entry.append(card, actions);
+    entry.append(card, createAlbumActions(album, "this tournament"));
     return entry;
   };
 
@@ -705,6 +709,9 @@ Thank you.
     pagination.append(previous, pageInfo, next);
     count.before(status);
     status.append(pagination, count);
+    if (track.classList.contains("spotlight-track")) {
+      status.append(createAlbumActions(galleryData.spotlight.albums[0], "Our Rising Champions"));
+    }
     let currentPage = 0;
     let offset = 0;
     let direction = -1;
@@ -843,7 +850,7 @@ Thank you.
     }
 
     const categories = [
-      { key: "learn", title: "Learn & Grow", description: "From classroom learning and exciting chess activities to the thrill of tournament day — a collection of special moments and memories at Hamilton Chess Club." },
+      { key: "learn", title: "HCC - The Experience", description: "From classroom learning and exciting chess activities to the thrill of tournament day — a collection of special moments and memories at Hamilton Chess Club." },
       { key: "compete", title: "HCC - Hosted Tournaments", description: "Celebrating our students' achievements, tournament champions, winners, and outstanding performances across our in-house class tournaments and scholastic tournaments hosted by Hamilton Chess Club." },
       { key: "trail", title: "Our Champions - Hall of Fame", description: "Celebrating our students who proudly represent Hamilton Chess Club at WSCF, USCF, and other scholastic tournaments. Every game, every achievement, and every milestone adds to our club's legacy!" },
       { key: "spotlight", title: "Our Rising Champions", description: "Student achievements and inspiring chess journeys." }
@@ -884,8 +891,10 @@ Thank you.
   const updateTournamentLikeButton = (button, isLiked) => {
     button.classList.toggle("is-liked", isLiked);
     button.querySelector(".like-icon").textContent = isLiked ? "\u2665" : "\u2661";
-    button.setAttribute("aria-label", isLiked ? "Unlike this tournament" : "Like this tournament");
-    button.setAttribute("title", isLiked ? "Unlike this tournament" : "Like this tournament");
+    const subject = button.dataset.tournament === "student-spotlight" ? "Our Rising Champions" : "this tournament";
+    const label = `${isLiked ? "Unlike" : "Like"} ${subject}`;
+    button.setAttribute("aria-label", label);
+    button.setAttribute("title", label);
   };
 
   window.toggleTournamentLike = function (event, button) {
@@ -910,9 +919,10 @@ Thank you.
 
   window.shareTournament = async function (event, tournamentKey) {
     event.stopPropagation();
+    const isSpotlight = tournamentKey === "student-spotlight";
     const shareData = {
       title: tournamentTitles[tournamentKey] || "Hamilton Chess Club tournament",
-      text: "View this Hamilton Chess Club tournament gallery.",
+      text: isSpotlight ? "Meet the Hamilton Chess Club Rising Champions." : "View this Hamilton Chess Club tournament gallery.",
       url: window.location.origin + albumPath(tournamentKey)
     };
 
@@ -921,7 +931,7 @@ Thank you.
         await navigator.share(shareData);
       } else {
         await navigator.clipboard.writeText(shareData.url);
-        window.alert("Tournament link copied to clipboard.");
+        window.alert(isSpotlight ? "Rising Champions link copied to clipboard." : "Tournament link copied to clipboard.");
       }
     } catch (error) {
       if (error.name !== "AbortError") console.error("Unable to share tournament", error);

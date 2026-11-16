@@ -3903,6 +3903,10 @@ nav ul li a:hover {
   margin-top: 20px;
 }
 
+.gallery-row-status .tournament-actions {
+  margin-top: 0;
+}
+
 .gallery-featured-count {
   color: #31572c;
   font-weight: 600;
