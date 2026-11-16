@@ -628,7 +628,7 @@ Thank you.
 
     const totalStudents = document.querySelectorAll("#student-spotlight .spotlight-card").length;
     const spotlightTotal = document.getElementById("spotlightTotalInfo");
-    if (spotlightTotal) spotlightTotal.textContent = `${totalStudents} Students Featured`;
+    if (spotlightTotal) spotlightTotal.textContent = `${totalStudents} Champion Featured`;
 
     const updateStudentSpotlight = () => {
       studentPages.forEach((page) => page.classList.remove("active"));
@@ -648,6 +648,73 @@ Thank you.
 
     updateStudentSpotlight();
   }
+
+  const createAlbumPagination = (entries, categoryName, featuredLabel, pageSize) => {
+    const container = document.createElement("div");
+    container.className = "album-pagination";
+    if (categoryName === "Hall of Fame") container.classList.add("hall-of-fame-pagination");
+    const wrapper = document.createElement("div");
+    wrapper.className = "spotlight-wrapper";
+    const albumGrid = document.createElement("div");
+    albumGrid.className = "album-pagination-grid";
+    const previous = document.createElement("button");
+    previous.type = "button";
+    previous.className = "spotlight-btn prev";
+    previous.setAttribute("aria-label", `Previous ${categoryName} page`);
+    previous.textContent = "❮";
+    const next = document.createElement("button");
+    next.type = "button";
+    next.className = "spotlight-btn next";
+    next.setAttribute("aria-label", `Next ${categoryName} page`);
+    next.textContent = "❯";
+    const status = document.createElement("div");
+    status.className = "spotlight-pagination";
+    status.setAttribute("aria-live", "polite");
+    const pageInfo = document.createElement("span");
+    pageInfo.className = "album-pagination-page-info";
+    if (categoryName === "Hall of Fame") pageInfo.classList.add("hall-of-fame-page-info");
+    const divider = document.createElement("span");
+    divider.className = "spotlight-count-divider";
+    divider.textContent = "|";
+    const total = document.createElement("span");
+    total.className = "album-pagination-total-info";
+    total.textContent = `${entries.length} ${featuredLabel}`;
+    status.append(pageInfo, divider, total);
+    albumGrid.append(...entries);
+    wrapper.append(previous, albumGrid, next);
+    container.append(wrapper, status);
+
+    const totalPages = Math.ceil(entries.length / pageSize);
+    let currentPage = 0;
+    const update = () => {
+      entries.forEach((entry, index) => {
+        entry.hidden = Math.floor(index / pageSize) !== currentPage;
+      });
+      pageInfo.textContent = `Page ${currentPage + 1} / ${totalPages}`;
+      previous.style.display = currentPage === 0 ? "none" : "flex";
+      next.style.display = currentPage === totalPages - 1 ? "none" : "flex";
+    };
+    previous.addEventListener("click", () => {
+      currentPage = Math.max(0, currentPage - 1);
+      update();
+    });
+    next.addEventListener("click", () => {
+      currentPage = Math.min(totalPages - 1, currentPage + 1);
+      update();
+    });
+    const showLinkedAlbum = () => {
+      const key = window.location.hash.slice(1);
+      const index = entries.findIndex((entry) => entry.querySelector(".tournament-card")?.dataset.tournament === key);
+      if (index !== -1) {
+        currentPage = Math.floor(index / pageSize);
+        update();
+      }
+    };
+    update();
+    showLinkedAlbum();
+    window.addEventListener("hashchange", showLinkedAlbum);
+    return container;
+  };
 
   const organizeTournamentCategories = () => {
     const grid = document.getElementById("tournamentGrid");
@@ -674,9 +741,16 @@ Thank you.
         fragment.appendChild(studentSpotlight);
       }
 
-      entries
-        .filter((entry) => entry.dataset.category === key)
-        .forEach((entry) => fragment.appendChild(entry));
+      const categoryEntries = entries.filter((entry) => entry.dataset.category === key);
+      if (key === "trail" && categoryEntries.length) {
+        fragment.appendChild(createAlbumPagination(categoryEntries, "Hall of Fame", "Fames Featured", 3));
+      } else if (key === "compete" && categoryEntries.length) {
+        fragment.appendChild(createAlbumPagination(categoryEntries, "Tournaments & Championships", "Champion-Tour Featured", 3));
+      } else if (key === "learn" && categoryEntries.length) {
+        fragment.appendChild(createAlbumPagination(categoryEntries, "Learn & Grow", "Growth Featured", 3));
+      } else {
+        categoryEntries.forEach((entry) => fragment.appendChild(entry));
+      }
     });
 
     grid.replaceChildren(fragment);
@@ -690,6 +764,11 @@ Thank you.
   };
 
   const tournamentTitles = {
+    "gca-tournament-nov-2026": "Grace Christian Academy (GCA) Tournament USCF Tournament Winner",
+    "nicolette-high-school-oct-2026": "Nicolette High School Tournament WSCF Tournament Moments",
+    "all-catholic-st-augustine-oct-2026": "All Catholic Chess - St Augustine WSCF Tournament Winners",
+    "g60-state-championship-oct-2026": "G/60 State Championship WSCF Tournament Winners",
+    "daniel-perelman-oct-2026": "5th Annual Daniel Perelman Memorial USCF Tournament Winners",
     "wscf-Feb-2026": "19th Annual WSCF Grade Level Championship Tournament Winners",
     "summer-june-2026": "Hamilton Chess Club Program Summer Session",
     "summer-july-2026": "Hamilton Chess Club Program Summer Tournament Winners",
@@ -759,6 +838,31 @@ Thank you.
   let currentImages = [];
 
   const tournaments = {
+    "gca-tournament-nov-2026": [
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794790509/HCC_Team_Champions_ulvsuj.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794790504/HCC_K-8_TeamTrophy_1stPlace_uxhiuf.jpg",
+"https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794790522/KianBatra_K-5_1stPlace_upgro6.jpg",
+"https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794790518/KarthikRamesh_K-8_3rdPlace_fxc1ct.jpg",
+"https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794790500/Gautham_K-8_6thPlace_ikc41d.jpg",
+"https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794790527/RiyaGupta_K-8_8thPlace_qoykde.jpg",
+"https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794790513/Isaac_K-12_NonRated_2ndPlace_wqxy5z.jpg"
+    ],
+    "nicolette-high-school-oct-2026": [
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794787980/HCC_Team_Champions_Aaditya_Hayan_Aathvik_Karthik_cubxpa.jpg"
+    ],
+    "all-catholic-st-augustine-oct-2026": [
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794785277/HCC_Team_Champion_vf0aem.jpg"
+    ],
+    "g60-state-championship-oct-2026": [
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794702892/HCC_Team_aabvfy.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794702896/Karthik_Kian_vuncke.jpg", 
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794780434/Neil_vmadlf.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794780435/Shravan_sim3r1.jpg"
+    ],
+    "daniel-perelman-oct-2026": [
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794702147/Kian_4thPlace_Naksh_9thPlace_USCF_c7q83n.jpg",
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794702137/HCC_Team_Champions_Brookfield_hl0zba.jpg"
+    ],
     "wscf-Feb-2026": [
       "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000237/1_owjwt7.jpg",
       "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000239/3_s7nyq5.jpg",
@@ -828,6 +932,25 @@ Thank you.
   };
 
   const tournamentStudentNames = {
+    "gca-tournament-nov-2026": {
+      1: "Hamilton Chess Club - 1st place (K-8 Section) - Team Trophy",
+      2: "Kian Batra - 1st Place in K-5 Section",
+      3: "Karthik - 3rd Place in K-8 Section",
+      4: "Gautham - 6th Place in K-8 Section",
+      5: "Riya Gupta - 8th Place in K-8 Section",
+      6: "Isaac - 2nd Place in K-12 Non-Rated Section"
+    },
+    "all-catholic-st-augustine-oct-2026": {
+      0: "Kian B- 1st Place in K-8 Section"
+    },
+    "g60-state-championship-oct-2026": {
+      1: "Karthik R - 2nd Place in Novice (U1000) Section",
+      2: "Neil - 1st Place in Reserve Section (1000-1501)",
+      3: "Shravan S - 3rd place in Premier Section (1500+)"
+    },
+    "daniel-perelman-oct-2026": {
+      0: "Kian Batra - 4th Place"
+    },
     "fall-kickoff-sep-2026": {
       0: "Leila Sajan- 1st (Beginner)",
       1: "Aliya Sajan- 2nd (Beginner)",
@@ -854,6 +977,30 @@ Thank you.
       12: "Karthik Ramesh - 3rd (Advanced)",
       13: "Ashwadh Dudipala - 4th (Advanced)",
       14: "Suhas Vemparala - 5th (Advanced)"
+    }
+  };
+
+  const tournamentSecondStudentNames = {
+    "all-catholic-st-augustine-oct-2026": {
+      0: "Hayan N - 1st Place in K-5 Section"
+    },
+    "g60-state-championship-oct-2026": {
+      1: "Kian B - 3rd Place in Novice (U1000) Section"
+    },
+    "daniel-perelman-oct-2026": {
+      0: "Naksh Mathur - 9th Place"
+    }
+  };
+
+  const tournamentCenterStudentNames = {
+    "all-catholic-st-augustine-oct-2026": {
+      0: "Aathvik A"
+    }
+  };
+
+  const tournamentGroupStudentNames = {
+    "nicolette-high-school-oct-2026": {
+      0: ["Aditya", "Hayan", "Aathvik", "Karthik"]
     }
   };
 
@@ -903,8 +1050,8 @@ Thank you.
   const getStudentLabel = (tournamentKey, imageIndex, imageUrl) =>
     tournamentStudentNames[tournamentKey]?.[imageIndex] || getDisplayNameFromUrl(imageUrl);
 
-  const shouldDisplayStudentLabels = (tournamentKey) =>
-    Boolean(tournamentCoachNames[tournamentKey] || tournamentStudentNames[tournamentKey]);
+  const shouldDisplayStudentLabels = (tournamentKey, imageIndex) =>
+    Boolean(tournamentCoachNames[tournamentKey] || tournamentStudentNames[tournamentKey]?.[imageIndex]);
 
   const buildTournamentCollages = () => {
     const collageBlocks = document.querySelectorAll(".tournament-collage[data-tournament]");
@@ -982,7 +1129,7 @@ Thank you.
         studentTag.classList.toggle("right", !studentOnLeft);
         coachTag.classList.toggle("left", !studentOnLeft);
         coachTag.classList.toggle("right", studentOnLeft);
-        studentTag.style.display = shouldDisplayStudentLabels(tournamentKey) ? "block" : "none";
+        studentTag.style.display = shouldDisplayStudentLabels(tournamentKey, index) ? "block" : "none";
         coachTag.style.display = coachName ? "block" : "none";
         progressBars.forEach((bar, barIndex) => {
           bar.classList.toggle("active", barIndex <= index);
@@ -1040,6 +1187,9 @@ Thank you.
     const nextBtn = document.querySelector(".lightbox-next");
     const imageCounter = document.getElementById("lightbox-image-counter");
     const studentTag = document.getElementById("lightbox-student-tag");
+    const secondStudentTag = document.getElementById("lightbox-second-student-tag");
+    const centerStudentTag = document.getElementById("lightbox-center-student-tag");
+    const groupStudentTags = document.getElementById("lightbox-group-student-tags");
     const coachTag = document.getElementById("lightbox-coach-tag");
     const lightboxLikeButton = document.getElementById("lightbox-like-button");
     const lightboxShareButton = document.getElementById("lightbox-share-button");
@@ -1053,6 +1203,15 @@ Thank you.
 
     img.src = currentImages[currentIndex];
     img.alt = getDisplayNameFromUrl(currentImages[currentIndex]);
+    if (groupStudentTags) {
+      const names = tournamentGroupStudentNames[currentTournament]?.[currentIndex] || [];
+      groupStudentTags.replaceChildren(...names.map((name) => {
+        const label = document.createElement("span");
+        label.textContent = name;
+        return label;
+      }));
+      groupStudentTags.hidden = names.length === 0;
+    }
     if (prevBtn) prevBtn.style.display = currentImages.length > 1 ? "flex" : "none";
     if (nextBtn) nextBtn.style.display = currentImages.length > 1 ? "flex" : "none";
     if (imageCounter) {
@@ -1062,11 +1221,23 @@ Thank you.
 
     if (studentTag && coachTag) {
       const coachName = tournamentCoachNames[currentTournament];
-      const showStudentLabel = shouldDisplayStudentLabels(currentTournament);
+      const showStudentLabel = shouldDisplayStudentLabels(currentTournament, currentIndex);
+      const secondStudentName = tournamentSecondStudentNames[currentTournament]?.[currentIndex];
+      studentTag.classList.toggle("paired", Boolean(secondStudentName));
+      if (secondStudentTag) {
+        secondStudentTag.textContent = secondStudentName || "";
+        secondStudentTag.style.display = secondStudentName ? "block" : "none";
+      }
+      if (centerStudentTag) {
+        const centerStudentName = tournamentCenterStudentNames[currentTournament]?.[currentIndex];
+        centerStudentTag.textContent = centerStudentName || "";
+        centerStudentTag.style.display = centerStudentName ? "block" : "none";
+        centerStudentTag.parentElement.classList.toggle("has-center-student", Boolean(centerStudentName));
+      }
       if (!coachName) {
         const studentName = getDisplayNameFromUrl(currentImages[currentIndex]);
         const isSwap = shouldSwapSides(studentName);
-        const studentOnLeft = isSwap ? currentIndex % 2 !== 0 : currentIndex % 2 === 0;
+        const studentOnLeft = Boolean(secondStudentName) || (isSwap ? currentIndex % 2 !== 0 : currentIndex % 2 === 0);
 
         studentTag.textContent = getStudentLabel(currentTournament, currentIndex, currentImages[currentIndex]);
         studentTag.style.display = showStudentLabel ? "block" : "none";

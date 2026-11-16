@@ -3430,6 +3430,35 @@ nav ul li a:hover {
   display: none;
 }
 
+.lightbox-group-student-tags {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 56px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2px;
+  z-index: 10001;
+  text-align: center;
+}
+
+.lightbox-group-student-tags[hidden] {
+  display: none;
+}
+
+.lightbox-group-student-tags span {
+  justify-self: center;
+  max-width: 100%;
+  padding: 5px 4px;
+  border-radius: 999px;
+  background: rgba(22, 94, 58, 0.88);
+  color: #fff;
+  font-size: clamp(0.65rem, 2vw, 0.9rem);
+  font-weight: 600;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
 .lightbox-image-counter {
   position: absolute;
   top: 12px;
@@ -3454,6 +3483,23 @@ nav ul li a:hover {
 
 .lightbox-name-tag.lowered {
   bottom: 16px;
+}
+
+.lightbox-name-tag.paired,
+#lightbox-second-student-tag {
+  max-width: 40%;
+}
+
+.lightbox-name-tag.center {
+  left: 50%;
+  bottom: 120px;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.has-center-student .lightbox-name-tag.paired,
+.has-center-student #lightbox-second-student-tag {
+  bottom: 54px;
 }
 
 .lightbox-coach-tag {
@@ -3831,6 +3877,31 @@ right:0;
   grid-column: 1 / -1;
 }
 
+.album-pagination {
+  grid-column: 1 / -1;
+}
+
+.album-pagination-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 15px;
+  width: 100%;
+}
+
+.album-pagination-page-info,
+.album-pagination-total-info {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.album-pagination-page-info {
+  color: #132a13;
+}
+
+.album-pagination-total-info {
+  color: #31572c;
+}
+
 @media (max-width: 768px) {
   .gallery-category h3 {
     font-size: 1.25rem;
@@ -3838,7 +3909,8 @@ right:0;
 }
 
 @media (max-width: 900px) {
-  .tournament-grid {
+  .tournament-grid,
+  .album-pagination-grid {
     grid-template-columns: 1fr;
   }
 }
