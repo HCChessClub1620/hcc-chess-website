@@ -4004,6 +4004,10 @@ nav ul li a:hover {
   transition: 0.2s;
 }
 
+.tournament-card[data-tournament="salaam-school-nov-2026"] .tournament-media > img {
+  object-position: center 20%;
+}
+
 .tournament-media > img:hover,
 .tournament-card .tournament-collage:hover,
 .tournament-card .tournament-reel:hover {
@@ -4025,6 +4029,12 @@ nav ul li a:hover {
   .tournament-media > img,
   .tournament-reel {
     height: 180px;
+  }
+}
+
+@media (max-width: 900px) {
+  .tournament-card[data-tournament="salaam-school-nov-2026"] .tournament-media > img {
+    height: clamp(300px, 60vw, 420px);
   }
 }
 

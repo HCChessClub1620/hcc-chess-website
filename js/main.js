@@ -619,6 +619,108 @@ Thank you.
       });
   }
 
+  const galleryData = window.hccGallery || {};
+  const galleryAlbums = Object.values(galleryData).flatMap((category) => category.albums || []);
+  const albumProperty = (property) => Object.fromEntries(
+    galleryAlbums.filter((album) => album[property] !== undefined).map((album) => [album.id, album[property]])
+  );
+  const tournamentTitles = albumProperty("shareTitle");
+  const tournaments = albumProperty("images");
+  const tournamentCoachNames = albumProperty("coachName");
+  const tournamentStudentNames = albumProperty("studentNames");
+  const tournamentSecondStudentNames = albumProperty("secondStudentNames");
+  const tournamentCenterStudentNames = albumProperty("centerStudentNames");
+  const tournamentGroupStudentNames = albumProperty("groupStudentNames");
+  const sideSwapNames = new Set(galleryData.compete?.sideSwapNames || []);
+  const studentNameOverrides = galleryData.compete?.nameOverrides || {};
+
+  const createGalleryAlbum = (album, category) => {
+    const entry = document.createElement("div");
+    entry.className = "tournament-entry";
+    entry.dataset.category = category;
+    const card = document.createElement("div");
+    card.className = "tournament-card";
+    card.dataset.tournament = album.id;
+    card.addEventListener("click", () => window.openTournament(album.id));
+    const media = document.createElement("div");
+    media.className = "tournament-media";
+    if (album.reelLabel) {
+      const reel = document.createElement("div");
+      reel.className = "tournament-reel";
+      reel.dataset.tournament = album.id;
+      reel.setAttribute("aria-label", album.reelLabel);
+      media.appendChild(reel);
+    } else {
+      const image = document.createElement("img");
+      image.src = album.cover;
+      image.alt = album.coverAlt;
+      image.loading = "lazy";
+      media.appendChild(image);
+    }
+    card.appendChild(media);
+    album.headings.forEach((text) => {
+      const heading = document.createElement("h4");
+      heading.textContent = text;
+      card.appendChild(heading);
+    });
+    const actions = document.createElement("div");
+    actions.className = "tournament-actions";
+    actions.setAttribute("aria-label", "Tournament actions");
+    const like = document.createElement("button");
+    like.className = "tournament-action like-button";
+    like.type = "button";
+    like.dataset.tournament = album.id;
+    like.setAttribute("aria-label", "Like this tournament");
+    like.title = "Like this tournament";
+    like.innerHTML = '<span class="like-icon" aria-hidden="true">&#9825;</span><span class="like-label">Like</span>';
+    like.addEventListener("click", (event) => window.toggleTournamentLike(event, like));
+    const share = document.createElement("button");
+    share.className = "tournament-action share-button";
+    share.type = "button";
+    share.setAttribute("aria-label", "Share this tournament");
+    share.title = "Share this tournament";
+    share.innerHTML = '<span class="share-icon" aria-hidden="true">&#8599;</span><span class="share-label">Share</span>';
+    share.addEventListener("click", (event) => window.shareTournament(event, album.id));
+    actions.append(like, share);
+    entry.append(card, actions);
+    return entry;
+  };
+
+  const createStudentSpotlight = (students) => {
+    const section = document.createElement("div");
+    section.id = "student-spotlight";
+    section.className = "student-spotlight gallery-spotlight";
+    const container = document.createElement("div");
+    container.className = "container";
+    const viewport = document.createElement("div");
+    viewport.className = "gallery-scroll";
+    viewport.setAttribute("aria-label", "Our Rising Champions");
+    const track = document.createElement("div");
+    track.className = "gallery-scroll-track spotlight-track";
+    students.forEach((student) => {
+      const card = document.createElement("div");
+      card.className = "spotlight-card";
+      const image = document.createElement("img");
+      image.src = student.image;
+      image.alt = student.name;
+      image.loading = "lazy";
+      image.addEventListener("click", () => window.openSpotlightLightbox(image.src));
+      const name = document.createElement("h4");
+      name.textContent = student.name;
+      const description = document.createElement("p");
+      description.textContent = student.description;
+      card.append(image, name, description);
+      track.appendChild(card);
+    });
+    const count = document.createElement("div");
+    count.className = "gallery-featured-count";
+    count.textContent = `${students.length} Champion Featured`;
+    viewport.appendChild(track);
+    container.append(viewport, count);
+    section.appendChild(container);
+    return section;
+  };
+
   const createAlbumScroll = (entries, categoryName, featuredLabel) => {
     const container = document.createElement("div");
     container.className = "gallery-album-row";
@@ -767,6 +869,11 @@ Thank you.
   const organizeTournamentCategories = () => {
     const grid = document.getElementById("tournamentGrid");
     if (!grid) return;
+    if (!["learn", "compete", "trail", "spotlight"].every((key) => galleryData[key])) {
+      console.error("Gallery category data could not be loaded.");
+      grid.textContent = "Gallery content could not be loaded.";
+      return;
+    }
 
     const categories = [
       { key: "learn", title: "Learn & Grow", description: "From classroom learning and exciting chess activities to the thrill of tournament day — a collection of special moments and memories at Hamilton Chess Club." },
@@ -774,9 +881,6 @@ Thank you.
       { key: "trail", title: "Hall of Fame", description: "Celebrating our students who proudly represent Hamilton Chess Club at WSCF, USCF, and other scholastic tournaments. Every game, every achievement, and every milestone adds to our club's legacy!" },
       { key: "spotlight", title: "Our Rising Champions", description: "Student achievements and inspiring chess journeys." }
     ];
-    const entries = Array.from(grid.querySelectorAll(".tournament-entry"));
-    const studentSpotlight = grid.querySelector("#student-spotlight");
-    if (studentSpotlight) studentSpotlight.remove();
     const fragment = document.createDocumentFragment();
 
     categories.forEach(({ key, title, description }) => {
@@ -785,18 +889,17 @@ Thank you.
       heading.innerHTML = `<h3>${title}</h3><p>${description}</p>`;
       fragment.appendChild(heading);
 
-      if (key === "spotlight" && studentSpotlight) {
-        fragment.appendChild(studentSpotlight);
+      if (key === "spotlight") {
+        fragment.appendChild(createStudentSpotlight(galleryData.spotlight.students));
+        return;
       }
 
-      const categoryEntries = entries.filter((entry) => entry.dataset.category === key);
+      const categoryEntries = galleryData[key].albums.map((album) => createGalleryAlbum(album, key));
       const labels = { trail: "Fames Featured", compete: "Champion-Tour Featured", learn: "Growth Featured" };
       if (categoryEntries.length) fragment.appendChild(createAlbumScroll(categoryEntries, title, labels[key]));
     });
 
     grid.replaceChildren(fragment);
-    const spotlightCount = studentSpotlight?.querySelector(".gallery-featured-count");
-    if (spotlightCount) spotlightCount.textContent = `${studentSpotlight.querySelectorAll(".spotlight-card").length} Champion Featured`;
     grid.querySelectorAll(".gallery-scroll").forEach(startGalleryScroll);
   };
 
@@ -807,21 +910,6 @@ Thank you.
     });
   };
 
-  const tournamentTitles = {
-    "salaam-school-nov-2026": "Salaam School Chess Tournament WSCF Tournament Winners",
-    "gca-tournament-nov-2026": "Grace Christian Academy (GCA) Tournament USCF Tournament Winner",
-    "nicolette-high-school-oct-2026": "Nicolette High School Tournament WSCF Tournament Moments",
-    "all-catholic-st-augustine-oct-2026": "All Catholic Chess - St Augustine WSCF Tournament Winners",
-    "g60-state-championship-oct-2026": "G/60 State Championship WSCF Tournament Winners",
-    "daniel-perelman-oct-2026": "5th Annual Daniel Perelman Memorial USCF Tournament Winners",
-    "wscf-Feb-2026": "19th Annual WSCF Grade Level Championship Tournament Winners",
-    "summer-june-2026": "Hamilton Chess Club Program Summer Session",
-    "summer-july-2026": "Hamilton Chess Club Program Summer Tournament Winners",
-    "fall-kickoff-aug-2026": "Hamilton Chess Club Program Fall Kick-off Program Session",
-    "fall-kickoff-sep-2026": "Hamilton Chess Club Program Fall Kick-off Tournament Winners",
-    "hamilton-scholastic-program-oct-2026": "Hamilton Chess Club - Program Scholastic Tournament Moments",
-    "hamilton-scholastic-winners-oct-2026": "Hamilton Chess Club - Program Scholastic Tournament Winners"
-  };
 
   const likedTournaments = JSON.parse(localStorage.getItem("likedTournaments") || "[]");
   const tournamentLikeCounts = JSON.parse(localStorage.getItem("tournamentLikeCounts") || "{}");
@@ -869,204 +957,24 @@ Thank you.
     }
   };
 
+  organizeTournamentCategories();
+  showAllTournamentEntries();
+
   document.querySelectorAll(".like-button[data-tournament]").forEach((button) => {
     updateTournamentLikeButton(button, likedTournaments.includes(button.dataset.tournament));
   });
-
-  organizeTournamentCategories();
-  showAllTournamentEntries();
 
   let currentTournament = null;
   let currentIndex = 0;
   let currentImages = [];
 
-  const tournaments = {
-    "salaam-school-nov-2026": [
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794793534/Aliya_Zain_3rdPlace_K-5_TeamTrophy_bs3vp0.jpg"
-    ],
-    "gca-tournament-nov-2026": [
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794790509/HCC_Team_Champions_ulvsuj.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794790504/HCC_K-8_TeamTrophy_1stPlace_uxhiuf.jpg",
-"https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794790522/KianBatra_K-5_1stPlace_upgro6.jpg",
-"https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794790518/KarthikRamesh_K-8_3rdPlace_fxc1ct.jpg",
-"https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794790500/Gautham_K-8_6thPlace_ikc41d.jpg",
-"https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794790527/RiyaGupta_K-8_8thPlace_qoykde.jpg",
-"https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794790513/Isaac_K-12_NonRated_2ndPlace_wqxy5z.jpg"
-    ],
-    "nicolette-high-school-oct-2026": [
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794787980/HCC_Team_Champions_Aaditya_Hayan_Aathvik_Karthik_cubxpa.jpg"
-    ],
-    "all-catholic-st-augustine-oct-2026": [
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794785277/HCC_Team_Champion_vf0aem.jpg"
-    ],
-    "g60-state-championship-oct-2026": [
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794702892/HCC_Team_aabvfy.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794702896/Karthik_Kian_vuncke.jpg", 
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794780434/Neil_vmadlf.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794780435/Shravan_sim3r1.jpg"
-    ],
-    "daniel-perelman-oct-2026": [
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794702147/Kian_4thPlace_Naksh_9thPlace_USCF_c7q83n.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794702137/HCC_Team_Champions_Brookfield_hl0zba.jpg"
-    ],
-    "wscf-Feb-2026": [
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000237/1_owjwt7.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000239/3_s7nyq5.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000238/2_y4xqyp.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000242/5_x6qb93.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000241/4_brkdaz.jpg"
-    ],
-    "summer-june-2026": [
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1785793096/1_r5hqhs.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1785793096/2_ucrpz9.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1785793097/3_zpekfx.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1785793097/4_lipvwp.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1785793097/5_gjm7q3.jpg"
-    ],
-    "summer-july-2026": [
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1786204605/Anay_Jadhav_mweqhi.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1786204605/Hayan_Nissar_tznk0a.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1786204605/Nayonika_Arun_bxorne.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1786204605/Karthik_Ramesh_jcbrbr.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1786204606/Vibha_Iyer_unieha.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1786204604/Aathvik_Ananth_uyglcf.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1786204605/Aayushi_Jadhav_cbgdor.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1786204605/Ronit_Ekshinge_x7cgv9.jpg"
-    ],
-     "fall-kickoff-aug-2026": [
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789792029/Fall_Kick_Off_Session_-2_ur3xv3.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788508/Fall_Kick-Off_Session_b8xxps.jpg",
-    ],
-     "fall-kickoff-sep-2026": [
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788567/Laila_-_1st_-_Beginner_lcycqh.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788558/Aliya-_2nd_-_Beginner_qapozz.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788563/Athreyan_-_3rd_-_Beginner_ilaevs.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788567/Shrivas_-_1st_-Intermediate_fzr2b2.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788561/Arjay-_2nd_-_Intermediate_kf932q.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788567/Hayan_-_3rd_-Intermediate_yoabus.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788570/Suhas_-_1st_-_Advanced_mfixkp.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788562/Anika_Vibha_Aathvik_-_2nd_-_Advanced_o7g8hr.jpg"
-    ],
-    "hamilton-scholastic-program-oct-2026": [
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/v1791570931/HamiltonChessClub_Team_ikf5qz.jpg", 
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/v1791570940/Tournament_Pics2_rjntgv.jpg",   
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/v1791570944/TournamentPics1_hiflpj.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/v1791570950/MindMoversChess_Team_flvss9.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/v1791570958/Concessions_Team_okptno.jpg"
-    ],
-    "hamilton-scholastic-winners-oct-2026": [
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570619/Winn_Vignesh_Beginner_1st_o7fnwj.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570610/Amogh_Yelkana_Beginner_2nd_j7exa2.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570611/Anagha_Vullaganti_Beginner_3rd_gv5zml.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570619/Yasha_Chithic_Beginner_4th_gsxgge.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570611/Amrutha_Siva_Beginner_5th_dtjqmv.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791577701/Madhav_Mankad_Mishra_Intermediate_1st_n8ql7m.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570864/Theo_Vignesh_Intermediate_2nd_oxksg4.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570858/Minal_Manral_Intermediate_3rd_tgfohp.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570635/Aathvik_Ananth_Intermediate_4th_ns8hgp.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791577671/Brihad_Mishra_Intermediate_5th_gs1oxf.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570882/Arovon_Mukhopadhyay_Advanced_1st_v1x5sz.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570898/Kian_Batra_Advanced_2nd_ehhbuy.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570894/Karthik_Ramesh_Advanced_3rd_v5u9y5.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570889/Ashwadh_Dudipala_Advanced_4th_qkmv7d.jpg",
-      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570904/Suhas_Vemparala_Advanced_5th_bpdsju.jpg"
-    ]
-  };
 
-  const tournamentCoachNames = {
-    "summer-july-2026": "Coach Edgar"
-  };
 
-  const tournamentStudentNames = {
-    "salaam-school-nov-2026": {
-      0: "Zain and Aliya - Hamilton Chess Club - 3rd Place - Team Trophy Winners"
-    },
-    "gca-tournament-nov-2026": {
-      1: "Hamilton Chess Club - 1st place (K-8 Section) - Team Trophy",
-      2: "Kian Batra - 1st Place in K-5 Section",
-      3: "Karthik - 3rd Place in K-8 Section",
-      4: "Gautham - 6th Place in K-8 Section",
-      5: "Riya Gupta - 8th Place in K-8 Section",
-      6: "Isaac - 2nd Place in K-12 Non-Rated Section"
-    },
-    "all-catholic-st-augustine-oct-2026": {
-      0: "Kian B- 1st Place in K-8 Section"
-    },
-    "g60-state-championship-oct-2026": {
-      1: "Karthik R - 2nd Place in Novice (U1000) Section",
-      2: "Neil - 1st Place in Reserve Section (1000-1501)",
-      3: "Shravan S - 3rd place in Premier Section (1500+)"
-    },
-    "daniel-perelman-oct-2026": {
-      0: "Kian Batra - 4th Place"
-    },
-    "fall-kickoff-sep-2026": {
-      0: "Leila Sajan- 1st (Beginner)",
-      1: "Aliya Sajan- 2nd (Beginner)",
-      2: "Athreyan Uthamraj - 3rd (Beginner)",
-      3: "Shrivas Polineni - 1st (Intermediate)",
-      4: "Arjay Vijay - 2nd (Intermediate)",
-      5: "Hayan Nissar - 3rd (Intermediate)",
-      6: "Suhas Vemparala - 1st (Advanced)",
-      7: "Anika Gupta, Vibha Iyer, Aathvik Ananth - 2nd (Advanced)"
-    },
-    "hamilton-scholastic-winners-oct-2026": {
-      0: "Winn Vignesh - 1st (Beginner)",
-      1: "Amogh Yelkana - 2nd (Beginner)",
-      2: "Anagha Vullaganti - 3rd (Beginner)",
-      3: "Yasha Chithic - 4th (Beginner)",
-      4: "Amrutha Siva - 5th (Beginner)",
-      5: "Madhav Mankad - 1st (Intermediate)",
-      6: "Theo Vignesh - 2nd (Intermediate)",
-      7: "Minal Manral - 3rd (Intermediate)",
-      8: "Aathvik Ananth - 4th (Intermediate)",
-      9: "Brihad Mishra - 5th (Intermediate)",
-      10: "Arovon Mukhopadhyay - 1st (Advanced)",
-      11: "Kian Batra - 2nd (Advanced)",
-      12: "Karthik Ramesh - 3rd (Advanced)",
-      13: "Ashwadh Dudipala - 4th (Advanced)",
-      14: "Suhas Vemparala - 5th (Advanced)"
-    }
-  };
 
-  const tournamentSecondStudentNames = {
-    "all-catholic-st-augustine-oct-2026": {
-      0: "Hayan N - 1st Place in K-5 Section"
-    },
-    "g60-state-championship-oct-2026": {
-      1: "Kian B - 3rd Place in Novice (U1000) Section"
-    },
-    "daniel-perelman-oct-2026": {
-      0: "Naksh Mathur - 9th Place"
-    }
-  };
 
-  const tournamentCenterStudentNames = {
-    "all-catholic-st-augustine-oct-2026": {
-      0: "Aathvik A"
-    }
-  };
 
-  const tournamentGroupStudentNames = {
-    "nicolette-high-school-oct-2026": {
-      0: ["Aditya", "Hayan", "Aathvik", "Karthik"]
-    }
-  };
 
-  const sideSwapNames = new Set([
-    "anay jadhav",
-    "hayan nissar",
-    "hayaan nissar",
-    "nayonika arun",
-    "vibha iyer",
-    "aayushi jadhav",
-    "ronit ekshinge"
-  ]);
 
-  const studentNameOverrides = {
-    "Hayan_Nissar": "Hayaan Nissar",
-    "Laila_-_1st_-_Beginner": "Leila Sajan"
-  };
 
   const shouldSwapSides = (name) => {
     const normalized = (name || "")
