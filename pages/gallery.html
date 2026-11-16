@@ -22,10 +22,8 @@
       <div class="tournament-grid" id="tournamentGrid">
           <div id="student-spotlight" class="student-spotlight gallery-spotlight">
             <div class="container">
-              <div class="spotlight-wrapper">
-                <button class="spotlight-btn prev" onclick="changeSpotlight(-1)">❮</button>
-                <div class="spotlight-page active">
-                  <div class="spotlight-grid">
+              <div class="gallery-scroll" aria-label="Our Rising Champions">
+                  <div class="gallery-scroll-track spotlight-track">
                     <div class="spotlight-card">
                       <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782104307/shravan_sayv5m.jpg" loading="lazy" onclick="openSpotlightLightbox(this.src)" alt="Shravan S" />
                       <h4>Shravan S</h4>
@@ -46,10 +44,6 @@
                       <h4>Vibha B</h4>
                       <p>WSCF Champion</p>
                     </div>
-                  </div>
-                </div>
-                <div class="spotlight-page">
-                  <div class="spotlight-grid">
                     <div class="spotlight-card">
                       <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782104304/Neil_ciwgwf.jpg" loading="lazy" onclick="openSpotlightLightbox(this.src)" alt="Neil" />
                       <h4>Neil</h4>
@@ -71,14 +65,8 @@
                       <p>WSCF &amp; USCF Champion</p>
                     </div>
                   </div>
-                </div>
-                <button class="spotlight-btn next" onclick="changeSpotlight(1)">❯</button>
               </div>
-              <div class="spotlight-pagination">
-                <span id="spotlightPageInfo"></span>
-                <span class="spotlight-count-divider">|</span>
-                <span id="spotlightTotalInfo"></span>
-              </div>
+              <div class="gallery-featured-count"></div>
             </div>
           </div>
         <div class="tournament-entry" data-category="learn">
@@ -157,6 +145,21 @@
         <div class="tournament-actions" aria-label="Tournament actions">
           <button class="tournament-action like-button" type="button" data-tournament="summer-june-2026" onclick="toggleTournamentLike(event, this)" aria-label="Like this tournament" title="Like this tournament"><span class="like-icon" aria-hidden="true">&#9825;</span><span class="like-label">Like</span></button>
           <button class="tournament-action share-button" type="button" onclick="shareTournament(event, 'summer-june-2026')" aria-label="Share this tournament" title="Share this tournament"><span class="share-icon" aria-hidden="true">&#8599;</span><span class="share-label">Share</span></button>
+        </div>
+        </div>
+        <div class="tournament-entry" data-category="trail">
+        <div class="tournament-card" data-tournament="salaam-school-nov-2026" onclick="openTournament('salaam-school-nov-2026')">
+          <div class="tournament-media">
+            <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794793534/Aliya_Zain_3rdPlace_K-5_TeamTrophy_bs3vp0.jpg" loading="lazy" alt="Zain and Aliya with the Hamilton Chess Club team trophy" />
+          </div>
+          <h4>Salaam School Chess Tournament</h4>
+          <h4>WSCF Tournament Winners</h4>
+          <h4>Milwaukee</h4>
+          <h4>14 NOV 2026</h4>
+        </div>
+        <div class="tournament-actions" aria-label="Tournament actions">
+          <button class="tournament-action like-button" type="button" data-tournament="salaam-school-nov-2026" onclick="toggleTournamentLike(event, this)" aria-label="Like this tournament" title="Like this tournament"><span class="like-icon" aria-hidden="true">&#9825;</span><span class="like-label">Like</span></button>
+          <button class="tournament-action share-button" type="button" onclick="shareTournament(event, 'salaam-school-nov-2026')" aria-label="Share this tournament" title="Share this tournament"><span class="share-icon" aria-hidden="true">&#8599;</span><span class="share-label">Share</span></button>
         </div>
         </div>
         <div class="tournament-entry" data-category="trail">

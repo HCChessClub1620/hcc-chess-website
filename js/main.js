@@ -619,101 +619,149 @@ Thank you.
       });
   }
 
-  const studentPages = document.querySelectorAll("#student-spotlight .spotlight-page");
-  const studentPrevBtn = document.querySelector("#student-spotlight .spotlight-btn.prev");
-  const studentNextBtn = document.querySelector("#student-spotlight .spotlight-btn.next");
-
-  if (studentPages.length > 0 && studentPrevBtn && studentNextBtn) {
-    let currentStudentPage = 0;
-
-    const totalStudents = document.querySelectorAll("#student-spotlight .spotlight-card").length;
-    const spotlightTotal = document.getElementById("spotlightTotalInfo");
-    if (spotlightTotal) spotlightTotal.textContent = `${totalStudents} Champion Featured`;
-
-    const updateStudentSpotlight = () => {
-      studentPages.forEach((page) => page.classList.remove("active"));
-      studentPages[currentStudentPage].classList.add("active");
-      studentPrevBtn.style.display = currentStudentPage === 0 ? "none" : "flex";
-      studentNextBtn.style.display = currentStudentPage === studentPages.length - 1 ? "none" : "flex";
-      const pageInfo = document.getElementById("spotlightPageInfo");
-      if (pageInfo) pageInfo.textContent = `Page ${currentStudentPage + 1} / ${studentPages.length}`;
-    };
-
-    window.changeSpotlight = function (dir) {
-      currentStudentPage += dir;
-      if (currentStudentPage < 0) currentStudentPage = 0;
-      if (currentStudentPage > studentPages.length - 1) currentStudentPage = studentPages.length - 1;
-      updateStudentSpotlight();
-    };
-
-    updateStudentSpotlight();
-  }
-
-  const createAlbumPagination = (entries, categoryName, featuredLabel, pageSize) => {
+  const createAlbumScroll = (entries, categoryName, featuredLabel) => {
     const container = document.createElement("div");
-    container.className = "album-pagination";
-    if (categoryName === "Hall of Fame") container.classList.add("hall-of-fame-pagination");
-    const wrapper = document.createElement("div");
-    wrapper.className = "spotlight-wrapper";
-    const albumGrid = document.createElement("div");
-    albumGrid.className = "album-pagination-grid";
+    container.className = "gallery-album-row";
+    const viewport = document.createElement("div");
+    viewport.className = "gallery-scroll";
+    viewport.setAttribute("aria-label", categoryName);
+    const track = document.createElement("div");
+    track.className = "gallery-scroll-track album-track";
+    const total = document.createElement("span");
+    total.className = "gallery-featured-count";
+    total.textContent = `${entries.length} ${featuredLabel}`;
+    track.append(...entries);
+    viewport.appendChild(track);
+    container.append(viewport, total);
+    return container;
+  };
+
+  const startGalleryScroll = (viewport) => {
+    const track = viewport.querySelector(".gallery-scroll-track");
+    const cards = Array.from(track.children);
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const mobile = window.matchMedia("(max-width: 768px)");
+    const pageSize = track.classList.contains("spotlight-track") ? 4 : 3;
+    const totalPages = Math.ceil(cards.length / pageSize);
+    const count = viewport.nextElementSibling;
+    const status = document.createElement("div");
+    status.className = "gallery-row-status";
+    const pagination = document.createElement("div");
+    pagination.className = "gallery-mobile-pagination";
     const previous = document.createElement("button");
     previous.type = "button";
-    previous.className = "spotlight-btn prev";
-    previous.setAttribute("aria-label", `Previous ${categoryName} page`);
+    previous.setAttribute("aria-label", `Previous ${viewport.getAttribute("aria-label")} page`);
     previous.textContent = "❮";
+    const pageInfo = document.createElement("span");
+    pageInfo.setAttribute("aria-live", "polite");
     const next = document.createElement("button");
     next.type = "button";
-    next.className = "spotlight-btn next";
-    next.setAttribute("aria-label", `Next ${categoryName} page`);
+    next.setAttribute("aria-label", `Next ${viewport.getAttribute("aria-label")} page`);
     next.textContent = "❯";
-    const status = document.createElement("div");
-    status.className = "spotlight-pagination";
-    status.setAttribute("aria-live", "polite");
-    const pageInfo = document.createElement("span");
-    pageInfo.className = "album-pagination-page-info";
-    if (categoryName === "Hall of Fame") pageInfo.classList.add("hall-of-fame-page-info");
-    const divider = document.createElement("span");
-    divider.className = "spotlight-count-divider";
-    divider.textContent = "|";
-    const total = document.createElement("span");
-    total.className = "album-pagination-total-info";
-    total.textContent = `${entries.length} ${featuredLabel}`;
-    status.append(pageInfo, divider, total);
-    albumGrid.append(...entries);
-    wrapper.append(previous, albumGrid, next);
-    container.append(wrapper, status);
-
-    const totalPages = Math.ceil(entries.length / pageSize);
+    pagination.append(previous, pageInfo, next);
+    count.before(status);
+    status.append(pagination, count);
     let currentPage = 0;
-    const update = () => {
-      entries.forEach((entry, index) => {
-        entry.hidden = Math.floor(index / pageSize) !== currentPage;
+    let offset = 0;
+    let lastTime = 0;
+    let hovered = false;
+    let motionEnabled = !reducedMotion.matches && !mobile.matches;
+    let mobileEnabled = mobile.matches;
+
+    const updatePage = () => {
+      cards.forEach((card, index) => {
+        card.hidden = mobile.matches && Math.floor(index / pageSize) !== currentPage;
       });
       pageInfo.textContent = `Page ${currentPage + 1} / ${totalPages}`;
-      previous.style.display = currentPage === 0 ? "none" : "flex";
-      next.style.display = currentPage === totalPages - 1 ? "none" : "flex";
+      previous.hidden = currentPage === 0;
+      next.hidden = currentPage === totalPages - 1;
     };
     previous.addEventListener("click", () => {
       currentPage = Math.max(0, currentPage - 1);
-      update();
+      updatePage();
     });
     next.addEventListener("click", () => {
       currentPage = Math.min(totalPages - 1, currentPage + 1);
-      update();
+      updatePage();
     });
-    const showLinkedAlbum = () => {
-      const key = window.location.hash.slice(1);
-      const index = entries.findIndex((entry) => entry.querySelector(".tournament-card")?.dataset.tournament === key);
-      if (index !== -1) {
-        currentPage = Math.floor(index / pageSize);
-        update();
+
+    const dimensions = () => {
+      const width = cards[0].getBoundingClientRect().width;
+      const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      return { width, step: width + gap, total: (width + gap) * cards.length };
+    };
+    const draw = () => {
+      const { width, step, total } = dimensions();
+      if (!total) return;
+      cards.forEach((card, index) => {
+        const position = ((index * step + offset + width) % total + total) % total - width;
+        card.style.transform = `translateX(${position - index * step}px)`;
+      });
+    };
+    const showFocusedCard = () => {
+      const card = cards.find((item) => item.contains(document.activeElement));
+      if (!card) return;
+      viewport.scrollLeft = 0;
+      const { width, step, total } = dimensions();
+      if (!total) return;
+      const index = cards.indexOf(card);
+      const position = ((index * step + offset + width) % total + total) % total - width;
+      if (position < -1 || position + width > viewport.getBoundingClientRect().width + 1) {
+        offset -= position;
       }
     };
-    update();
-    showLinkedAlbum();
+    const tick = (time) => {
+      if (motionEnabled !== (!reducedMotion.matches && !mobile.matches) || mobileEnabled !== mobile.matches) updateMotion();
+      if (motionEnabled) {
+        if (viewport.contains(document.activeElement)) showFocusedCard();
+        else if (!hovered && lastTime) offset += Math.min(time - lastTime, 50) * 0.025;
+        draw();
+      }
+      lastTime = time;
+      requestAnimationFrame(tick);
+    };
+    const updateMotion = () => {
+      cards.forEach((card) => { card.style.transform = ""; });
+      offset = 0;
+      viewport.scrollLeft = 0;
+      mobileEnabled = mobile.matches;
+      motionEnabled = !reducedMotion.matches && !mobileEnabled;
+      pagination.hidden = !mobileEnabled;
+      updatePage();
+      viewport.classList.toggle("is-animated", motionEnabled);
+      if (!motionEnabled && !mobileEnabled) viewport.tabIndex = 0;
+      else viewport.removeAttribute("tabindex");
+      if (motionEnabled) draw();
+    };
+    viewport.addEventListener("mouseenter", () => { hovered = true; });
+    viewport.addEventListener("mouseleave", () => { hovered = false; });
+    viewport.addEventListener("focusin", () => {
+      if (!motionEnabled) return;
+      showFocusedCard();
+      draw();
+    });
+    const showLinkedAlbum = () => {
+      const index = cards.findIndex((card) => card.querySelector(".tournament-card")?.dataset.tournament === window.location.hash.slice(1));
+      if (index < 0) return;
+      if (mobile.matches) {
+        currentPage = Math.floor(index / pageSize);
+        updatePage();
+      } else if (reducedMotion.matches) {
+        viewport.scrollLeft = cards[index].offsetLeft - track.offsetLeft;
+      } else {
+        offset = -index * dimensions().step;
+        draw();
+      }
+    };
+    reducedMotion.addEventListener("change", updateMotion);
+    mobile.addEventListener("change", () => {
+      updateMotion();
+      showLinkedAlbum();
+    });
     window.addEventListener("hashchange", showLinkedAlbum);
-    return container;
+    updateMotion();
+    showLinkedAlbum();
+    requestAnimationFrame(tick);
   };
 
   const organizeTournamentCategories = () => {
@@ -742,18 +790,14 @@ Thank you.
       }
 
       const categoryEntries = entries.filter((entry) => entry.dataset.category === key);
-      if (key === "trail" && categoryEntries.length) {
-        fragment.appendChild(createAlbumPagination(categoryEntries, "Hall of Fame", "Fames Featured", 3));
-      } else if (key === "compete" && categoryEntries.length) {
-        fragment.appendChild(createAlbumPagination(categoryEntries, "Tournaments & Championships", "Champion-Tour Featured", 3));
-      } else if (key === "learn" && categoryEntries.length) {
-        fragment.appendChild(createAlbumPagination(categoryEntries, "Learn & Grow", "Growth Featured", 3));
-      } else {
-        categoryEntries.forEach((entry) => fragment.appendChild(entry));
-      }
+      const labels = { trail: "Fames Featured", compete: "Champion-Tour Featured", learn: "Growth Featured" };
+      if (categoryEntries.length) fragment.appendChild(createAlbumScroll(categoryEntries, title, labels[key]));
     });
 
     grid.replaceChildren(fragment);
+    const spotlightCount = studentSpotlight?.querySelector(".gallery-featured-count");
+    if (spotlightCount) spotlightCount.textContent = `${studentSpotlight.querySelectorAll(".spotlight-card").length} Champion Featured`;
+    grid.querySelectorAll(".gallery-scroll").forEach(startGalleryScroll);
   };
 
   const showAllTournamentEntries = () => {
@@ -764,6 +808,7 @@ Thank you.
   };
 
   const tournamentTitles = {
+    "salaam-school-nov-2026": "Salaam School Chess Tournament WSCF Tournament Winners",
     "gca-tournament-nov-2026": "Grace Christian Academy (GCA) Tournament USCF Tournament Winner",
     "nicolette-high-school-oct-2026": "Nicolette High School Tournament WSCF Tournament Moments",
     "all-catholic-st-augustine-oct-2026": "All Catholic Chess - St Augustine WSCF Tournament Winners",
@@ -828,16 +873,17 @@ Thank you.
     updateTournamentLikeButton(button, likedTournaments.includes(button.dataset.tournament));
   });
 
-  window.addEventListener("load", () => {
-    organizeTournamentCategories();
-    showAllTournamentEntries();
-  });
+  organizeTournamentCategories();
+  showAllTournamentEntries();
 
   let currentTournament = null;
   let currentIndex = 0;
   let currentImages = [];
 
   const tournaments = {
+    "salaam-school-nov-2026": [
+      "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794793534/Aliya_Zain_3rdPlace_K-5_TeamTrophy_bs3vp0.jpg"
+    ],
     "gca-tournament-nov-2026": [
       "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794790509/HCC_Team_Champions_ulvsuj.jpg",
       "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794790504/HCC_K-8_TeamTrophy_1stPlace_uxhiuf.jpg",
@@ -932,6 +978,9 @@ Thank you.
   };
 
   const tournamentStudentNames = {
+    "salaam-school-nov-2026": {
+      0: "Zain and Aliya - Hamilton Chess Club - 3rd Place - Team Trophy Winners"
+    },
     "gca-tournament-nov-2026": {
       1: "Hamilton Chess Club - 1st place (K-8 Section) - Team Trophy",
       2: "Kian Batra - 1st Place in K-5 Section",

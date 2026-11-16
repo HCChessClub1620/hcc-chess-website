@@ -3745,32 +3745,6 @@ nav ul li a:hover {
   color: #4f772d;
 }
 
-.spotlight-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative; /* FIXED TYPO */
-  gap: 20px;
-  width: 100%;
-}
-
-/* pages */
-.spotlight-page {
-  display: none;
-  width: 100%;
-}
-
-.spotlight-page.active {
-  display: block;
-}
-
-/* grid */
-.spotlight-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-}
-
 /* cards */
 .spotlight-card {
   text-align: center;
@@ -3780,58 +3754,7 @@ nav ul li a:hover {
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* arrows */
-.spotlight-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1000;
-
-  background: #4f772d;
-  color: #fff;
-  border: none;
-
-  font-size: 28px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* LEFT */
-.spotlight-btn.prev {
-  left: -25px; /* pulls outside nicely */
-}
-
-/* RIGHT */
-.spotlight-btn.next {
-  right: -25px;
-}
-
-.spotlight-btn:hover {
-  transform: translateY(-50%) scale(1.1);
-}
-
-@media(max-width:768px){
-
-.spotlight-btn.prev{
-left:0;
-}
-
-.spotlight-btn.next{
-right:0;
-}
-
-}
-
 @media (max-width: 768px) {
-  .spotlight-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
   .spotlight-card img {
     height: 180px; /* ✅ proper height */
     object-fit: cover; /* fills nicely */
@@ -3840,7 +3763,7 @@ right:0;
 }
 .tournament-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 15px;
 }
 
@@ -3875,31 +3798,79 @@ right:0;
 
 .gallery-spotlight {
   grid-column: 1 / -1;
+  min-width: 0;
 }
 
-.album-pagination {
+.gallery-album-row {
   grid-column: 1 / -1;
+  min-width: 0;
 }
 
-.album-pagination-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+.gallery-scroll {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.gallery-scroll.is-animated {
+  overflow: hidden;
+}
+
+.gallery-scroll-track {
+  display: flex;
   gap: 15px;
   width: 100%;
 }
 
-.album-pagination-page-info,
-.album-pagination-total-info {
+.gallery-scroll-track > [hidden] {
+  display: none;
+}
+
+.album-track > * {
+  flex: 0 0 calc((100% - 30px) / 3);
+}
+
+.spotlight-track > * {
+  flex: 0 0 calc((100% - 45px) / 4);
+  box-sizing: border-box;
+}
+
+.gallery-row-status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.gallery-featured-count {
+  color: #31572c;
   font-weight: 600;
   font-size: 0.95rem;
 }
 
-.album-pagination-page-info {
+.gallery-mobile-pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
   color: #132a13;
 }
 
-.album-pagination-total-info {
-  color: #31572c;
+.gallery-mobile-pagination[hidden],
+.gallery-mobile-pagination button[hidden] {
+  display: none;
+}
+
+.gallery-mobile-pagination button {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: #31572c;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {
@@ -3909,9 +3880,22 @@ right:0;
 }
 
 @media (max-width: 900px) {
-  .tournament-grid,
-  .album-pagination-grid {
-    grid-template-columns: 1fr;
+  .tournament-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .album-track > * {
+    flex-basis: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .gallery-scroll-track {
+    flex-wrap: wrap;
+  }
+
+  .spotlight-track > * {
+    flex-basis: calc((100% - 15px) / 2);
   }
 }
 
