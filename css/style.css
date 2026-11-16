@@ -3958,21 +3958,6 @@ nav ul li a:hover {
     flex-wrap: wrap;
   }
 
-  .gallery-scroll[data-category="learn"],
-  .gallery-scroll[data-category="compete"] {
-    scroll-snap-type: x mandatory;
-  }
-
-  .gallery-scroll[data-category="learn"] .album-track,
-  .gallery-scroll[data-category="compete"] .album-track {
-    flex-wrap: nowrap;
-  }
-
-  .gallery-scroll[data-category="learn"] .tournament-entry,
-  .gallery-scroll[data-category="compete"] .tournament-entry {
-    scroll-snap-align: start;
-  }
-
   .spotlight-track > * {
     flex-basis: calc((100% - 15px) / 2);
   }

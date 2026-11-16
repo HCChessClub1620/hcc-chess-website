@@ -819,9 +819,6 @@ Thank you.
       if (mobile.matches) {
         currentPage = Math.floor(index / pageSize);
         updatePage();
-        if (viewport.dataset.category === "learn" || viewport.dataset.category === "compete") {
-          viewport.scrollLeft += cards[index].getBoundingClientRect().left - viewport.getBoundingClientRect().left;
-        }
       } else if (reducedMotion.matches) {
         viewport.scrollLeft = cards[index].offsetLeft - track.offsetLeft;
       } else {
@@ -869,7 +866,7 @@ Thank you.
       }
 
       const categoryEntries = galleryData[key].albums.map((album) => createGalleryAlbum(album, key));
-      const labels = { trail: "Tours Featured", compete: "Host Featured", learn: "Growth Featured" };
+      const labels = { trail: "Tours Featured", compete: "Host Featured", learn: "Exp Featured" };
       if (categoryEntries.length) fragment.appendChild(createAlbumScroll(categoryEntries, title, labels[key]));
     });
 
