@@ -1,47 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const getIncludeBasePath = () => {
-    const path = window.location.pathname;
-    return path.includes("/pages/") ? "../includes/" : "includes/";
-  };
-
   const fixInjectedNavLinks = (target) => {
     if (!target) return;
-    const isInPagesFolder = window.location.pathname.includes("/pages/");
     const normalizedPath = window.location.pathname.toLowerCase().replace(/\/+$/, "") || "/";
-    const isHomePage = normalizedPath === "/" || normalizedPath.endsWith("/index.html");
-
-    target.querySelectorAll('a[href]').forEach((link) => {
-      const href = link.getAttribute("href");
-      if (href === "../index.html") {
-        link.setAttribute("href", isInPagesFolder ? "../index.html" : "index.html");
-      } else if (href === "about.html") {
-        link.setAttribute("href", isInPagesFolder ? "about.html" : "pages/about.html");
-      } else if (href === "founders.html") {
-        link.setAttribute("href", isInPagesFolder ? "founders.html" : "pages/founders.html");
-      } else if (href === "coaches.html") {
-        link.setAttribute("href", isInPagesFolder ? "coaches.html" : "pages/coaches.html");
-      } else if (href === "programs.html") {
-        link.setAttribute("href", isInPagesFolder ? "programs.html" : "pages/programs.html");
-      } else if (href === "events.html") {
-        link.setAttribute("href", isInPagesFolder ? "events.html" : "pages/events.html");
-      } else if (href === "why-us.html") {
-        link.setAttribute("href", isInPagesFolder ? "why-us.html" : "pages/why-us.html");
-      } else if (href === "register.html") {
-        link.setAttribute("href", isInPagesFolder ? "register.html" : "pages/register.html");
-      } else if (href === "fees.html") {
-        link.setAttribute("href", isInPagesFolder ? "fees.html" : "pages/fees.html");
-      } else if (href === "gallery.html") {
-        link.setAttribute("href", isInPagesFolder ? "gallery.html" : "pages/gallery.html");
-      } else if (href === "students.html") {
-        link.setAttribute("href", isInPagesFolder ? "students.html" : "pages/students.html");
-      } else if (href === "reviews.html") {
-        link.setAttribute("href", isInPagesFolder ? "reviews.html" : "pages/reviews.html");
-      } else if (href === "sponsors.html") {
-        link.setAttribute("href", isInPagesFolder ? "sponsors.html" : "pages/sponsors.html");
-      } else if (href === "contact.html") {
-        link.setAttribute("href", isInPagesFolder ? "contact.html" : "pages/contact.html");
-      }
-    });
+    const isHomePage = normalizedPath === "/" || normalizedPath === "/index.html";
 
     const navList = target.querySelector("#mainNav ul");
     const existingHomeItem = navList?.querySelector('a[data-home-link="true"]')?.closest("li");
@@ -55,14 +16,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const homeItem = document.createElement("li");
     const homeLink = document.createElement("a");
-    homeLink.setAttribute("href", isInPagesFolder ? "../index.html" : "index.html");
+    homeLink.setAttribute("href", "/");
     homeLink.setAttribute("data-home-link", "true");
     homeLink.setAttribute("aria-label", "Home");
     homeLink.setAttribute("title", "Home");
     homeLink.innerHTML = '<svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" focusable="false"><path fill="currentColor" d="M12 3l9 8h-3v10h-5v-6H11v6H6V11H3l9-8z"></path></svg>';
     homeItem.appendChild(homeLink);
 
-    const aboutItem = navList.querySelector('a[href="about.html"], a[href="pages/about.html"]')?.closest("li");
+    const aboutItem = navList.querySelector('a[href="/pages/about/"]')?.closest("li");
     if (aboutItem) {
       navList.insertBefore(homeItem, aboutItem);
     } else {
@@ -151,60 +112,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  const fixInjectedFooterLinks = (target) => {
-    if (!target) return;
-    const isInPagesFolder = window.location.pathname.includes("/pages/");
-
-    target.querySelectorAll('a[data-page-link], a[href$="privacy-policy.html"]').forEach((link) => {
-      const page = link.getAttribute("data-page-link") || "privacy-policy.html";
-      if (!page) return;
-      link.setAttribute("href", isInPagesFolder ? page : `pages/${page}`);
-    });
-  };
-
   const loadSharedIncludes = () => {
     const headerTarget = document.getElementById("site-header");
     const footerTarget = document.getElementById("site-footer");
-    const includeBase = getIncludeBasePath();
-
     const loadInclude = (target, fileName) => {
       if (!target) return;
 
-      const candidates = [
-        `${includeBase}${fileName}`,
-        fileName === "header.html" ? "./includes/header.html" : "./includes/footer.html",
-        fileName === "header.html" ? "../includes/header.html" : "../includes/footer.html"
-      ];
-
-      const tryFetch = (index) => {
-        if (index >= candidates.length) {
-          console.error(`Failed to load ${fileName}`);
-          return;
-        }
-
-        fetch(candidates[index])
-          .then((response) => {
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            return response.text();
-          })
-          .then((html) => {
-            target.innerHTML = html;
-            if (fileName === "header.html") {
-              fixInjectedNavLinks(target);
-              try {
-                initNavDropdowns(target);
-                initMobileNav(target);
-              } catch (err) {
-                console.error('initNavDropdowns error', err);
-              }
-            } else if (fileName === "footer.html") {
-              fixInjectedFooterLinks(target);
+      fetch(`/includes/${fileName}?v=20261116`)
+        .then((response) => {
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return response.text();
+        })
+        .then((html) => {
+          target.innerHTML = html;
+          if (fileName === "header.html") {
+            fixInjectedNavLinks(target);
+            try {
+              initNavDropdowns(target);
+              initMobileNav(target);
+            } catch (err) {
+              console.error('initNavDropdowns error', err);
             }
-          })
-          .catch(() => tryFetch(index + 1));
-      };
-
-      tryFetch(0);
+          }
+        })
+        .catch((error) => console.error(`Failed to load ${fileName}`, error));
     };
 
     loadInclude(headerTarget, "header.html");
