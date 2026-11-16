@@ -9,9 +9,9 @@ window.hccGallery.compete = {
   albums: [
     {
       id: "hamilton-scholastic-winners-oct-2026",
-      shareTitle: "Hamilton Chess Club - Program Scholastic Tournament Winners",
-      headings: ["Scholastic Tournament Winners", "Oct Classic - 03 Oct 2026"],
-      reelLabel: "Hamilton Scholastic Chess Tournament October 2026 winners reel",
+      shareTitle: "HCC Hosted - OCT Scholastic Tournament Winners",
+      headings: ["HCC Hosted - OCT Scholastic Tournament Winners", "Oct Classic - 03 Oct 2026"],
+      coverAlt: "Winn Vignesh - 1st place in the beginner section",
       images: [
         "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570619/Winn_Vignesh_Beginner_1st_o7fnwj.jpg",
         "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1791570610/Amogh_Yelkana_Beginner_2nd_j7exa2.jpg",
@@ -49,9 +49,9 @@ window.hccGallery.compete = {
     },
     {
       id: "fall-kickoff-sep-2026",
-      shareTitle: "Hamilton Chess Club Program Fall Kick-off Tournament Winners",
-      headings: ["Fall Kick-off Tournament Winners", "Sep 2026"],
-      reelLabel: "Fall Kick-Off Sep 2026 tournament winners reel",
+      shareTitle: "HCC Fall Kick-Off Tournament Winners",
+      headings: ["HCC Fall Kick-Off Tournament Winners", "Sep 2026"],
+      coverAlt: "Leila Sajan - 1st place in the beginner section",
       images: [
         "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788567/Laila_-_1st_-_Beginner_lcycqh.jpg",
         "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1789788558/Aliya-_2nd_-_Beginner_qapozz.jpg",
@@ -75,9 +75,9 @@ window.hccGallery.compete = {
     },
     {
       id: "summer-july-2026",
-      shareTitle: "Hamilton Chess Club Program Summer Tournament Winners",
-      headings: ["Summer Tournament Winners", "Jul 2026"],
-      reelLabel: "Summer July 2026 tournament winners reel",
+      shareTitle: "HCC Summer Tournament Winners",
+      headings: ["HCC Summer Tournament Winners", "Jul 2026"],
+      coverAlt: "Anay Jadhav with Coach Edgar",
       coachName: "Coach Edgar",
       images: [
         "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1786204605/Anay_Jadhav_mweqhi.jpg",

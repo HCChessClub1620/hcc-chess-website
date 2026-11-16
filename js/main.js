@@ -564,31 +564,24 @@ Thank you.
   const tournamentGroupStudentNames = albumProperty("groupStudentNames");
   const sideSwapNames = new Set(galleryData.compete?.sideSwapNames || []);
   const studentNameOverrides = galleryData.compete?.nameOverrides || {};
+  const albumPath = (id) => `/pages/gallery/${id.toLowerCase()}/`;
 
   const createGalleryAlbum = (album, category) => {
     const entry = document.createElement("div");
     entry.className = "tournament-entry";
     entry.dataset.category = category;
     entry.dataset.tournament = album.id;
-    const card = document.createElement("div");
+    const card = document.createElement("a");
     card.className = "tournament-card";
     card.dataset.tournament = album.id;
-    card.addEventListener("click", () => window.openTournament(album.id));
+    card.href = albumPath(album.id);
     const media = document.createElement("div");
     media.className = "tournament-media";
-    if (album.reelLabel) {
-      const reel = document.createElement("div");
-      reel.className = "tournament-reel";
-      reel.dataset.tournament = album.id;
-      reel.setAttribute("aria-label", album.reelLabel);
-      media.appendChild(reel);
-    } else {
-      const image = document.createElement("img");
-      image.src = album.cover;
-      image.alt = album.coverAlt;
-      image.loading = "lazy";
-      media.appendChild(image);
-    }
+    const image = document.createElement("img");
+    image.src = album.cover || album.images[0];
+    image.alt = album.coverAlt;
+    image.loading = "lazy";
+    media.appendChild(image);
     card.appendChild(media);
     album.headings.forEach((text) => {
       const heading = document.createElement("h4");
@@ -659,6 +652,7 @@ Thank you.
     const viewport = document.createElement("div");
     viewport.className = "gallery-scroll";
     viewport.setAttribute("aria-label", categoryName);
+    viewport.dataset.category = entries[0].dataset.category;
     const track = document.createElement("div");
     track.className = "gallery-scroll-track album-track";
     const total = document.createElement("span");
@@ -678,6 +672,22 @@ Thank you.
     const pageSize = track.classList.contains("spotlight-track") ? 4 : 3;
     const totalPages = Math.ceil(cards.length / pageSize);
     const count = viewport.nextElementSibling;
+    const frame = document.createElement("div");
+    frame.className = "gallery-scroll-frame";
+    const first = document.createElement("button");
+    first.type = "button";
+    first.className = "gallery-jump gallery-jump-first";
+    first.setAttribute("aria-label", `Show first item in ${viewport.getAttribute("aria-label")}`);
+    first.title = "Show first item";
+    first.textContent = "❮";
+    const last = document.createElement("button");
+    last.type = "button";
+    last.className = "gallery-jump gallery-jump-last";
+    last.setAttribute("aria-label", `Show last item in ${viewport.getAttribute("aria-label")}`);
+    last.title = "Show last item";
+    last.textContent = "❯";
+    viewport.before(frame);
+    frame.append(viewport, first, last);
     const status = document.createElement("div");
     status.className = "gallery-row-status";
     const pagination = document.createElement("div");
@@ -714,10 +724,12 @@ Thank you.
     previous.addEventListener("click", () => {
       currentPage = Math.max(0, currentPage - 1);
       updatePage();
+      viewport.scrollLeft = 0;
     });
     next.addEventListener("click", () => {
       currentPage = Math.min(totalPages - 1, currentPage + 1);
       updatePage();
+      viewport.scrollLeft = 0;
     });
 
     const cardPosition = (card) => card.offsetLeft - cards[0].offsetLeft;
@@ -731,6 +743,17 @@ Thank you.
         card.style.transform = `translateX(${offset}px)`;
       });
     };
+    const jumpToEnd = (end) => {
+      if (motionEnabled) {
+        offset = end ? minOffset() : 0;
+        direction = end ? 1 : -1;
+        draw();
+      } else {
+        viewport.scrollLeft = end ? viewport.scrollWidth - viewport.clientWidth : 0;
+      }
+    };
+    first.addEventListener("click", () => jumpToEnd(false));
+    last.addEventListener("click", () => jumpToEnd(true));
     const showFocusedCard = () => {
       const card = cards.find((item) => item.contains(document.activeElement));
       if (!card) return;
@@ -744,7 +767,7 @@ Thank you.
       if (motionEnabled !== (!reducedMotion.matches && !mobile.matches) || mobileEnabled !== mobile.matches) updateMotion();
       if (motionEnabled) {
         if (viewport.contains(document.activeElement)) showFocusedCard();
-        else if (!hovered && lastTime) {
+        else if (!frame.contains(document.activeElement) && !hovered && lastTime) {
           const end = minOffset();
           offset += direction * Math.min(time - lastTime, 50) * 0.05;
           if (offset <= end) {
@@ -768,14 +791,16 @@ Thank you.
       mobileEnabled = mobile.matches;
       motionEnabled = !reducedMotion.matches && !mobileEnabled;
       pagination.hidden = !mobileEnabled;
+      first.hidden = mobileEnabled;
+      last.hidden = mobileEnabled;
       updatePage();
       viewport.classList.toggle("is-animated", motionEnabled);
       if (!motionEnabled && !mobileEnabled) viewport.tabIndex = 0;
       else viewport.removeAttribute("tabindex");
       if (motionEnabled) draw();
     };
-    viewport.addEventListener("mouseenter", () => { hovered = true; });
-    viewport.addEventListener("mouseleave", () => { hovered = false; });
+    frame.addEventListener("mouseenter", () => { hovered = true; });
+    frame.addEventListener("mouseleave", () => { hovered = false; });
     viewport.addEventListener("focusin", () => {
       if (!motionEnabled) return;
       showFocusedCard();
@@ -787,6 +812,9 @@ Thank you.
       if (mobile.matches) {
         currentPage = Math.floor(index / pageSize);
         updatePage();
+        if (viewport.dataset.category === "learn" || viewport.dataset.category === "compete") {
+          viewport.scrollLeft += cards[index].getBoundingClientRect().left - viewport.getBoundingClientRect().left;
+        }
       } else if (reducedMotion.matches) {
         viewport.scrollLeft = cards[index].offsetLeft - track.offsetLeft;
       } else {
@@ -817,7 +845,7 @@ Thank you.
     const categories = [
       { key: "learn", title: "Learn & Grow", description: "From classroom learning and exciting chess activities to the thrill of tournament day — a collection of special moments and memories at Hamilton Chess Club." },
       { key: "compete", title: "HCC - Hosted Tournaments", description: "Celebrating our students' achievements, tournament champions, winners, and outstanding performances across our in-house class tournaments and scholastic tournaments hosted by Hamilton Chess Club." },
-      { key: "trail", title: "Hall of Fame", description: "Celebrating our students who proudly represent Hamilton Chess Club at WSCF, USCF, and other scholastic tournaments. Every game, every achievement, and every milestone adds to our club's legacy!" },
+      { key: "trail", title: "Our Champions - Hall of Fame", description: "Celebrating our students who proudly represent Hamilton Chess Club at WSCF, USCF, and other scholastic tournaments. Every game, every achievement, and every milestone adds to our club's legacy!" },
       { key: "spotlight", title: "Our Rising Champions", description: "Student achievements and inspiring chess journeys." }
     ];
     const fragment = document.createDocumentFragment();
@@ -873,7 +901,11 @@ Thank you.
     }
     localStorage.setItem("likedTournaments", JSON.stringify(likedTournaments));
     localStorage.setItem("tournamentLikeCounts", JSON.stringify(tournamentLikeCounts));
-    updateTournamentLikeButton(button, likedIndex === -1);
+    document.querySelectorAll(".like-button[data-tournament]").forEach((likeButton) => {
+      if (likeButton.dataset.tournament === tournamentKey) {
+        updateTournamentLikeButton(likeButton, likedIndex === -1);
+      }
+    });
   };
 
   window.shareTournament = async function (event, tournamentKey) {
@@ -881,7 +913,7 @@ Thank you.
     const shareData = {
       title: tournamentTitles[tournamentKey] || "Hamilton Chess Club tournament",
       text: "View this Hamilton Chess Club tournament gallery.",
-      url: window.location.href.split("#")[0] + `#${tournamentKey}`
+      url: window.location.origin + albumPath(tournamentKey)
     };
 
     try {
@@ -969,96 +1001,11 @@ Thank you.
     });
   };
 
-  const buildTournamentReels = () => {
-    const reelBlocks = document.querySelectorAll(".tournament-reel[data-tournament]");
-    if (!reelBlocks.length) return;
-
-    reelBlocks.forEach((block) => {
-      const tournamentKey = block.getAttribute("data-tournament");
-      const images = tournaments[tournamentKey] || [];
-      if (!images.length) return;
-
-      block.innerHTML = "";
-
-      const preview = document.createElement("img");
-      preview.src = images[0];
-      preview.alt = getDisplayNameFromUrl(images[0]);
-      preview.loading = "lazy";
-      preview.decoding = "async";
-
-      const progress = document.createElement("div");
-      progress.className = "reel-progress";
-      const progressBars = images.map(() => {
-        const bar = document.createElement("span");
-        progress.appendChild(bar);
-        return bar;
-      });
-
-      const reelCounter = document.createElement("div");
-      reelCounter.className = "reel-image-counter";
-
-      block.appendChild(preview);
-      block.appendChild(progress);
-      block.appendChild(reelCounter);
-
-      const studentTag = document.createElement("div");
-      studentTag.className = "reel-name-tag";
-      const coachTag = document.createElement("div");
-      coachTag.className = "reel-coach-tag";
-      block.appendChild(studentTag);
-      block.appendChild(coachTag);
-
-      let index = 0;
-      const draw = () => {
-        const currentImage = images[index];
-        preview.src = currentImage;
-        preview.alt = getDisplayNameFromUrl(currentImage);
-        reelCounter.textContent = `${index + 1}/${images.length}`;
-        const studentName = getDisplayNameFromUrl(currentImage);
-        const coachName = tournamentCoachNames[tournamentKey];
-        const isSwap = shouldSwapSides(studentName);
-        const studentOnLeft = isSwap ? index % 2 !== 0 : index % 2 === 0;
-        studentTag.textContent = getStudentLabel(tournamentKey, index, currentImage);
-        coachTag.textContent = coachName || "";
-        studentTag.classList.toggle("lowered", isRonit(studentName));
-        studentTag.classList.toggle("left", studentOnLeft);
-        studentTag.classList.toggle("right", !studentOnLeft);
-        coachTag.classList.toggle("left", !studentOnLeft);
-        coachTag.classList.toggle("right", studentOnLeft);
-        studentTag.style.display = shouldDisplayStudentLabels(tournamentKey, index) ? "block" : "none";
-        coachTag.style.display = coachName ? "block" : "none";
-        progressBars.forEach((bar, barIndex) => {
-          bar.classList.toggle("active", barIndex <= index);
-        });
-      };
-
-      draw();
-
-      let timer = setInterval(() => {
-        index = (index + 1) % images.length;
-        draw();
-      }, 1400);
-
-      block.addEventListener("mouseenter", () => {
-        clearInterval(timer);
-      });
-
-      block.addEventListener("mouseleave", () => {
-        timer = setInterval(() => {
-          index = (index + 1) % images.length;
-          draw();
-        }, 1400);
-      });
-    });
-  };
-
   const buildTournamentCardTotalBadges = () => {
     const cards = document.querySelectorAll(".tournament-card[data-tournament]");
     if (!cards.length) return;
 
     cards.forEach((card) => {
-      if (card.querySelector(".tournament-reel")) return;
-
       const tournamentKey = card.getAttribute("data-tournament") || "";
       const images = tournaments[tournamentKey] || [];
       if (!images.length) return;
@@ -1074,7 +1021,6 @@ Thank you.
   };
 
   buildTournamentCollages();
-  buildTournamentReels();
   buildTournamentCardTotalBadges();
 
   const updateImage = () => {
@@ -1098,7 +1044,14 @@ Thank you.
     if (lightboxShareButton) lightboxShareButton.dataset.tournament = currentTournament;
 
     img.src = currentImages[currentIndex];
-    img.alt = getDisplayNameFromUrl(currentImages[currentIndex]);
+    const album = galleryAlbums.find((item) => item.id === currentTournament);
+    const photoNames = [
+      tournamentStudentNames[currentTournament]?.[currentIndex],
+      tournamentSecondStudentNames[currentTournament]?.[currentIndex],
+      tournamentCenterStudentNames[currentTournament]?.[currentIndex],
+      ...(tournamentGroupStudentNames[currentTournament]?.[currentIndex] || [])
+    ].filter(Boolean);
+    img.alt = photoNames.join(", ") || `${album?.headings[0] || "Gallery"} - photo ${currentIndex + 1}`;
     img.parentElement.classList.toggle(
       "lightbox-media-large",
       currentTournament === "wisconsin-junior-open-nov-2026" && [0, 3, 5].includes(currentIndex)
@@ -1164,11 +1117,11 @@ Thank you.
     }
   };
 
-  window.openTournament = function (name) {
+  window.openTournament = function (name, imageIndex = 0) {
     currentTournament = name;
     currentImages = tournaments[name] || [];
     if (!currentImages.length) return;
-    currentIndex = 0;
+    currentIndex = Math.max(0, Math.min(imageIndex, currentImages.length - 1));
     const lightbox = document.getElementById("lightbox");
     if (lightbox) {
       lightbox.style.display = "flex";

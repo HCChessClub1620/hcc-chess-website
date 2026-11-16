@@ -13,3 +13,15 @@ window.hccGallery.spotlight = {
     { image: "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794797286/Hayan_lzfwrp.jpg", name: "Hayan N", description: "Wisconsin - Junior Open - Champion" }
   ]
 };
+
+window.hccGallery.spotlight.albums = [{
+  id: "student-spotlight",
+  shareTitle: "Our Rising Champions",
+  headings: ["Our Rising Champions"],
+  cover: window.hccGallery.spotlight.students[0].image,
+  coverAlt: "Hamilton Chess Club rising champion Shravan S",
+  images: window.hccGallery.spotlight.students.map((student) => student.image),
+  studentNames: Object.fromEntries(window.hccGallery.spotlight.students.map((student, index) =>
+    [index, `${student.name} - ${student.description}`]
+  ))
+}];
