@@ -3395,6 +3395,15 @@ nav ul li a:hover {
   justify-content: center;
 }
 
+.lightbox-media.lightbox-media-large {
+  max-width: 96vw;
+  max-height: 92vh;
+}
+
+.lightbox-media-large img {
+  max-height: 92vh;
+}
+
 .lightbox-actions {
   position: absolute;
   bottom: 14px;
@@ -3827,6 +3836,12 @@ nav ul li a:hover {
 
 .album-track > * {
   flex: 0 0 calc((100% - 30px) / 3);
+}
+
+@media (min-width: 901px) {
+  .album-track > .tournament-entry[data-tournament="wisconsin-junior-open-nov-2026"] {
+    flex-basis: calc((100% - 30px) * 2 / 3 + 15px);
+  }
 }
 
 .spotlight-track > * {

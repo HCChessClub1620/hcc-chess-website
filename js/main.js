@@ -638,6 +638,7 @@ Thank you.
     const entry = document.createElement("div");
     entry.className = "tournament-entry";
     entry.dataset.category = category;
+    entry.dataset.tournament = album.id;
     const card = document.createElement("div");
     card.className = "tournament-card";
     card.dataset.tournament = album.id;
@@ -714,7 +715,7 @@ Thank you.
     });
     const count = document.createElement("div");
     count.className = "gallery-featured-count";
-    count.textContent = `${students.length} Champion Featured`;
+    count.textContent = `${students.length} Champions Featured`;
     viewport.appendChild(track);
     container.append(viewport, count);
     section.appendChild(container);
@@ -765,6 +766,7 @@ Thank you.
     status.append(pagination, count);
     let currentPage = 0;
     let offset = 0;
+    let direction = -1;
     let lastTime = 0;
     let hovered = false;
     let motionEnabled = !reducedMotion.matches && !mobile.matches;
@@ -787,36 +789,41 @@ Thank you.
       updatePage();
     });
 
-    const dimensions = () => {
-      const width = cards[0].getBoundingClientRect().width;
-      const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
-      return { width, step: width + gap, total: (width + gap) * cards.length };
+    const cardPosition = (card) => card.offsetLeft - cards[0].offsetLeft;
+    const minOffset = () => {
+      const lastCard = cards[cards.length - 1];
+      return Math.min(0, viewport.clientWidth - (cardPosition(lastCard) + lastCard.offsetWidth));
     };
     const draw = () => {
-      const { width, step, total } = dimensions();
-      if (!total) return;
-      cards.forEach((card, index) => {
-        const position = ((index * step + offset + width) % total + total) % total - width;
-        card.style.transform = `translateX(${position - index * step}px)`;
+      offset = Math.max(minOffset(), Math.min(0, offset));
+      cards.forEach((card) => {
+        card.style.transform = `translateX(${offset}px)`;
       });
     };
     const showFocusedCard = () => {
       const card = cards.find((item) => item.contains(document.activeElement));
       if (!card) return;
       viewport.scrollLeft = 0;
-      const { width, step, total } = dimensions();
-      if (!total) return;
-      const index = cards.indexOf(card);
-      const position = ((index * step + offset + width) % total + total) % total - width;
-      if (position < -1 || position + width > viewport.getBoundingClientRect().width + 1) {
-        offset -= position;
-      }
+      const width = card.getBoundingClientRect().width;
+      const position = cardPosition(card) + offset;
+      if (position < 0) offset -= position;
+      else if (position + width > viewport.clientWidth) offset -= position + width - viewport.clientWidth;
     };
     const tick = (time) => {
       if (motionEnabled !== (!reducedMotion.matches && !mobile.matches) || mobileEnabled !== mobile.matches) updateMotion();
       if (motionEnabled) {
         if (viewport.contains(document.activeElement)) showFocusedCard();
-        else if (!hovered && lastTime) offset += Math.min(time - lastTime, 50) * 0.025;
+        else if (!hovered && lastTime) {
+          const end = minOffset();
+          offset += direction * Math.min(time - lastTime, 50) * 0.05;
+          if (offset <= end) {
+            offset = end;
+            direction = 1;
+          } else if (offset >= 0) {
+            offset = 0;
+            direction = -1;
+          }
+        }
         draw();
       }
       lastTime = time;
@@ -825,6 +832,7 @@ Thank you.
     const updateMotion = () => {
       cards.forEach((card) => { card.style.transform = ""; });
       offset = 0;
+      direction = -1;
       viewport.scrollLeft = 0;
       mobileEnabled = mobile.matches;
       motionEnabled = !reducedMotion.matches && !mobileEnabled;
@@ -851,7 +859,7 @@ Thank you.
       } else if (reducedMotion.matches) {
         viewport.scrollLeft = cards[index].offsetLeft - track.offsetLeft;
       } else {
-        offset = -index * dimensions().step;
+        offset = -cardPosition(cards[index]);
         draw();
       }
     };
@@ -877,7 +885,7 @@ Thank you.
 
     const categories = [
       { key: "learn", title: "Learn & Grow", description: "From classroom learning and exciting chess activities to the thrill of tournament day — a collection of special moments and memories at Hamilton Chess Club." },
-      { key: "compete", title: "Tournaments & Championships", description: "Celebrating our students' achievements, tournament champions, winners, and outstanding performances across our in-house class tournaments and scholastic tournaments hosted by Hamilton Chess Club." },
+      { key: "compete", title: "HCC - Hosted Tournaments", description: "Celebrating our students' achievements, tournament champions, winners, and outstanding performances across our in-house class tournaments and scholastic tournaments hosted by Hamilton Chess Club." },
       { key: "trail", title: "Hall of Fame", description: "Celebrating our students who proudly represent Hamilton Chess Club at WSCF, USCF, and other scholastic tournaments. Every game, every achievement, and every milestone adds to our club's legacy!" },
       { key: "spotlight", title: "Our Rising Champions", description: "Student achievements and inspiring chess journeys." }
     ];
@@ -895,7 +903,7 @@ Thank you.
       }
 
       const categoryEntries = galleryData[key].albums.map((album) => createGalleryAlbum(album, key));
-      const labels = { trail: "Fames Featured", compete: "Champion-Tour Featured", learn: "Growth Featured" };
+      const labels = { trail: "Tours Featured", compete: "Host Featured", learn: "Growth Featured" };
       if (categoryEntries.length) fragment.appendChild(createAlbumScroll(categoryEntries, title, labels[key]));
     });
 
@@ -1160,6 +1168,10 @@ Thank you.
 
     img.src = currentImages[currentIndex];
     img.alt = getDisplayNameFromUrl(currentImages[currentIndex]);
+    img.parentElement.classList.toggle(
+      "lightbox-media-large",
+      currentTournament === "wisconsin-junior-open-nov-2026" && [0, 3, 5].includes(currentIndex)
+    );
     if (groupStudentTags) {
       const names = tournamentGroupStudentNames[currentTournament]?.[currentIndex] || [];
       groupStudentTags.replaceChildren(...names.map((name) => {

@@ -3,6 +3,28 @@ window.hccGallery.trail = {
   // Label indexes correspond to positions in each album's images array.
   albums: [
     {
+      id: "wisconsin-junior-open-nov-2026",
+      shareTitle: "Wisconsin State Chess Championship 2026–2027 Wisconsin Junior Open Tournament",
+      headings: ["Wisconsin State Chess Championship", "2026–2027 Wisconsin Junior Open Tournament", "Manitowoc", "14 NOV - 15 NOV 2026"],
+      cover: "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_1200/v1794797924/HCC_Team_Championship_pwwrh2.jpg",
+      coverAlt: "Hamilton Chess Club team at the Wisconsin Junior Open",
+      images: [
+        "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_1200/v1794797924/HCC_Team_Championship_pwwrh2.jpg",
+        "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794797906/Hayan_ElementarySchool_1stPlace_zcvgud.jpg",
+        "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794797941/Kian_StateChampion_K-5_h3el3s.jpg",
+        "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_1200/v1794797976/Vibha_WisconsinElementary_Girls_1stPlace_rq12ju.jpg",
+        "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794797969/Shravan_MiddleSchool_StateChampion_ljvbjw.jpg",
+        "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_1200/v1794797963/Riya_WisconsinMiddle_Girls_1stPlace_hozfru.jpg"
+      ],
+      studentNames: {
+        1: "Hayan Nissar - Wisconsin Junior Open - 1st Place - Elementary School Section",
+        2: "Kian Batra - Wisconsin State Champion - Elementary School Section",
+        3: "Vibha Iyer - Wisconsin Junior Open - Girls Champion - 1st Place - Elementary School Section",
+        4: "Shravan Sabarish - Wisconsin State Champion - Middle School Section",
+        5: "Riya Gupta - Wisconsin Junior Open - Girls Champion - 1st Place - Middle School Section"
+      }
+    },
+    {
       id: "salaam-school-nov-2026",
       shareTitle: "Salaam School Chess Tournament WSCF Tournament Winners",
       headings: ["Salaam School Chess Tournament", "WSCF Tournament Winners", "Milwaukee", "14 NOV 2026"],
