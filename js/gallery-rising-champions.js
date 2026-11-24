@@ -1,0 +1,27 @@
+window.hccGallery = window.hccGallery || {};
+window.hccGallery.spotlight = {
+  students: [
+    { image: "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782104307/shravan_sayv5m.jpg", name: "Shravan Sabarish", description: "FIDE ACM Master Title Winner" },
+    { image: "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782104305/shashwath_q7itkn.jpg", name: "Shashwath Sabarish", description: "Arena FIDE Rising Star" },
+    { image: "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000104/Karthik_yqti7s.jpg", name: "Karthik Ramesh", description: "2026 WI State Novice Champion" },
+    { image: "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782104860/Vibha_wvax4e.jpg", name: "Vibha Iyer", description: "Wisconsin State Junior Open - Girls Champion" },
+    { image: "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782104304/Neil_ciwgwf.jpg", name: "Neil Mathur", description: "WSCF Champion & USCF Champion" },
+    { image: "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782102786/copy_of_navya_fzubna.jpg", name: "Navya Iyer", description: "Budding Young Champion" },
+    { image: "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000105/Kian_zg1xeb.jpg", name: "Kian Batra", description: "Wisconsin State Champion" },
+    { image: "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782000106/Subhash_nsxdnj.jpg", name: "Subhash", description: "WSCF & USCF Champion" },
+    { image: "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794796732/RiyaGupta_cpebea.png", name: "Riya Gupta", description: "Wisconsin State Junior Open - Girls Champion" },
+    { image: "https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1794797286/Hayan_lzfwrp.jpg", name: "Hayan Nissar", description: "Wisconsin - Junior Open - Champion" }
+  ]
+};
+
+window.hccGallery.spotlight.albums = [{
+  id: "student-spotlight",
+  shareTitle: "Our Rising Champions",
+  headings: ["Our Rising Champions"],
+  cover: window.hccGallery.spotlight.students[0].image,
+  coverAlt: "Hamilton Chess Club rising champion Shravan Sabarish",
+  images: window.hccGallery.spotlight.students.map((student) => student.image),
+  studentNames: Object.fromEntries(window.hccGallery.spotlight.students.map((student, index) =>
+    [index, `${student.name} - ${student.description}`]
+  ))
+}];

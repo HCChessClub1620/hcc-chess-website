@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery | Hamilton Chess Club</title>
+  <link rel="canonical" href="https://hamiltonchessclub.org/pages/gallery/" />
+  <link rel="stylesheet" href="../../css/style.css?v=20261122-cover-framing" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <section id="gallery" class="gallery-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Memories & Achievements</span>
+        <h2>Photo Gallery</h2>
+      </div>
+      
+      <div class="tournament-grid" id="tournamentGrid"></div>
+
+    </div>
+  </section>
+
+  <div id="lightbox" class="lightbox" style="display:none;">
+    <span class="lightbox-close" onclick="closeLightbox()">×</span>
+    <span class="lightbox-prev" onclick="prevImage()">❮</span>
+    <div class="lightbox-media">
+      <img id="lightbox-img" src="" alt="" />
+      <div id="lightbox-image-counter" class="lightbox-image-counter" aria-live="polite"></div>
+      <div id="lightbox-student-tag" class="lightbox-name-tag left" aria-live="polite"></div>
+      <div id="lightbox-second-student-tag" class="lightbox-name-tag right" aria-live="polite"></div>
+      <div id="lightbox-center-student-tag" class="lightbox-name-tag center" aria-live="polite"></div>
+      <div id="lightbox-group-student-tags" class="lightbox-group-student-tags" aria-label="Students from left to right" hidden></div>
+      <div id="lightbox-coach-tag" class="lightbox-coach-tag right"></div>
+      <div id="lightbox-award-tag" class="lightbox-award-tag left" aria-live="polite"></div>
+      <div id="lightbox-actions" class="lightbox-actions" aria-label="Tournament actions">
+        <button id="lightbox-like-button" class="tournament-action like-button" type="button" onclick="toggleTournamentLike(event, this)" aria-label="Like this tournament" title="Like this tournament"><span class="like-icon" aria-hidden="true">&#9825;</span><span class="like-label">Like</span></button>
+        <button id="lightbox-share-button" class="tournament-action share-button" type="button" onclick="shareTournament(event, this.dataset.tournament)" aria-label="Share this tournament" title="Share this tournament"><span class="share-icon" aria-hidden="true">&#8599;</span><span class="share-label">Share</span></button>
+      </div>
+    </div>
+    <span class="lightbox-next" onclick="nextImage()">❯</span>
+  </div>
+
+  <div id="spotlightLightbox" class="lightbox" style="display:none;">
+    <span class="lightbox-close" onclick="closeSpotlightLightbox()">×</span>
+    <img id="spotlightLightboxImg" src="" alt="Student image" />
+  </div>
+
+  <div id="site-footer"></div>
+
+  <script src="../../js/gallery-learn.js?v=20261116-albums2"></script>
+  <script src="../../js/gallery-tournaments.js?v=20261116-albums3"></script>
+  <script src="../../js/gallery-hall-of-fame.js?v=20261122-winners"></script>
+  <script src="../../js/gallery-rising-champions.js?v=20261116-albums2"></script>
+  <script src="../../js/main.js?v=20261116-gallery-mobile1"></script>
+</body>
+</html>
