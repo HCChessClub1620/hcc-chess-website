@@ -376,6 +376,26 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  const tshirtPurchase = document.getElementById("tshirtPurchase");
+  const tshirtSizeGroup = document.getElementById("tshirtSizeGroup");
+  const tshirtSize = document.getElementById("tshirtSize");
+
+  if (tshirtPurchase && tshirtSizeGroup && tshirtSize) {
+    const toggleTshirtSize = (value) => {
+      const shouldShow = value === "Yes";
+      tshirtSizeGroup.hidden = !shouldShow;
+      tshirtSize.required = shouldShow;
+      if (!shouldShow) {
+        tshirtSize.value = "";
+      }
+    };
+
+    toggleTshirtSize(tshirtPurchase.value);
+    tshirtPurchase.addEventListener("change", function () {
+      toggleTshirtSize(this.value);
+    });
+  }
+
   const registrationForm = document.getElementById("registrationForm");
   const successPopup = document.getElementById("successPopup");
   const paymentReceiptSteps = document.getElementById("paymentReceiptSteps");
@@ -422,12 +442,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (registrationForm) {
       registrationForm.reset();
-      registrationForm.querySelectorAll("input").forEach((field) => {
+      registrationForm.querySelectorAll("input[type='text'], input[type='email'], input[type='tel']").forEach((field) => {
         field.value = "";
+      });
+      registrationForm.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
+        checkbox.checked = false;
       });
       registrationForm.querySelectorAll("select").forEach((select) => {
         select.selectedIndex = 0;
       });
+    }
+
+    const tshirtSizeGroup = document.getElementById("tshirtSizeGroup");
+    if (tshirtSizeGroup) {
+      tshirtSizeGroup.hidden = true;
+    }
+    const tshirtSize = document.getElementById("tshirtSize");
+    if (tshirtSize) {
+      tshirtSize.required = false;
+      tshirtSize.value = "";
+    }
+
+    const medicalDetailsGroup = document.getElementById("medicalDetailsGroup");
+    if (medicalDetailsGroup) {
+      medicalDetailsGroup.hidden = true;
+    }
+    const medicalDetailsTextarea = document.getElementById("medicalDetailsTextarea");
+    if (medicalDetailsTextarea) {
+      medicalDetailsTextarea.required = false;
+      medicalDetailsTextarea.value = "";
     }
 
     const paymentContainer = document.getElementById("paymentSection");
