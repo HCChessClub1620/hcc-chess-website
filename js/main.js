@@ -423,6 +423,62 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  if (stepsCurriculumSelect) {
+    const updateVisibleBooks = (curriculumLevel) => {
+      const bookMap = {
+        "Stepping Stones": ["book-stepping-stones", "book-step1", "book-coach-recommendation"],
+        "Step 1": ["book-step1-plus", "book-step1-extra", "book-coach-recommendation"],
+        "Step 2": ["book-step1-plus", "book-step1-extra", "book-step2-plus", "book-coach-recommendation"],
+        "Step 3": ["book-step2-plus", "book-step2-extra", "book-step3-plus", "book-coach-recommendation"],
+        "Step 4": ["book-coach-recommendation"],
+        "Step 5": ["book-coach-recommendation"],
+        "Step 6": ["book-coach-recommendation"],
+        "Not Sure - Coach Recommendation Required": ["book-coach-recommendation"]
+      };
+
+      const visibleBooks = bookMap[curriculumLevel] || [];
+      const allBookIds = [
+        "book-stepping-stones",
+        "book-step1", "book-step1-plus", "book-step1-extra",
+        "book-step2", "book-step2-plus", "book-step2-extra",
+        "book-step3", "book-step3-plus", "book-step3-extra",
+        "book-step4", "book-step4-plus", "book-step4-extra",
+        "book-step5", "book-step5-plus", "book-step5-extra",
+        "book-step6", "book-opt-out", "book-coach-recommendation"
+      ];
+
+      allBookIds.forEach((id) => {
+        const element = document.getElementById(id);
+        if (element) {
+          const parentLabel = element.parentElement;
+          if (parentLabel) {
+            parentLabel.style.display = visibleBooks.includes(id) ? "" : "none";
+          }
+          element.checked = false;
+        }
+      });
+
+      const messageContainer = document.getElementById("booksMessageContainer");
+      if (messageContainer) {
+        if (curriculumLevel === "Stepping Stones") {
+          messageContainer.innerHTML = '<p><strong>Steps Book Selection – Stepping Stones</strong><br /><br />Stepping Stones has been pre-selected as the complimentary book for eligible beginners. <strong>Stepping Stones is provided free of charge.</strong><br /><br />Based on your child\'s current learning level, the following Steps books are also suggested for consideration if you wish to purchase an additional book. Each paid Steps book costs <strong>$14.00</strong>.<br /><br />The coach may recommend a different book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.</p>';
+          const steppingStonesCheckbox = document.getElementById("book-stepping-stones");
+          if (steppingStonesCheckbox) {
+            steppingStonesCheckbox.checked = true;
+          }
+        } else {
+          messageContainer.innerHTML = '<p><strong>Steps Curriculum – Book Selection</strong><br />Based on your child\'s current learning level, the following books are suggested for consideration. The coach may recommend a different book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.<br /><br />Each paid Steps book costs <strong>$14.00</strong>. Stepping Stones is complimentary for eligible beginners.</p>';
+        }
+      }
+    };
+
+    stepsCurriculumSelect.addEventListener("change", function () {
+      updateVisibleBooks(this.value);
+    });
+
+    updateVisibleBooks(stepsCurriculumSelect.value);
+  }
+
   const registrationForm = document.getElementById("registrationForm");
   const successPopup = document.getElementById("successPopup");
   const paymentReceiptSteps = document.getElementById("paymentReceiptSteps");
