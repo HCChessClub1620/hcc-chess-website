@@ -397,38 +397,23 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const stepBookPurchase = document.getElementById("stepBookPurchase");
-  const recommendedBooksSection = document.getElementById("recommendedBooksSection");
   const recommendedBooksCheckboxes = document.querySelectorAll('#recommendedBooksGroup input[type="checkbox"]');
   const stepsCurriculumSection = document.getElementById("stepsCurriculumSection");
   const stepsCurriculumSelect = document.querySelector('select[name="entry.1459360062"]');
-
-  if (stepBookPurchase && recommendedBooksSection) {
-    const toggleRecommendedBooks = (value) => {
-      const shouldShow = value === "Yes";
-      recommendedBooksSection.hidden = !shouldShow;
-      recommendedBooksCheckboxes.forEach((checkbox) => {
-        checkbox.required = shouldShow;
-      });
-      if (!shouldShow) {
-        recommendedBooksCheckboxes.forEach((checkbox) => {
-          checkbox.checked = false;
-        });
-      }
-    };
-
-    toggleRecommendedBooks(stepBookPurchase.value);
-    stepBookPurchase.addEventListener("change", function () {
-      toggleRecommendedBooks(this.value);
-    });
-  }
 
   if (stepBookPurchase && stepsCurriculumSection && stepsCurriculumSelect) {
     const toggleStepsCurriculum = (value) => {
       const shouldShow = value === "Yes";
       stepsCurriculumSection.hidden = !shouldShow;
       stepsCurriculumSelect.required = shouldShow;
+      recommendedBooksCheckboxes.forEach((checkbox) => {
+        checkbox.required = shouldShow;
+      });
       if (!shouldShow) {
         stepsCurriculumSelect.selectedIndex = 0;
+        recommendedBooksCheckboxes.forEach((checkbox) => {
+          checkbox.checked = false;
+        });
       }
     };
 
@@ -515,10 +500,6 @@ document.addEventListener("DOMContentLoaded", () => {
       medicalDetailsTextarea.value = "";
     }
 
-    const recommendedBooksSection = document.getElementById("recommendedBooksSection");
-    if (recommendedBooksSection) {
-      recommendedBooksSection.hidden = true;
-    }
     document.querySelectorAll('#recommendedBooksGroup input[type="checkbox"]').forEach((checkbox) => {
       checkbox.checked = false;
       checkbox.required = false;
