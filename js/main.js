@@ -470,6 +470,19 @@ document.addEventListener("DOMContentLoaded", () => {
           messageContainer.innerHTML = '<p><strong>Steps Curriculum – Book Selection</strong><br />Based on your child\'s current learning level, the following books are suggested for consideration. The coach may recommend a different book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.<br /><br />Each paid Steps book costs <strong>$14.00</strong>. Stepping Stones is complimentary for eligible beginners.</p>';
         }
       }
+
+      const defaultBookMap = {
+        "Step 1": "book-step1-plus",
+        "Step 2": "book-step2-plus",
+        "Step 3": "book-step3-plus"
+      };
+
+      if (defaultBookMap[curriculumLevel]) {
+        const defaultBookCheckbox = document.getElementById(defaultBookMap[curriculumLevel]);
+        if (defaultBookCheckbox) {
+          defaultBookCheckbox.checked = true;
+        }
+      }
     };
 
     stepsCurriculumSelect.addEventListener("change", function () {
