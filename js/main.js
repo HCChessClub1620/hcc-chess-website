@@ -460,15 +460,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const messageContainer = document.getElementById("booksMessageContainer");
       if (messageContainer) {
-        if (curriculumLevel === "Stepping Stones") {
-          messageContainer.innerHTML = '<p><strong>Steps Book Selection – Stepping Stones</strong><br /><br />Stepping Stones has been pre-selected as the complimentary book for eligible beginners. <strong>Stepping Stones is provided free of charge.</strong><br /><br />Based on your child\'s current learning level, the following Steps books are also suggested for consideration if you wish to purchase an additional book. Each paid Steps book costs <strong>$14.00</strong>.<br /><br />The coach may recommend a different book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.</p>';
-          const steppingStonesCheckbox = document.getElementById("book-stepping-stones");
-          if (steppingStonesCheckbox) {
-            steppingStonesCheckbox.checked = true;
-          }
-        } else {
-          messageContainer.innerHTML = '<p><strong>Steps Curriculum – Book Selection</strong><br />Based on your child\'s current learning level, the following books are suggested for consideration. The coach may recommend a different book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.<br /><br />Each paid Steps book costs <strong>$14.00</strong>. Stepping Stones is complimentary for eligible beginners.</p>';
-        }
+        const messageMap = {
+          "Stepping Stones": '<p><strong>Steps Book Selection – Stepping Stones</strong><br /><br />Stepping Stones has been pre-selected as the complimentary book for eligible beginners. <strong>Stepping Stones is provided free of charge.</strong><br /><br />Based on your child\'s current learning level, the following books are also suggested for consideration if you wish to purchase an additional book:<br /><br />• Step 1 – $14.00<br />• Contact Coach for Recommendation<br /><br />The coach may recommend a different book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.</p>',
+          
+          "Step 1": '<p><strong>Steps Book Selection – Step 1</strong><br /><br />Step 1 has been pre-selected as the recommended book for your child\'s current learning level. <strong>Step 1 costs $14.00.</strong><br /><br />Based on your child\'s current learning level, the following supplementary books are also available for consideration if you wish to enhance their learning:<br /><br />• Step 1 - Plus – $14.00<br />• Step 1 - Extra – $14.00<br />• Contact Coach for Recommendation<br /><br />The coach may recommend a different book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.</p>',
+          
+          "Step 2": '<p><strong>Steps Book Selection – Step 2</strong><br /><br />Step 2 has been pre-selected as the recommended book for your child\'s current learning level. <strong>Step 2 costs $14.00.</strong><br /><br />Based on your child\'s current learning level, the following supplementary books are also available for consideration if you wish to enhance their learning:<br /><br />• Step 1 - Plus – $14.00<br />• Step 1 - Extra – $14.00<br />• Step 2 - Plus – $14.00<br />• Contact Coach for Recommendation<br /><br />The coach may recommend a different book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.</p>',
+          
+          "Step 3": '<p><strong>Steps Book Selection – Step 3</strong><br /><br />Step 3 has been pre-selected as the recommended book for your child\'s current learning level. <strong>Step 3 costs $14.00.</strong><br /><br />Based on your child\'s current learning level, the following supplementary books are also available for consideration if you wish to enhance their learning:<br /><br />• Step 2 - Plus – $14.00<br />• Step 2 - Extra – $14.00<br />• Step 3 - Plus – $14.00<br />• Contact Coach for Recommendation<br /><br />The coach may recommend a different book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.</p>',
+          
+          "Step 4": '<p><strong>Steps Book Selection – Step 4</strong><br /><br />Based on your child\'s advanced learning level, we recommend consulting with the coach for personalized book recommendations.<br /><br />• Contact Coach for Recommendation<br /><br />The coach will assess your child\'s USCF rating, chess knowledge, playing strength, and overall progress to recommend the most appropriate Steps study materials.</p>',
+          
+          "Step 5": '<p><strong>Steps Book Selection – Step 5</strong><br /><br />Based on your child\'s advanced learning level, we recommend consulting with the coach for personalized book recommendations.<br /><br />• Contact Coach for Recommendation<br /><br />The coach will assess your child\'s USCF rating, chess knowledge, playing strength, and overall progress to recommend the most appropriate Steps study materials.</p>',
+          
+          "Step 6": '<p><strong>Steps Book Selection – Step 6</strong><br /><br />Based on your child\'s advanced learning level, we recommend consulting with the coach for personalized book recommendations.<br /><br />• Contact Coach for Recommendation<br /><br />The coach will assess your child\'s USCF rating, chess knowledge, playing strength, and overall progress to recommend the most appropriate Steps study materials.</p>',
+          
+          "Not Sure - Coach Recommendation Required": '<p><strong>Steps Book Selection – Coach Recommendation</strong><br /><br />Since you are unsure of your child\'s current level, we recommend consulting with the coach for personalized book recommendations.<br /><br />• Contact Coach for Recommendation<br /><br />The coach will assess your child\'s USCF rating, chess knowledge, playing strength, and overall progress to recommend the most appropriate Steps study materials.</p>'
+        };
+
+        messageContainer.innerHTML = messageMap[curriculumLevel] || '<p><strong>Steps Curriculum – Book Selection</strong><br />Based on your child\'s current learning level, the following books are suggested for consideration. The coach may recommend a different book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.<br /><br />Each paid Steps book costs <strong>$14.00</strong>. Stepping Stones is complimentary for eligible beginners.</p>';
       }
 
       const defaultBookMap = {
