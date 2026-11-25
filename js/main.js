@@ -427,9 +427,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const updateVisibleBooks = (curriculumLevel) => {
       const bookMap = {
         "Stepping Stones": ["book-stepping-stones", "book-step1", "book-coach-recommendation"],
-        "Step 1": ["book-step1-plus", "book-step1-extra", "book-coach-recommendation"],
-        "Step 2": ["book-step1-plus", "book-step1-extra", "book-step2-plus", "book-coach-recommendation"],
-        "Step 3": ["book-step2-plus", "book-step2-extra", "book-step3-plus", "book-coach-recommendation"],
+        "Step 1": ["book-step1", "book-step1-plus", "book-step1-extra", "book-coach-recommendation"],
+        "Step 2": ["book-step2", "book-step1-plus", "book-step1-extra", "book-step2-plus", "book-coach-recommendation"],
+        "Step 3": ["book-step3", "book-step2-plus", "book-step2-extra", "book-step3-plus", "book-coach-recommendation"],
         "Step 4": ["book-coach-recommendation"],
         "Step 5": ["book-coach-recommendation"],
         "Step 6": ["book-coach-recommendation"],
@@ -472,9 +472,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const defaultBookMap = {
-        "Step 1": "book-step1-plus",
-        "Step 2": "book-step2-plus",
-        "Step 3": "book-step3-plus"
+        "Stepping Stones": "book-stepping-stones",
+        "Step 1": "book-step1",
+        "Step 2": "book-step2",
+        "Step 3": "book-step3"
       };
 
       if (defaultBookMap[curriculumLevel]) {
