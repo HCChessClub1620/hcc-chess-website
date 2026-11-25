@@ -399,6 +399,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const stepBookPurchase = document.getElementById("stepBookPurchase");
   const recommendedBooksSection = document.getElementById("recommendedBooksSection");
   const recommendedBooksCheckboxes = document.querySelectorAll('#recommendedBooksGroup input[type="checkbox"]');
+  const stepsCurriculumSection = document.getElementById("stepsCurriculumSection");
+  const stepsCurriculumSelect = document.querySelector('select[name="entry.1459360062"]');
 
   if (stepBookPurchase && recommendedBooksSection) {
     const toggleRecommendedBooks = (value) => {
@@ -417,6 +419,22 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleRecommendedBooks(stepBookPurchase.value);
     stepBookPurchase.addEventListener("change", function () {
       toggleRecommendedBooks(this.value);
+    });
+  }
+
+  if (stepBookPurchase && stepsCurriculumSection && stepsCurriculumSelect) {
+    const toggleStepsCurriculum = (value) => {
+      const shouldShow = value === "Yes";
+      stepsCurriculumSection.hidden = !shouldShow;
+      stepsCurriculumSelect.required = shouldShow;
+      if (!shouldShow) {
+        stepsCurriculumSelect.selectedIndex = 0;
+      }
+    };
+
+    toggleStepsCurriculum(stepBookPurchase.value);
+    stepBookPurchase.addEventListener("change", function () {
+      toggleStepsCurriculum(this.value);
     });
   }
 
@@ -505,6 +523,16 @@ document.addEventListener("DOMContentLoaded", () => {
       checkbox.checked = false;
       checkbox.required = false;
     });
+
+    const stepsCurriculumSection = document.getElementById("stepsCurriculumSection");
+    if (stepsCurriculumSection) {
+      stepsCurriculumSection.hidden = true;
+    }
+    const stepsCurriculumSelect = document.querySelector('select[name="entry.1459360062"]');
+    if (stepsCurriculumSelect) {
+      stepsCurriculumSelect.required = false;
+      stepsCurriculumSelect.selectedIndex = 0;
+    }
 
     const paymentContainer = document.getElementById("paymentSection");
     if (paymentContainer) {
