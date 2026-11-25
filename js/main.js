@@ -396,6 +396,30 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  const stepBookPurchase = document.getElementById("stepBookPurchase");
+  const recommendedBooksSection = document.getElementById("recommendedBooksSection");
+  const recommendedBooksCheckboxes = document.querySelectorAll('#recommendedBooksGroup input[type="checkbox"]');
+
+  if (stepBookPurchase && recommendedBooksSection) {
+    const toggleRecommendedBooks = (value) => {
+      const shouldShow = value === "Yes";
+      recommendedBooksSection.hidden = !shouldShow;
+      recommendedBooksCheckboxes.forEach((checkbox) => {
+        checkbox.required = shouldShow;
+      });
+      if (!shouldShow) {
+        recommendedBooksCheckboxes.forEach((checkbox) => {
+          checkbox.checked = false;
+        });
+      }
+    };
+
+    toggleRecommendedBooks(stepBookPurchase.value);
+    stepBookPurchase.addEventListener("change", function () {
+      toggleRecommendedBooks(this.value);
+    });
+  }
+
   const registrationForm = document.getElementById("registrationForm");
   const successPopup = document.getElementById("successPopup");
   const paymentReceiptSteps = document.getElementById("paymentReceiptSteps");
@@ -472,6 +496,15 @@ document.addEventListener("DOMContentLoaded", () => {
       medicalDetailsTextarea.required = false;
       medicalDetailsTextarea.value = "";
     }
+
+    const recommendedBooksSection = document.getElementById("recommendedBooksSection");
+    if (recommendedBooksSection) {
+      recommendedBooksSection.hidden = true;
+    }
+    document.querySelectorAll('#recommendedBooksGroup input[type="checkbox"]').forEach((checkbox) => {
+      checkbox.checked = false;
+      checkbox.required = false;
+    });
 
     const paymentContainer = document.getElementById("paymentSection");
     if (paymentContainer) {
