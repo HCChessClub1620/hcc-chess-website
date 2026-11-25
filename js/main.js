@@ -169,12 +169,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Set to true while testing register.html, then set back to false before going live.
   const USE_CLASS_PROGRAM_TEST_DATE = false;
 
-  // Sep 29, 2026 = Early Bird pricing.
-  // Change to Oct 1, 2026 to test regular pricing after the Sep 30 cutoff.
-  const CLASS_PROGRAM_TEST_DATE = new Date(2026, 9, 01, 12, 0, 0);
+  // Dec 18, 2026 = Early Bird pricing; Dec 19, 2026 = regular pricing.
+  const CLASS_PROGRAM_TEST_DATE = new Date(2026, 11, 19, 12, 0, 0);
 
-  // Early Bird pricing applies through Sep 30, 2026.
-  const classProgramEarlyBirdCutoff = new Date(2026, 8, 30, 23, 59, 59);
+  // Early Bird pricing applies through Dec 18, 2026.
+  const classProgramEarlyBirdCutoff = new Date(2026, 11, 18, 23, 59, 59, 999);
 
   // Use test date or actual current date
   const currentDate = USE_TEST_DATE ? TEST_DATE : new Date();
@@ -191,6 +190,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const paymentFeeNotice = document.getElementById("paymentFeeNotice");
   const chessLevel = document.getElementById("chessLevel");
   const familyDiscount = document.getElementById("familyDiscount");
+  const studentTypeSelect = document.querySelector('select[name="entry.1900317233"]');
+  const tshirtPurchase = document.getElementById("tshirtPurchase");
+  const tshirtSize = document.getElementById("tshirtSize");
+  const stepBookPurchaseYes = document.getElementById("stepBookPurchaseYes");
+  const stepBookPurchaseNo = document.getElementById("stepBookPurchaseNo");
+  const recommendedBooksCheckboxes = document.querySelectorAll('#recommendedBooksGroup input[type="checkbox"]');
   const squarePaymentUrl = "https://square.link/u/uTetALxk";
   const squarePaymentMethod = "Credit/Debit Card(Square)";
 
@@ -205,22 +210,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const earlyBird = classProgramCurrentDate <= classProgramEarlyBirdCutoff;
     const fees = {
-      Beginner: earlyBird ? 100 : 115,
+      Beginner: earlyBird ? 110 : 125,
       Intermediate: earlyBird ? 125 : 140,
       Advanced: earlyBird ? 125 : 140
     };
     const baseFee = fees[chessLevel.value];
     if (!baseFee) return null;
 
-    return familyDiscount?.value === "Yes" ? baseFee - 10 : baseFee;
+    return baseFee;
   };
 
   const calculateSquareTotal = (registrationFee) => {
-    const squareRate = 0.033;
-    const squareFlatFee = 0.3;
-    const total = (registrationFee + squareFlatFee) / (1 - squareRate);
+    const feeCents = Math.round(registrationFee * 100);
+    return Math.ceil((feeCents + 30) * 1000 / 967) / 100;
+  };
 
-    return Math.ceil(total * 100) / 100;
+  const getBooksFeeCents = () => {
+    if (!stepBookPurchaseYes?.checked) return 0;
+    let total = 0;
+    for (const book of recommendedBooksCheckboxes) {
+      if (!book.checked || book.disabled) continue;
+      if (book.value === "Stepping Stones") {
+        if (studentTypeSelect?.value !== "New Student" && studentTypeSelect?.value !== "Returning Student") return null;
+        if (studentTypeSelect.value === "Returning Student") total += 1299;
+      } else if (/^Step [1-6]$/.test(book.value)) {
+        total += 1299;
+      } else if (/^Step [1-5] - (Plus|Extra)$/.test(book.value)) {
+        total += 1399;
+      } else if (book.value !== "Contact Coach for Recommendation" && book.value !== "Opt Out - No Books Required") {
+        throw new Error(`Unknown book selection: ${book.value}`);
+      }
+    }
+    return total;
   };
 
   if (paymentMethod && paymentSection) {
@@ -230,15 +251,28 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
       const isClassProgram = Boolean(chessLevel);
-      const fee = isClassProgram ? getClassProgramFee() : getTournamentFee();
+      const baseFee = isClassProgram ? getClassProgramFee() : getTournamentFee();
+      const discount = isClassProgram && familyDiscount?.value === "Yes" ? 10 : 0;
+      const shirtFee = isClassProgram && studentTypeSelect?.value === "Returning Student" && tshirtPurchase?.value === "Yes" ? 13.5 : 0;
+      const booksFeeCents = isClassProgram ? getBooksFeeCents() : 0;
+      const needsPurchaseChoice = isClassProgram && stepBookPurchaseYes && stepBookPurchaseNo
+        && !stepBookPurchaseYes.disabled && !stepBookPurchaseYes.checked && !stepBookPurchaseNo.checked;
+      const calculationNotice = needsPurchaseChoice
+        ? "Select whether to purchase the selected books to calculate your total."
+        : booksFeeCents === null ? "Select the student type to calculate the Stepping Stones price." : "";
+      const fee = baseFee === null || calculationNotice
+        ? null
+        : (Math.round((baseFee - discount + shirtFee) * 100) + booksFeeCents) / 100;
       const programName = chessLevel?.value || "";
-      const feeLine = fee
+      const feeLine = fee !== null
         ? isClassProgram
-          ? `${programName} Program Registration Fee: $${fee.toFixed(2)}`
+          ? `${programName} Program Registration Fee: $${baseFee.toFixed(2)}<br>Family Discount: -$${discount.toFixed(2)}<br>T-Shirt: $${shirtFee.toFixed(2)}<br>Books: $${(booksFeeCents / 100).toFixed(2)}<br>Subtotal: $${fee.toFixed(2)}`
           : `Tournament Registration Fee: $${fee.toFixed(2)}`
         : "";
       const squareTotalAmount = fee ? calculateSquareTotal(fee) : 0;
-      const squareProcessingFee = (squareTotalAmount * 0.033 + 0.3).toFixed(3);
+      const squareProcessingFee = isClassProgram
+        ? (squareTotalAmount - fee).toFixed(2)
+        : (squareTotalAmount * 0.033 + 0.3).toFixed(3);
       const squareTotal = squareTotalAmount.toFixed(2);
 
       if (method === "Venmo") {
@@ -247,8 +281,8 @@ document.addEventListener("DOMContentLoaded", () => {
             <h3>Pay Using Venmo</h3>
             <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782076247/VenmoPayment_jsrtv4.jpg" loading="lazy" alt="Venmo payment">
             <p>
-              ${feeLine ? `<strong>${feeLine}</strong><br>` : ""}
-              Please send${fee ? ` $${fee}` : ""} to Venmo Account:<br>
+              ${feeLine ? `<strong>${feeLine}</strong><br>` : ""}${calculationNotice ? `<strong>${calculationNotice}</strong><br>` : ""}
+              Please send${fee ? ` $${fee.toFixed(2)}` : ""} to Venmo Account:<br>
               @Bala-Narayanan
             </p>
             <br>
@@ -261,8 +295,8 @@ document.addEventListener("DOMContentLoaded", () => {
             <h3>Pay Using Zelle</h3>
             <img src="https://res.cloudinary.com/dtwkmx7ih/image/upload/f_auto,q_auto,w_600/v1782076247/ZellePayment_ehbzko.jpg" loading="lazy" alt="Zelle payment">
             <p>
-              ${feeLine ? `<strong>${feeLine}</strong><br>` : ""}
-              Please send${fee ? ` $${fee}` : ""} to Zelle Account:<br>
+              ${feeLine ? `<strong>${feeLine}</strong><br>` : ""}${calculationNotice ? `<strong>${calculationNotice}</strong><br>` : ""}
+              Please send${fee ? ` $${fee.toFixed(2)}` : ""} to Zelle Account:<br>
               hamiltonsdchess
             </p>
           </div>
@@ -276,14 +310,13 @@ document.addEventListener("DOMContentLoaded", () => {
               <p>Square Processing Fee: <strong>$${squareProcessingFee}</strong><br>
               Total Amount Due: <strong>$${squareTotal}</strong></p>
             ` : ""}
-            <p>Complete your payment securely with a credit or debit card.</p>
-            <a href="${squarePaymentUrl}" target="_blank" rel="noopener" class="btn btn-payment">Pay with Credit/Debit Card</a>
+            ${calculationNotice ? `<p><strong>${calculationNotice}</strong></p>` : ""}
+            <p>${isClassProgram && feeLine ? `Enter $${squareTotal} on the Square payment page. ` : ""}Complete your payment securely with a credit or debit card.</p>
+            ${calculationNotice ? "" : `<a href="${squarePaymentUrl}" target="_blank" rel="noopener" class="btn btn-payment">Pay with Credit/Debit Card</a>`}
           </div>
         `;
       } else {
-        paymentSection.innerHTML = feeLine
-          ? `<p><strong>${feeLine}</strong></p><p>Select a payment method to view payment instructions.</p>`
-          : "<p>Select a payment method to view payment instructions.</p>";
+        paymentSection.innerHTML = `${feeLine || calculationNotice ? `<p><strong>${feeLine || calculationNotice}</strong></p>` : ""}<p>Select a payment method to view payment instructions.</p>`;
       }
     };
 
@@ -376,64 +409,113 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const tshirtPurchase = document.getElementById("tshirtPurchase");
+  const tshirtMessage = document.getElementById("tshirtMessage");
+
+  if (studentTypeSelect && tshirtMessage) {
+    const returningStudentMessage = tshirtMessage.innerHTML;
+    const newStudentMessage = '<p><strong>Hamilton Chess Club T-Shirt</strong><br /><br /><strong>Welcome, New Students!</strong><br /><br />Every new student will receive <strong>one complimentary Hamilton Chess Club (HCC) T-shirt</strong> to proudly represent our club at WSCF- and USCF-rated chess tournaments!<br /><br />Please select your preferred T-shirt size below.<br /><br /><strong>Proudly wear HCC. Proudly represent your club!</strong></p>';
+
+    const updateTshirtMessage = () => {
+      tshirtMessage.innerHTML = studentTypeSelect.value === "New Student"
+        ? newStudentMessage
+        : returningStudentMessage;
+    };
+
+    updateTshirtMessage();
+    studentTypeSelect.addEventListener("change", updateTshirtMessage);
+  }
+
   const tshirtSizeGroup = document.getElementById("tshirtSizeGroup");
-  const tshirtSize = document.getElementById("tshirtSize");
 
   if (tshirtPurchase && tshirtSizeGroup && tshirtSize) {
-    const toggleTshirtSize = (value) => {
-      const shouldShow = value === "Yes";
-      tshirtSizeGroup.hidden = !shouldShow;
-      tshirtSize.required = shouldShow;
-      if (!shouldShow) {
+    let previousStudentType = studentTypeSelect?.value;
+    const updateTshirtFields = () => {
+      const isNewStudent = studentTypeSelect?.value === "New Student";
+      const isReturningStudent = studentTypeSelect?.value === "Returning Student";
+      if (isNewStudent) {
+        tshirtPurchase.value = "No";
+        if (previousStudentType !== "New Student") {
+          tshirtSize.value = "";
+        }
+      } else if (isReturningStudent && previousStudentType === "New Student") {
+        tshirtPurchase.value = "";
+      }
+      previousStudentType = studentTypeSelect?.value;
+
+      const shouldShowSize = isNewStudent || tshirtPurchase.value === "Yes";
+      const optOut = tshirtSize.querySelector('option[value="No T Shirt Needed (Opt Out)"]');
+      if (optOut) {
+        optOut.disabled = isReturningStudent && tshirtPurchase.value === "Yes";
+      }
+
+      tshirtPurchase.hidden = isNewStudent;
+      tshirtPurchase.required = !isNewStudent;
+      tshirtSizeGroup.hidden = !shouldShowSize;
+      tshirtSize.required = shouldShowSize;
+
+      if (isReturningStudent && tshirtPurchase.value === "No") {
+        tshirtSize.value = "No T Shirt Needed (Opt Out)";
+      } else if (!shouldShowSize || (optOut?.disabled && tshirtSize.value === optOut.value)) {
         tshirtSize.value = "";
       }
-    };
 
-    toggleTshirtSize(tshirtPurchase.value);
-    tshirtPurchase.addEventListener("change", function () {
-      toggleTshirtSize(this.value);
-    });
-  }
-
-  const stepBookPurchase = document.getElementById("stepBookPurchase");
-  const recommendedBooksCheckboxes = document.querySelectorAll('#recommendedBooksGroup input[type="checkbox"]');
-  const stepsCurriculumSection = document.getElementById("stepsCurriculumSection");
-  const stepsCurriculumSelect = document.querySelector('select[name="entry.1459360062"]');
-
-  if (stepBookPurchase && stepsCurriculumSection && stepsCurriculumSelect) {
-    const toggleStepsCurriculum = (value) => {
-      const shouldShow = value === "Yes";
-      stepsCurriculumSection.hidden = !shouldShow;
-      stepsCurriculumSelect.required = shouldShow;
-      recommendedBooksCheckboxes.forEach((checkbox) => {
-        checkbox.required = shouldShow;
-      });
-      if (!shouldShow) {
-        stepsCurriculumSelect.selectedIndex = 0;
-        recommendedBooksCheckboxes.forEach((checkbox) => {
-          checkbox.checked = false;
-        });
+      if (paymentMethod && paymentSection) {
+        paymentMethod.dispatchEvent(new Event("change"));
       }
     };
 
-    toggleStepsCurriculum(stepBookPurchase.value);
-    stepBookPurchase.addEventListener("change", function () {
-      toggleStepsCurriculum(this.value);
-    });
+    updateTshirtFields();
+    studentTypeSelect?.addEventListener("change", updateTshirtFields);
+    tshirtPurchase.addEventListener("change", updateTshirtFields);
   }
 
+  const stepBookPurchaseGroup = document.getElementById("stepBookPurchaseGroup");
+  const stepsCurriculumSelect = document.querySelector('select[name="entry.1459360062"]');
+
   if (stepsCurriculumSelect) {
+    const messageContainer = document.getElementById("booksMessageContainer");
+    const defaultBooksMessage = messageContainer ? messageContainer.innerHTML : "";
+    let purchaseLocked = false;
+    const updatePurchaseChoice = (selectYes = false) => {
+      if (!stepBookPurchaseYes || !stepBookPurchaseNo || !stepBookPurchaseGroup) return;
+      const needsCoach = stepsCurriculumSelect.value === "Not Sure - Contact Coach";
+      const hasBooks = Array.from(recommendedBooksCheckboxes).some((checkbox) => checkbox.checked && !checkbox.disabled);
+      const shouldLock = needsCoach || !hasBooks;
+      stepBookPurchaseGroup.hidden = needsCoach;
+      stepBookPurchaseYes.disabled = shouldLock;
+      stepBookPurchaseNo.disabled = shouldLock;
+      if (shouldLock) {
+        stepBookPurchaseYes.checked = false;
+        stepBookPurchaseNo.checked = true;
+      } else if (purchaseLocked || selectYes) {
+        stepBookPurchaseYes.checked = true;
+        stepBookPurchaseNo.checked = false;
+      }
+      purchaseLocked = shouldLock;
+      stepBookPurchaseYes.setCustomValidity(
+        !shouldLock && !stepBookPurchaseYes.checked && !stepBookPurchaseNo.checked
+          ? "Please choose whether to purchase the selected books."
+          : ""
+      );
+      if (paymentMethod && paymentSection) {
+        paymentMethod.dispatchEvent(new Event("change"));
+      }
+    };
+
     const updateVisibleBooks = (curriculumLevel) => {
+      const needsCoach = curriculumLevel === "Not Sure - Contact Coach";
+      const coachRecommendation = document.getElementById("book-coach-recommendation");
+      if (coachRecommendation) {
+        coachRecommendation.disabled = needsCoach;
+        coachRecommendation.parentElement?.classList.toggle("locked-recommendation", needsCoach);
+      }
       const bookMap = {
-        "Stepping Stones": ["book-stepping-stones", "book-step1", "book-coach-recommendation"],
-        "Step 1": ["book-step1", "book-step1-plus", "book-step1-extra", "book-coach-recommendation"],
-        "Step 2": ["book-step2", "book-step1-plus", "book-step1-extra", "book-step2-plus", "book-coach-recommendation"],
-        "Step 3": ["book-step3", "book-step2-plus", "book-step2-extra", "book-step3-plus", "book-coach-recommendation"],
-        "Step 4": ["book-coach-recommendation"],
-        "Step 5": ["book-coach-recommendation"],
-        "Step 6": ["book-coach-recommendation"],
-        "Not Sure - Coach Recommendation Required": ["book-coach-recommendation"]
+        "Stepping Stones": ["book-stepping-stones", "book-step1"],
+        "Step 1": ["book-step1", "book-step1-plus", "book-step1-extra"],
+        "Step 2": ["book-step2", "book-step1-plus", "book-step1-extra", "book-step2-plus", "book-step2-extra"],
+        "Step 3": ["book-step3", "book-step2-plus", "book-step2-extra", "book-step3-plus", "book-step3-extra"],
+        "Step 4 and Above": ["book-coach-recommendation"],
+        "Not Sure - Contact Coach": ["book-coach-recommendation"]
       };
 
       const visibleBooks = bookMap[curriculumLevel] || [];
@@ -458,34 +540,31 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      const messageContainer = document.getElementById("booksMessageContainer");
       if (messageContainer) {
         const messageMap = {
-          "Stepping Stones": '<p><strong>Steps Book Selection – Stepping Stones</strong><br /><br />Stepping Stones has been pre-selected as the complimentary book for eligible beginners. <strong>Stepping Stones is provided free of charge.</strong><br /><br />Based on your child\'s current learning level, the following books are also suggested for consideration if you wish to purchase an additional book:<br /><br />• Step 1 – $14.00<br />• Contact Coach for Recommendation<br /><br />The coach may recommend a different book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.</p>',
+          "Stepping Stones": '<p><strong>Steps Book Selection – Stepping Stones</strong><br /><br />Stepping Stones has been pre-selected. It is <strong>free for new students</strong> and costs <strong>$12.99 for returning students</strong>.<br /><br />You may also select an additional book:<br /><br /><strong>• Step 1 – $12.99</strong><br /><br /><strong>Coach\'s Recommendation:</strong> The coach will recommend the most appropriate book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.</p>',
           
-          "Step 1": '<p><strong>Steps Book Selection – Step 1</strong><br /><br />Step 1 has been pre-selected as the recommended book for your child\'s current learning level. <strong>Step 1 costs $14.00.</strong><br /><br />Based on your child\'s current learning level, the following supplementary books are also available for consideration if you wish to enhance their learning:<br /><br />• Step 1 - Plus – $14.00<br />• Step 1 - Extra – $14.00<br />• Contact Coach for Recommendation<br /><br />The coach may recommend a different book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.</p>',
+          "Step 1": '<p><strong>Steps Book Selection – Step 1</strong><br /><br />Step 1 is the suggested book based on your child\'s current learning level.<br /><br />You may choose to purchase any of the following books:<br /><br /><strong>• Step 1 – $12.99 (Suggested)</strong><br /><strong>• Step 1 – Plus – $13.99</strong><br /><strong>• Step 1 – Extra – $13.99</strong><br /><br /><strong>Coach\'s Recommendation:</strong> The coach will recommend the most appropriate book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.</p>',
           
-          "Step 2": '<p><strong>Steps Book Selection – Step 2</strong><br /><br />Step 2 has been pre-selected as the recommended book for your child\'s current learning level. <strong>Step 2 costs $14.00.</strong><br /><br />Based on your child\'s current learning level, the following supplementary books are also available for consideration if you wish to enhance their learning:<br /><br />• Step 1 - Plus – $14.00<br />• Step 1 - Extra – $14.00<br />• Step 2 - Plus – $14.00<br />• Contact Coach for Recommendation<br /><br />The coach may recommend a different book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.</p>',
+          "Step 2": '<p><strong>Steps Book Selection – Step 2</strong><br /><br />Step 2 is the suggested book based on your child\'s current learning level.<br /><br />You may choose to purchase any of the following books:<br /><br /><strong>• Step 2 – $12.99 (Suggested)</strong><br /><strong>• Step 1 – Plus – $13.99</strong><br /><strong>• Step 1 – Extra – $13.99</strong><br /><strong>• Step 2 – Plus – $13.99</strong><br /><strong>• Step 2 – Extra – $13.99</strong><br /><br /><strong>Coach\'s Recommendation:</strong> The coach will recommend the most appropriate book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.</p>',
           
-          "Step 3": '<p><strong>Steps Book Selection – Step 3</strong><br /><br />Step 3 has been pre-selected as the recommended book for your child\'s current learning level. <strong>Step 3 costs $14.00.</strong><br /><br />Based on your child\'s current learning level, the following supplementary books are also available for consideration if you wish to enhance their learning:<br /><br />• Step 2 - Plus – $14.00<br />• Step 2 - Extra – $14.00<br />• Step 3 - Plus – $14.00<br />• Contact Coach for Recommendation<br /><br />The coach may recommend a different book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.</p>',
+          "Step 3": '<p><strong>Steps Book Selection – Step 3</strong><br /><br />Step 3 is the suggested book based on your child\'s current learning level.<br /><br />You may choose to purchase any of the following books:<br /><br /><strong>• Step 3 – $12.99 (Suggested)</strong><br /><strong>• Step 2 – Plus – $13.99</strong><br /><strong>• Step 2 – Extra – $13.99</strong><br /><strong>• Step 3 – Plus – $13.99</strong><br /><strong>• Step 3 – Extra – $13.99</strong><br /><br /><strong>Coach\'s Recommendation:</strong> The coach will recommend the most appropriate book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.</p>',
           
-          "Step 4": '<p><strong>Steps Book Selection – Step 4</strong><br /><br />Based on your child\'s advanced learning level, we recommend consulting with the coach for personalized book recommendations.<br /><br />• Contact Coach for Recommendation<br /><br />The coach will assess your child\'s USCF rating, chess knowledge, playing strength, and overall progress to recommend the most appropriate Steps study materials.</p>',
-          
-          "Step 5": '<p><strong>Steps Book Selection – Step 5</strong><br /><br />Based on your child\'s advanced learning level, we recommend consulting with the coach for personalized book recommendations.<br /><br />• Contact Coach for Recommendation<br /><br />The coach will assess your child\'s USCF rating, chess knowledge, playing strength, and overall progress to recommend the most appropriate Steps study materials.</p>',
-          
-          "Step 6": '<p><strong>Steps Book Selection – Step 6</strong><br /><br />Based on your child\'s advanced learning level, we recommend consulting with the coach for personalized book recommendations.<br /><br />• Contact Coach for Recommendation<br /><br />The coach will assess your child\'s USCF rating, chess knowledge, playing strength, and overall progress to recommend the most appropriate Steps study materials.</p>',
-          
-          "Not Sure - Coach Recommendation Required": '<p><strong>Steps Book Selection – Coach Recommendation</strong><br /><br />Since you are unsure of your child\'s current level, we recommend consulting with the coach for personalized book recommendations.<br /><br />• Contact Coach for Recommendation<br /><br />The coach will assess your child\'s USCF rating, chess knowledge, playing strength, and overall progress to recommend the most appropriate Steps study materials.</p>'
+          "Step 4 and Above": '<p><strong>Steps Book Selection – Step 4 and Above</strong><br /><br />Based on your child\'s current learning level, <strong>please contact the coach for a recommendation on the most appropriate Steps study material.</strong><br /><br />The coach will consider your child\'s USCF rating, chess knowledge, playing strength, and overall progress before recommending a suitable book for purchase.</p>',
+
+          "Not Sure - Contact Coach": '<p><strong>Steps Book Selection – Coach Recommendation</strong><br /><br />Since you are unsure of your child\'s current Steps curriculum level, <strong>please contact the coach for a recommendation on the most appropriate Steps study material.</strong><br /><br />The coach will consider your child\'s USCF rating, chess knowledge, playing strength, and overall progress before recommending a suitable book for purchase.</p>'
         };
 
-        messageContainer.innerHTML = messageMap[curriculumLevel] || '<p><strong>Steps Curriculum – Book Selection</strong><br />Based on your child\'s current learning level, the following books are suggested for consideration. The coach may recommend a different book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.<br /><br />Each paid Steps book costs <strong>$14.00</strong>. Stepping Stones is complimentary for eligible beginners.</p>';
+        messageContainer.innerHTML = messageMap[curriculumLevel] || defaultBooksMessage;
       }
 
       const defaultBookMap = {
         "Stepping Stones": "book-stepping-stones",
         "Step 1": "book-step1",
         "Step 2": "book-step2",
-        "Step 3": "book-step3"
+        "Step 3": "book-step3",
+        "Step 4 and Above": "book-coach-recommendation",
+        "Not Sure - Contact Coach": "book-coach-recommendation"
       };
 
       if (defaultBookMap[curriculumLevel]) {
@@ -494,10 +573,25 @@ document.addEventListener("DOMContentLoaded", () => {
           defaultBookCheckbox.checked = true;
         }
       }
+      updatePurchaseChoice(true);
     };
 
     stepsCurriculumSelect.addEventListener("change", function () {
       updateVisibleBooks(this.value);
+    });
+
+    if (stepBookPurchaseYes && stepBookPurchaseNo) {
+      stepBookPurchaseYes.addEventListener("change", () => {
+        if (stepBookPurchaseYes.checked) stepBookPurchaseNo.checked = false;
+        updatePurchaseChoice();
+      });
+      stepBookPurchaseNo.addEventListener("change", () => {
+        if (stepBookPurchaseNo.checked) stepBookPurchaseYes.checked = false;
+        updatePurchaseChoice();
+      });
+    }
+    recommendedBooksCheckboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", () => updatePurchaseChoice(checkbox.checked));
     });
 
     updateVisibleBooks(stepsCurriculumSelect.value);
@@ -509,6 +603,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const emailReceiptBtn = document.getElementById("emailReceiptBtn");
   const submissionFrame = document.getElementById("hidden_iframe");
   let awaitingRegistrationResponse = false;
+
+  registrationForm?.addEventListener("formdata", (event) => {
+    if (stepBookPurchaseYes && stepBookPurchaseNo) {
+      event.formData.delete("entry.1257403535");
+      if (stepBookPurchaseYes.checked || stepBookPurchaseNo.checked) {
+        event.formData.append("entry.1257403535", stepBookPurchaseYes.checked ? "Yes" : "No");
+      }
+      if (!stepBookPurchaseYes.checked) {
+        event.formData.set("entry.1301409583",
+          stepsCurriculumSelect?.value === "Not Sure - Contact Coach"
+            ? "Contact Coach for Recommendation"
+            : "Opt Out - No Books Required");
+      }
+    }
+  });
 
   submissionFrame?.addEventListener("load", () => {
     if (!awaitingRegistrationResponse) return;
@@ -558,6 +667,7 @@ document.addEventListener("DOMContentLoaded", () => {
       registrationForm.querySelectorAll("select").forEach((select) => {
         select.selectedIndex = 0;
       });
+      studentTypeSelect?.dispatchEvent(new Event("change"));
     }
 
     const tshirtSizeGroup = document.getElementById("tshirtSizeGroup");
@@ -568,6 +678,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tshirtSize) {
       tshirtSize.required = false;
       tshirtSize.value = "";
+    }
+    if (tshirtPurchase) {
+      tshirtPurchase.hidden = false;
+      tshirtPurchase.required = true;
     }
 
     const medicalDetailsGroup = document.getElementById("medicalDetailsGroup");
@@ -582,17 +696,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelectorAll('#recommendedBooksGroup input[type="checkbox"]').forEach((checkbox) => {
       checkbox.checked = false;
-      checkbox.required = false;
+      checkbox.setCustomValidity("");
     });
 
-    const stepsCurriculumSection = document.getElementById("stepsCurriculumSection");
-    if (stepsCurriculumSection) {
-      stepsCurriculumSection.hidden = true;
-    }
     const stepsCurriculumSelect = document.querySelector('select[name="entry.1459360062"]');
     if (stepsCurriculumSelect) {
-      stepsCurriculumSelect.required = false;
       stepsCurriculumSelect.selectedIndex = 0;
+      stepsCurriculumSelect.dispatchEvent(new Event("change"));
     }
 
     const paymentContainer = document.getElementById("paymentSection");

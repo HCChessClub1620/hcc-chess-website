@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Register | Hamilton Chess Club</title>
   <link rel="canonical" href="https://hamiltonchessclub.org/pages/register/" />
-  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/style.css?v=20261125i" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -53,6 +53,19 @@
             <option>Advanced</option>
           </select>
 
+          <div class="consent-note">
+            <p>
+              <strong>Family Discount:</strong><br />
+              A <strong>$10 discount per child</strong> is available for families registering multiple children. If you are registering more than one child from your family, please select <strong>Yes</strong> for each child's registration. <strong>Each registered child will receive a $10 discount.</strong>
+            </p>
+          </div>
+
+          <select id="familyDiscount" name="entry.767759010" required>
+            <option value="">Family Discount</option>
+            <option value="Yes">Yes - I am registering multiple children from my family</option>
+            <option value="No">No - I am registering only one child</option>
+          </select>
+
           <select name="entry.521185981" required>
             <option value="">Tournament Interest</option>
             <option>Yes</option>
@@ -68,35 +81,28 @@
           <input type="number" name="entry.1336812094" placeholder="USCF Rating (Optional)" min="0" />
 
           <div class="consent-note">
-            <p><strong>Steps Book Purchase:</strong><br />Would you like to purchase a Steps book for your child?</p>
+            <p><strong>Steps Chess Curriculum – Current Learning Level</strong><br /><br />Please indicate the current Steps curriculum learning level your child is using at Hamilton Chess Club (HCC).<br /><br />If you are unsure of your child's current level, please contact the coach for a recommendation.</p>
           </div>
 
-          <select id="stepBookPurchase" name="entry.1257403535" required>
-            <option value="">Steps Book Purchase</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
+          <select name="entry.1459360062" required>
+            <option value="">Current Steps Curriculum Level</option>
+            <option value="Stepping Stones">Stepping Stones</option>
+            <option value="Step 1">Step 1</option>
+            <option value="Step 2">Step 2</option>
+            <option value="Step 3">Step 3</option>
+            <option value="Step 4 and Above">Step 4 and Above</option>
+            <option value="Not Sure - Contact Coach">Not Sure - Contact Coach</option>
           </select>
 
-          <div id="stepsCurriculumSection" hidden>
-            <div class="consent-note">
-              <p><strong>Steps Chess Curriculum – Current Learning Level</strong><br /><br />Please indicate the current Steps curriculum learning level your child is using at Hamilton Chess Club (HCC).<br /><br />If you are unsure of your child's current level, please select <strong>"Not Sure – Coach Recommendation Needed."</strong></p>
-            </div>
-
-            <select name="entry.1459360062" required>
-              <option value="">Current Steps Curriculum Level</option>
-              <option value="Stepping Stones">Stepping Stones</option>
-              <option value="Step 1">Step 1</option>
-              <option value="Step 2">Step 2</option>
-              <option value="Step 3">Step 3</option>
-              <option value="Step 4">Step 4</option>
-              <option value="Step 5">Step 5</option>
-              <option value="Step 6">Step 6</option>
-              <option value="Not Sure - Coach Recommendation Required">Not Sure - Coach Recommendation Required</option>
-            </select>
-
+          <div id="stepsCurriculumSection">
             <div id="recommendedBooksSection">
               <div id="booksMessageContainer" class="consent-note">
-                <p><strong>Steps Curriculum – Book Selection</strong><br />Based on your child's current learning level, the following books are suggested for consideration. The coach may recommend a different book based on your child's USCF rating, chess knowledge, playing strength, and overall progress.<br /><br />Each paid Steps book costs <strong>$14.00</strong>. Stepping Stones is complimentary for eligible beginners.</p>
+                <p><strong>Steps Curriculum – Book Selection</strong><br />Based on your child's current learning level, the following books are suggested for consideration. The coach may recommend a different book based on your child's USCF rating, chess knowledge, playing strength, and overall progress.</p>
+                <ul>
+                  <li><strong>Stepping Stones is free for new students and $12.99 for returning students.</strong></li>
+                  <li><strong>Standard Step books cost $12.99.</strong></li>
+                  <li><strong>Step-Plus and Step-Extra books cost $13.99.</strong></li>
+                </ul>
               </div>
 
               <div id="recommendedBooksGroup">
@@ -123,18 +129,45 @@
             </div>
           </div>
 
-          <div class="consent-note">
-            <p>
-              <strong>Family Discount:</strong><br />
-              A <strong>$10 discount per child</strong> is available for families registering multiple children. If you are registering more than one child from your family, please select <strong>Yes</strong> for each child's registration. <strong>Each registered child will receive a $10 discount.</strong>
-            </p>
+          <div id="stepBookPurchaseGroup">
+            <div class="consent-note">
+              <p><strong>Steps Book Purchase:</strong><br />Would you like to purchase a Steps book for your child?</p>
+              <ul>
+                <li>If you select <strong>Yes</strong>, the selected books will be ordered.</li>
+                <li>If you select <strong>No</strong>, books will not be ordered.</li>
+              </ul>
+            </div>
+
+            <div class="book-purchase-options" role="group" aria-label="Steps Book Purchase">
+              <label><input type="checkbox" id="stepBookPurchaseYes" name="entry.1257403535" value="Yes" /> Yes - Books added to cart</label>
+              <label><input type="checkbox" id="stepBookPurchaseNo" name="entry.1257403535" value="No" /> No - No books added to cart</label>
+            </div>
           </div>
 
-          <select id="familyDiscount" name="entry.767759010" required>
-            <option value="">Family Discount</option>
-            <option value="Yes">Yes - I am registering multiple children from my family</option>
-            <option value="No">No - I am registering only one child</option>
+          <div id="tshirtMessage" class="consent-note">
+            <p><strong>Hamilton Chess Club T-Shirt – Returning Students</strong><br /><br /><strong>Welcome Back!</strong><br /><br />Returning students who would like a new Hamilton Chess Club (HCC) T-shirt can purchase one for <strong>$13.50</strong>, added to the class registration total.<br /><br />If you wish to purchase a T-shirt, please select <strong>Yes</strong> below and choose your preferred size. Select <strong>No</strong> if you do not need a T-shirt.<br /><br />Wear your HCC colors with pride and represent our club at WSCF- and USCF-rated chess tournaments!<br /><br /><strong>Proudly wear HCC. Proudly represent your club!</strong></p>
+          </div>
+
+          <select id="tshirtPurchase" name="entry.1553706562" required>
+            <option value="">T-Shirt Purchase</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
           </select>
+
+          <div id="tshirtSizeGroup" hidden>
+            <select id="tshirtSize" name="entry.98983480" required>
+              <option value="">Select T-Shirt Size</option>
+              <option value="Kids 5-6 Years">Kids 5-6 Years</option>
+              <option value="Kids 7-8 Years">Kids 7-8 Years</option>
+              <option value="Kids 9-10 Years">Kids 9-10 Years</option>
+              <option value="Kids 11-12 Years">Kids 11-12 Years</option>
+              <option value="Youth Small">Youth Small</option>
+              <option value="Youth Medium">Youth Medium</option>
+              <option value="Youth Large">Youth Large</option>
+              <option value="Youth X-Large">Youth X-Large</option>
+              <option value="No T Shirt Needed (Opt Out)">No T Shirt Needed (Opt Out)</option>
+            </select>
+          </div>
 
           <div class="consent-note">
             <p><strong>Photo & Media Permission:</strong><br />Hamilton Chess Club occasionally takes photographs and videos during classes, tournaments, award ceremonies, and club events. These images may be used on our website, social media pages, newsletters, and promotional materials to showcase student achievements and club activities. Please indicate whether you give permission for your child's photo/video to be used.</p>
@@ -191,35 +224,6 @@
           </select>
 
           <div class="consent-note">
-            <p><strong>Hamilton Chess Club T-Shirt</strong><br /><br />Every new student will receive one complimentary Hamilton Chess Club (HCC) T-shirt!<br /><br />Returning students are welcome to purchase an HCC T-shirt for <strong>$13.50</strong>. Wear your HCC colors with pride as you represent our club at WSCF and USCF-rated chess tournaments!<br /><br /><strong>Proudly wear HCC. Proudly represent your club!</strong></p>
-          </div>
-
-          <select id="tshirtPurchase" name="entry.1553706562" required>
-            <option value="">T-Shirt Purchase</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
-
-          <div id="tshirtSizeGroup" hidden>
-            <div class="consent-note">
-              <p><strong>T-Shirt Size Selection</strong><br />Please select your child's T-Shirt size.</p>
-            </div>
-
-            <select id="tshirtSize" name="entry.98983480" required>
-              <option value="">Select T-Shirt Size</option>
-              <option value="Kids 5-6 Years">Kids 5-6 Years</option>
-              <option value="Kids 7-8 Years">Kids 7-8 Years</option>
-              <option value="Kids 9-10 Years">Kids 9-10 Years</option>
-              <option value="Kids 11-12 Years">Kids 11-12 Years</option>
-              <option value="Youth Small">Youth Small</option>
-              <option value="Youth Medium">Youth Medium</option>
-              <option value="Youth Large">Youth Large</option>
-              <option value="Youth X-Large">Youth X-Large</option>
-              <option value="No T Shirt Needed (Opt Out)">No T Shirt Needed (Opt Out)</option>
-            </select>
-          </div>
-
-          <div class="consent-note">
             <p><strong>Payment Methods - Processing Fees Information :</strong></p>
             <ul>
               <li><strong>Zelle:</strong> Payments have a <strong>0% processing fee.</strong></li>
@@ -268,6 +272,6 @@
 
   <div id="site-footer"></div>
 
-  <script src="../../js/main.js?v=20261116"></script>
+  <script src="../../js/main.js?v=20261125k"></script>
 </body>
 </html>
