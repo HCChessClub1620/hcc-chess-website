@@ -476,10 +476,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const messageContainer = document.getElementById("booksMessageContainer");
     const defaultBooksMessage = messageContainer ? messageContainer.innerHTML : "";
     let purchaseLocked = false;
-    const updatePurchaseChoice = (selectYes = false) => {
+    const updatePurchaseChoice = (autoSelect = false) => {
       if (!stepBookPurchaseYes || !stepBookPurchaseNo || !stepBookPurchaseGroup) return;
       const needsCoach = stepsCurriculumSelect.value === "Not Sure - Contact Coach";
       const hasBooks = Array.from(recommendedBooksCheckboxes).some((checkbox) => checkbox.checked && !checkbox.disabled);
+      const hasChargeableBooks = Array.from(recommendedBooksCheckboxes).some((checkbox) => {
+        if (!checkbox.checked || checkbox.disabled) return false;
+        if (checkbox.value === "Stepping Stones") {
+          return studentTypeSelect?.value !== "New Student";
+        }
+        return /^Step [1-6]$/.test(checkbox.value) || /^Step [1-5] - (Plus|Extra)$/.test(checkbox.value);
+      });
       const shouldLock = needsCoach || !hasBooks;
       stepBookPurchaseGroup.hidden = needsCoach;
       stepBookPurchaseYes.disabled = shouldLock;
@@ -487,9 +494,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (shouldLock) {
         stepBookPurchaseYes.checked = false;
         stepBookPurchaseNo.checked = true;
-      } else if (purchaseLocked || selectYes) {
-        stepBookPurchaseYes.checked = true;
-        stepBookPurchaseNo.checked = false;
+      } else if (purchaseLocked || autoSelect) {
+        stepBookPurchaseYes.checked = hasChargeableBooks;
+        stepBookPurchaseNo.checked = !hasChargeableBooks;
       }
       purchaseLocked = shouldLock;
       stepBookPurchaseYes.setCustomValidity(
@@ -590,8 +597,9 @@ document.addEventListener("DOMContentLoaded", () => {
         updatePurchaseChoice();
       });
     }
+    studentTypeSelect?.addEventListener("change", () => updatePurchaseChoice(true));
     recommendedBooksCheckboxes.forEach((checkbox) => {
-      checkbox.addEventListener("change", () => updatePurchaseChoice(checkbox.checked));
+      checkbox.addEventListener("change", () => updatePurchaseChoice(true));
     });
 
     updateVisibleBooks(stepsCurriculumSelect.value);
@@ -611,10 +619,18 @@ document.addEventListener("DOMContentLoaded", () => {
         event.formData.append("entry.1257403535", stepBookPurchaseYes.checked ? "Yes" : "No");
       }
       if (!stepBookPurchaseYes.checked) {
-        event.formData.set("entry.1301409583",
-          stepsCurriculumSelect?.value === "Not Sure - Contact Coach"
-            ? "Contact Coach for Recommendation"
-            : "Opt Out - No Books Required");
+        const selectedBooks = Array.from(recommendedBooksCheckboxes)
+          .filter((checkbox) => checkbox.checked && !checkbox.disabled);
+        const complimentarySteppingStonesOnly = studentTypeSelect?.value === "New Student"
+          && stepsCurriculumSelect?.value === "Stepping Stones"
+          && selectedBooks.length === 1
+          && selectedBooks[0].value === "Stepping Stones";
+        if (!complimentarySteppingStonesOnly) {
+          event.formData.set("entry.1301409583",
+            stepsCurriculumSelect?.value === "Not Sure - Contact Coach"
+              ? "Contact Coach for Recommendation"
+              : "Opt Out - No Books Required");
+        }
       }
     }
   });

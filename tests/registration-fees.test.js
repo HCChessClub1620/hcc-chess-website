@@ -32,7 +32,7 @@ function registration(testDate = [2026, 10, 25, 12]) {
   const fields = Object.fromEntries([
     "paymentMethod", "paymentSection", "chessLevel", "familyDiscount",
     "tshirtPurchase", "tshirtSize", "tshirtSizeGroup", "stepBookPurchaseYes",
-    "stepBookPurchaseNo", "stepBookPurchaseGroup"
+    "stepBookPurchaseNo", "stepBookPurchaseGroup", "registrationForm"
   ].map((id) => [id, new Field()]));
   fields.tshirtSize.querySelector = () => ({ value: "No T Shirt Needed (Opt Out)" });
   const student = new Field();
@@ -85,7 +85,32 @@ function registration(testDate = [2026, 10, 25, 12]) {
     field.checked = checked;
     field.dispatchEvent({ type: "change" });
   }
-  return { fields, student, level, change, check, output: () => fields.paymentSection.innerHTML };
+  function submitFormData() {
+    const values = new Map();
+    for (const book of books) {
+      if (book.checked && !book.disabled) {
+        const selected = values.get("entry.1301409583") || [];
+        selected.push(book.value);
+        values.set("entry.1301409583", selected);
+      }
+    }
+    const formData = {
+      delete(name) { values.delete(name); },
+      append(name, value) {
+        const current = values.get(name) || [];
+        current.push(value);
+        values.set(name, current);
+      },
+      set(name, value) { values.set(name, [value]); },
+      getAll(name) { return values.get(name) || []; }
+    };
+    fields.registrationForm.dispatchEvent({ type: "formdata", formData });
+    return formData;
+  }
+  return {
+    fields, student, level, change, check, submitFormData,
+    output: () => fields.paymentSection.innerHTML
+  };
 }
 
 test("book prices update with student type, purchases and multiple selections", () => {
@@ -107,6 +132,29 @@ test("book prices update with student type, purchases and multiple selections", 
   assert.match(output(), /Books: \$40\.97<br>Subtotal: \$154\.47/);
   check(fields.stepBookPurchaseNo, true);
   assert.match(output(), /Books: \$0\.00<br>Subtotal: \$113\.50/);
+});
+
+test("new student Stepping Stones-only selection is complimentary, but adding Step 1 is a purchase", () => {
+  const { fields, student, level, change, check, submitFormData } = registration();
+  change(student, "New Student");
+  change(level, "Stepping Stones");
+
+  assert.equal(fields.stepBookPurchaseNo.checked, true);
+  assert.equal(fields.stepBookPurchaseYes.checked, false);
+  const complimentarySubmission = submitFormData();
+  assert.deepEqual(complimentarySubmission.getAll("entry.1257403535"), ["No"]);
+  assert.deepEqual(complimentarySubmission.getAll("entry.1301409583"), ["Stepping Stones"]);
+
+  check(fields["book-step1"], true);
+  assert.equal(fields.stepBookPurchaseYes.checked, true);
+  assert.equal(fields.stepBookPurchaseNo.checked, false);
+  const paidSubmission = submitFormData();
+  assert.deepEqual(paidSubmission.getAll("entry.1257403535"), ["Yes"]);
+  assert.deepEqual(paidSubmission.getAll("entry.1301409583"), ["Stepping Stones", "Step 1"]);
+
+  check(fields["book-step1"], false);
+  assert.equal(fields.stepBookPurchaseNo.checked, true);
+  assert.equal(fields.stepBookPurchaseYes.checked, false);
 });
 
 test("Square processing includes the book total and prompts for the payable amount", () => {
