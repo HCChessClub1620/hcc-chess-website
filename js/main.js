@@ -466,7 +466,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (registrationForm) {
       registrationForm.reset();
-      registrationForm.querySelectorAll("input[type='text'], input[type='email'], input[type='tel']").forEach((field) => {
+      registrationForm.querySelectorAll("input[type='text'], input[type='email'], input[type='tel'], input[type='number']").forEach((field) => {
         field.value = "";
       });
       registrationForm.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
