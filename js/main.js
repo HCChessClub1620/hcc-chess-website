@@ -509,6 +509,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     };
 
+    const updateSteppingStonesPrice = () => {
+      if (stepsCurriculumSelect?.value !== "Stepping Stones") return;
+      const priceElement = document.getElementById("stepping-stones-price");
+      if (!priceElement) return;
+      const price = studentTypeSelect?.value === "New Student" ? "$0.00" : "$12.99";
+      priceElement.textContent = `• Stepping Stones – ${price}`;
+    };
+
     const updateVisibleBooks = (curriculumLevel) => {
       const needsCoach = curriculumLevel === "Not Sure - Contact Coach";
       const coachRecommendation = document.getElementById("book-coach-recommendation");
@@ -549,7 +557,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (messageContainer) {
         const messageMap = {
-          "Stepping Stones": '<p><strong>Steps Book Selection – Stepping Stones</strong><br /><br />Stepping Stones has been pre-selected. It is <strong>free for new students</strong> and costs <strong>$12.99 for returning students</strong>.<br /><br />You may also select an additional book:<br /><br /><strong>• Step 1 – $12.99</strong><br /><br /><strong>Coach\'s Recommendation:</strong> The coach will recommend the most appropriate book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.</p>',
+          "Stepping Stones": '<p><strong>Steps Book Selection – Stepping Stones</strong><br /><br />Stepping Stones has been pre-selected. It is <strong>free for new students</strong> and costs <strong>$12.99 for returning students</strong>.<br /><br />You may also select an additional book:<br /><br /><strong id="stepping-stones-price">• Stepping Stones – $12.99</strong><br /><strong>• Step 1 – $12.99</strong><br /><br /><strong>Coach\'s Recommendation:</strong> The coach will recommend the most appropriate book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.</p>',
           
           "Step 1": '<p><strong>Steps Book Selection – Step 1</strong><br /><br />Step 1 is the suggested book based on your child\'s current learning level.<br /><br />You may choose to purchase any of the following books:<br /><br /><strong>• Step 1 – $12.99 (Suggested)</strong><br /><strong>• Step 1 – Plus – $13.99</strong><br /><strong>• Step 1 – Extra – $13.99</strong><br /><br /><strong>Coach\'s Recommendation:</strong> The coach will recommend the most appropriate book based on your child\'s USCF rating, chess knowledge, playing strength, and overall progress.</p>',
           
@@ -563,6 +571,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         messageContainer.innerHTML = messageMap[curriculumLevel] || defaultBooksMessage;
+        updateSteppingStonesPrice();
       }
 
       const defaultBookMap = {
@@ -597,7 +606,10 @@ document.addEventListener("DOMContentLoaded", () => {
         updatePurchaseChoice();
       });
     }
-    studentTypeSelect?.addEventListener("change", () => updatePurchaseChoice(true));
+    studentTypeSelect?.addEventListener("change", () => {
+      updateSteppingStonesPrice();
+      updatePurchaseChoice(true);
+    });
     recommendedBooksCheckboxes.forEach((checkbox) => {
       checkbox.addEventListener("change", () => updatePurchaseChoice(true));
     });
